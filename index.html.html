@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Rohrer Seed Solutions — Fall 2026 / Spring 2027 Sales Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1A1918;
+  --ink-2:#3A3835;
+  --paper:#FBFAF6;
+  --paper-2:#F2EEE3;
+  --field:#2F3A2E;
+  --field-2:#4A5A47;
+  --furrow:#6B5D48;
+  --signal:#C8461A;
+  --signal-2:#E67035;
+  --hair:#DED9CD;
+  --hair-2:#C9C2B0;
+  --wheat:#C9A24E;
+  --ok:#3F6B3A;
+  --warn:#B4691E;
+  --shadow:0 1px 0 rgba(26,25,24,.04),0 8px 24px -12px rgba(26,25,24,.16);
+  --radius:14px;
+  --radius-sm:8px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4,.display{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.1;color:var(--ink);margin:0 0 .4em}
+h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;letter-spacing:-.025em}
+h2{font-size:clamp(1.6rem,3.2vw,2.4rem);letter-spacing:-.02em}
+h3{font-size:1.25rem;font-weight:600}
+h4{font-size:1rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--field);font-family:'Inter',sans-serif}
+p{margin:0 0 1em}
+a{color:var(--signal);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+a:hover{border-bottom-color:var(--signal)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:'Inter',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--furrow);margin-bottom:.6em}
+.diamond{color:var(--signal);font-weight:700;margin:0 .35em}
+
+/* ============ TOP NAV ============ */
+.topbar{
+  position:sticky;top:0;z-index:100;background:var(--ink);color:var(--paper);
+  padding:.6rem 1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  border-bottom:1px solid var(--ink-2);
+}
+.topbar .logo{font-family:'Fraunces',serif;font-weight:800;font-size:1.05rem;letter-spacing:-.01em;white-space:nowrap;cursor:pointer}
+.topbar .logo span{color:var(--signal-2)}
+.topbar .season{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#a8a29e}
+.topbar .contact{margin-left:auto;font-size:.82rem;color:#d6d3d1;display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+.topbar .contact a{color:#d6d3d1;border:0}
+.topbar .contact a:hover{color:var(--signal-2)}
+
+/* Big dropdown section picker */
+.picker-wrap{
+  background:var(--paper-2);border-bottom:1px solid var(--hair);
+  padding:.7rem 1rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;
+  position:sticky;top:52px;z-index:99;
+}
+.picker-wrap .picker-label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--furrow);font-weight:600}
+.picker{
+  flex:1;min-width:240px;max-width:520px;
+  padding:.7rem 2.4rem .7rem .9rem;
+  font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;
+  background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='none' stroke='%231A1918' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 1l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 1rem center;
+  color:var(--ink);border:1px solid var(--hair-2);border-radius:10px;
+  -webkit-appearance:none;appearance:none;cursor:pointer;
+  transition:border-color .12s,box-shadow .12s;
+}
+.picker:hover,.picker:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 3px rgba(200,70,26,.15)}
+.picker optgroup{font-family:'Inter',sans-serif;font-size:.75rem;color:var(--furrow)}
+.picker option{font-family:'Inter',sans-serif;font-size:.95rem;color:var(--ink)}
+.picker-home-btn{
+  padding:.6rem .9rem;border-radius:8px;font-size:.82rem;font-weight:600;
+  background:var(--paper);border:1px solid var(--hair-2);color:var(--ink);cursor:pointer;
+  display:inline-flex;align-items:center;gap:.35rem;
+}
+.picker-home-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* View-switching: only one section visible at a time */
+main section.section,main section.hero{display:none}
+body[data-view="home"] #home{display:block}
+body[data-view="corn"] #corn{display:block}
+body[data-view="soybeans"] #soybeans{display:block}
+body[data-view="wheat"] #wheat{display:block}
+body[data-view="specialty"] #specialty{display:block}
+body[data-view="cover"] #cover{display:block}
+body[data-view="forage"] #forage{display:block}
+body[data-view="rye"] #rye{display:block}
+body[data-view="treatments"] #treatments{display:block}
+body[data-view="biologicals"] #biologicals{display:block}
+body[data-view="programs"] #programs{display:block}
+body[data-view="policies"] #policies{display:block}
+body[data-view="quote-seed"] #quote-seed{display:block}
+body[data-view="quote-bio"] #quote-bio{display:block}
+body[data-view="quote-farm"] #quote-farm{display:block}
+/* Print-all mode: show every section (for binder printing) */
+body.print-all main section.section,body.print-all main section.hero{display:block !important}
+body.print-all main section.section{page-break-before:always;break-before:page}
+
+/* Back-to-home breadcrumb at top of each non-home section */
+.crumb{
+  display:none;margin-bottom:.9rem;font-size:.78rem;color:var(--furrow);
+  font-weight:600;letter-spacing:.06em;text-transform:uppercase;align-items:center;gap:.4rem;
+}
+body:not([data-view="home"]) .crumb{display:inline-flex}
+.crumb a{color:var(--furrow);border:0;cursor:pointer}
+.crumb a:hover{color:var(--signal)}
+.crumb .sep{color:var(--hair-2)}
+
+/* ============ LAYOUT ============ */
+main{max-width:1280px;margin:0 auto;padding:1rem 1.2rem 6rem}
+.section{padding:1.6rem 0 1.6rem;border-bottom:0;scroll-margin-top:130px}
+.section:last-child{border-bottom:0}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.section-head .print-btn{opacity:.85}
+
+/* ============ HOME / HERO ============ */
+.hero{padding:2rem 0 1.8rem;border-bottom:1px solid var(--hair);scroll-margin-top:130px}
+.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4rem;align-items:end}
+@media(max-width:820px){.hero-grid{grid-template-columns:1fr}}
+.hero .kicker{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--signal);font-weight:700;margin-bottom:1rem}
+.hero .lede{font-size:1.1rem;color:var(--ink-2);max-width:52ch;margin-top:1rem}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;background:var(--field);color:var(--paper);padding:1.4rem;border-radius:var(--radius)}
+.hero-stats .stat{padding:.4rem 0}
+.hero-stats .stat b{font-family:'Fraunces',serif;font-size:2rem;font-weight:600;display:block;line-height:1;color:#fff}
+.hero-stats .stat span{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#c9c2b0}
+
+.quicklinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;margin-top:2rem}
+.ql{
+  background:var(--paper);border:1px solid var(--hair);border-radius:var(--radius);
+  padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;
+  transition:border-color .15s,transform .15s,box-shadow .15s;color:var(--ink);border-bottom:1px solid var(--hair);
+}
+.ql:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:var(--shadow);border-bottom-color:var(--ink)}
+.ql .ql-eyebrow{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);font-weight:700}
+.ql .ql-title{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--ink)}
+.ql .ql-sub{font-size:.82rem;color:var(--ink-2)}
+
+/* Tile grid — the home-screen "app buttons" */
+.tile-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:.9rem;
+}
+.tile{
+  position:relative;text-align:left;background:var(--paper);border:1px solid var(--hair);
+  border-radius:var(--radius);padding:1.1rem 1.2rem 1.1rem 1.2rem;
+  display:flex;flex-direction:column;gap:.35rem;
+  font-family:'Inter',sans-serif;color:var(--ink);cursor:pointer;
+  transition:border-color .15s,transform .12s,box-shadow .15s,background .12s;
+  min-height:130px;
+  -webkit-tap-highlight-color:transparent;
+}
+.tile:hover,.tile:focus-visible{border-color:var(--ink);transform:translateY(-2px);box-shadow:var(--shadow);outline:none}
+.tile:active{transform:translateY(0)}
+.tile .tile-num{
+  position:absolute;top:.75rem;right:.9rem;
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;
+  color:var(--furrow);letter-spacing:.08em;
+}
+.tile .tile-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--ink);line-height:1.15;margin-bottom:.15rem;letter-spacing:-.01em}
+.tile .tile-sub{font-size:.83rem;color:var(--ink-2);line-height:1.4}
+.tile .tile-tag{
+  margin-top:auto;padding-top:.6rem;font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--furrow);font-weight:600;
+}
+.tile .tile-tag.signal{color:var(--signal)}
+.tile.tile-accent{background:var(--field);border-color:var(--field);color:var(--paper)}
+.tile.tile-accent:hover{background:var(--ink);border-color:var(--ink)}
+.tile.tile-accent .tile-num{color:#c9c2b0}
+.tile.tile-accent .tile-title{color:#fff}
+.tile.tile-accent .tile-sub{color:#c9c2b0}
+.tile.tile-accent .tile-tag,.tile.tile-accent .tile-tag.signal{color:var(--signal-2)}
+
+/* ============ PRICE CARDS ============ */
+.line-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem;margin:1rem 0 1.6rem}
+.price-card{
+  background:var(--paper);border:1px solid var(--hair);border-radius:var(--radius);
+  padding:1.1rem 1.2rem;position:relative;
+}
+.price-card.dark{background:var(--field);color:var(--paper);border-color:var(--field)}
+.price-card.dark h3,.price-card.dark h4{color:#fff}
+.price-card.dark .tag{background:#4A5A47;color:#fff;border-color:#5c6b58}
+.price-card .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:.8rem;margin-bottom:.4rem}
+.price-card .card-head h3{margin:0}
+.price-card .card-sub{font-size:.82rem;color:var(--furrow);margin-bottom:.7rem}
+.price-card.dark .card-sub{color:#c9c2b0}
+.tag{
+  display:inline-block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:600;padding:.2rem .55rem;border-radius:99px;
+  background:var(--paper-2);color:var(--field);border:1px solid var(--hair-2);
+}
+.tag.signal{background:var(--signal);color:#fff;border-color:var(--signal)}
+.tag.wheat{background:var(--wheat);color:var(--ink);border-color:#b78e35}
+.tag.ok{background:#e2ecd9;color:var(--ok);border-color:#bccdb0}
+
+table.price-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.4rem 0}
+.price-table th,.price-table td{padding:.42rem .6rem;text-align:left;border-bottom:1px solid var(--hair)}
+.price-table th{font-family:'Inter',sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--furrow);font-weight:600;background:transparent;border-bottom:1px solid var(--hair-2)}
+.price-table td.num,.price-table th.num{text-align:right;font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.price-table tr:last-child td{border-bottom:0}
+.price-table .rm{color:var(--furrow);width:60px}
+.price-table .name{font-weight:500}
+.dark .price-table th,.dark .price-table td{color:var(--paper);border-color:#4A5A47}
+.dark .price-table th{color:#c9c2b0}
+
+/* Volume ladder */
+.ladder{background:var(--paper-2);border-radius:var(--radius-sm);padding:.85rem 1rem;margin-top:.9rem;font-size:.85rem}
+.ladder h4{margin-bottom:.5rem;color:var(--field);font-size:.72rem}
+.ladder-rows{display:grid;grid-template-columns:1fr auto;gap:.15rem .8rem}
+.ladder-rows .lr-b{color:var(--ink-2)}
+.ladder-rows .lr-d{font-family:'JetBrains Mono',monospace;text-align:right;font-weight:600;color:var(--signal)}
+.dark .ladder{background:#3d4a3b;color:var(--paper)}
+.dark .ladder h4{color:#c9c2b0}
+.dark .ladder-rows .lr-b{color:#e7e5df}
+.dark .ladder-rows .lr-d{color:var(--signal-2)}
+
+/* ============ CALCULATOR ============ */
+.calc{
+  background:var(--paper-2);border:1px solid var(--hair-2);border-radius:var(--radius);
+  padding:1rem 1.1rem;margin-top:1rem;
+}
+.calc h4{margin-bottom:.6rem}
+.calc-row{display:grid;grid-template-columns:1fr 90px 1fr;gap:.5rem;align-items:center;margin-bottom:.5rem}
+.calc input[type="number"]{
+  width:100%;padding:.55rem .7rem;border:1px solid var(--hair-2);border-radius:8px;
+  font-family:'JetBrains Mono',monospace;font-size:1rem;text-align:right;background:var(--paper);
+  color:var(--ink);
+}
+.calc input[type="number"]:focus{outline:2px solid var(--signal);border-color:var(--signal)}
+.calc label{font-size:.85rem;color:var(--ink-2)}
+.calc-out{
+  background:var(--ink);color:var(--paper);border-radius:8px;padding:.85rem 1rem;margin-top:.6rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.85rem;
+}
+.calc-out .out-lbl{color:#a8a29e;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+.calc-out .out-val{font-family:'JetBrains Mono',monospace;font-size:1.15rem;color:#fff;font-weight:700}
+.calc-out .out-val.signal{color:var(--signal-2)}
+.calc select{
+  width:100%;padding:.55rem .7rem;border:1px solid var(--hair-2);border-radius:8px;
+  font-family:'Inter',sans-serif;font-size:.9rem;background:var(--paper);color:var(--ink);
+}
+
+/* ============ CONTROLS / BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1rem;border-radius:8px;
+  font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;border:1px solid var(--ink);
+  background:var(--paper);color:var(--ink);cursor:pointer;transition:all .12s;
+}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.primary{background:var(--signal);color:#fff;border-color:var(--signal)}
+.btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+.btn.ghost{background:transparent;border-color:var(--hair-2);color:var(--ink-2)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.small{padding:.35rem .7rem;font-size:.75rem}
+
+/* Dealer toggle */
+.dealer-view{display:none}
+body.show-dealer .dealer-view{display:block}
+body.show-dealer .dealer-hide{opacity:.6}
+.dealer-btn{position:fixed;bottom:1rem;right:1rem;z-index:120;box-shadow:var(--shadow)}
+body.show-dealer .dealer-btn{background:var(--ink);color:var(--signal-2);border-color:var(--ink)}
+
+/* ============ NOTES / CALLOUTS ============ */
+.callout{
+  background:var(--paper-2);border-left:3px solid var(--signal);padding:.9rem 1.1rem;
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:1rem 0;font-size:.9rem;
+}
+.callout.field{border-left-color:var(--field);background:#eff0e9}
+.callout h4{margin-bottom:.35rem;color:var(--ink)}
+.callout.dealer{background:#fff3d1;border-left-color:var(--wheat);color:var(--ink-2)}
+
+/* ============ INTRO / PROOF ============ */
+.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;margin:1rem 0}
+.proof{padding:1rem 1.1rem;border:1px solid var(--hair);border-radius:var(--radius);background:var(--paper)}
+.proof .pnum{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:600;color:var(--field);line-height:1;display:block}
+.proof .plbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--furrow);font-weight:600;margin-top:.35rem;display:block}
+.proof .pdesc{font-size:.85rem;color:var(--ink-2);margin-top:.5rem}
+
+/* ============ QUOTE BUILDER ============ */
+.quote-panel{background:var(--paper);border:1px solid var(--hair);border-radius:var(--radius);padding:1.2rem;margin-top:1rem}
+.quote-head{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--hair)}
+.quote-head label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--furrow);font-weight:600;margin-bottom:.25rem}
+.quote-head input{width:100%;padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:var(--paper);color:var(--ink)}
+.quote-head input:focus{outline:2px solid var(--signal);border-color:var(--signal)}
+.q-add{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0 1rem}
+.q-add select{padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:var(--paper);color:var(--ink);flex:1;min-width:220px}
+table.q-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.4rem}
+.q-table th,.q-table td{padding:.55rem .5rem;text-align:left;border-bottom:1px solid var(--hair);vertical-align:middle}
+.q-table th{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--furrow);font-weight:600}
+.q-table td.num,.q-table th.num{text-align:right;font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.q-table input[type="number"]{width:90px;padding:.35rem .5rem;border:1px solid var(--hair-2);border-radius:6px;text-align:right;font-family:'JetBrains Mono',monospace;background:var(--paper);color:var(--ink)}
+.q-table .q-remove{background:transparent;border:0;color:var(--furrow);cursor:pointer;font-size:1.1rem;padding:.2rem .4rem}
+.q-table .q-remove:hover{color:var(--signal)}
+.q-table tfoot td{font-weight:700;background:var(--paper-2)}
+.q-totals{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:1rem;display:grid;grid-template-columns:1fr auto;gap:.5rem 1.5rem;align-items:baseline}
+.q-totals .qt-lbl{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#a8a29e;font-weight:600}
+.q-totals .qt-val{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:#fff;text-align:right}
+.q-totals .qt-val.big{font-family:'Fraunces',serif;font-size:2.2rem;color:var(--signal-2);font-weight:600}
+.q-empty{padding:2rem;text-align:center;color:var(--furrow);font-style:italic;border:1px dashed var(--hair-2);border-radius:var(--radius)}
+
+/* ============ PRINT ============ */
+@media print{
+  @page{size:letter;margin:.55in}
+  body{background:#fff;font-size:11pt;color:#000}
+  .topbar,.picker-wrap,.dealer-btn,.print-btn,.btn.print-hide,.q-add,.calc,.dealer-view,.crumb{display:none !important}
+  .section{border-bottom:0;padding:0 0 1rem;page-break-inside:avoid;break-inside:avoid}
+  .price-card{page-break-inside:avoid;break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+  .price-card.dark{background:#f6f5f0 !important;color:#000 !important;border-color:#999 !important}
+  .price-card.dark *{color:#000 !important;border-color:#bbb !important}
+  .price-card.dark h3,.price-card.dark h4,.price-card.dark p,.price-card.dark div,.price-card.dark li,.price-card.dark td,.price-card.dark th{color:#000 !important}
+  .price-card.dark .card-sub{color:#444 !important}
+  .price-card.dark .price-table th{color:#555 !important}
+  .price-card.dark .ladder{background:#efeee8 !important;color:#000 !important}
+  .price-card.dark .ladder h4,.price-card.dark .ladder-rows .lr-b,.price-card.dark .ladder-rows .lr-d{color:#000 !important}
+  .price-card.dark .tag,.price-card.dark .tag.signal{background:#e8e2d0 !important;color:#333 !important;border-color:#bbb !important}
+  .hero{padding:0 0 .6rem}
+  .hero-stats{background:#f6f5f0;color:#000}
+  .hero-stats .stat b,.hero-stats .stat span{color:#000}
+  .callout{background:#f6f5f0;color:#000;border-left-color:#000}
+  h1,h2,h3{color:#000}
+  a{color:#000;border:0}
+  .print-only{display:block !important}
+  body.print-section-only .section:not(.print-active){display:none}
+  body.print-section-only .print-active{display:block}
+  .q-totals{background:#f6f5f0;color:#000}
+  .q-totals .qt-val,.q-totals .qt-val.big,.q-totals .qt-lbl{color:#000}
+  main{padding:0}
+}
+.print-only{display:none}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:640px){
+  .hero-grid{gap:1.4rem}
+  .hero-stats{grid-template-columns:1fr 1fr;padding:1rem}
+  .hero-stats .stat b{font-size:1.6rem}
+  .topbar{padding:.5rem .8rem}
+  .topbar .contact{width:100%;margin-left:0;order:3}
+  .picker-wrap{top:70px}
+  main{padding:0 .8rem 4rem}
+  .price-card{padding:1rem}
+  .calc-row{grid-template-columns:1fr 1fr;gap:.4rem}
+  .calc-row label:nth-child(1){grid-column:1 / -1}
+  .q-add select{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<header class="topbar">
+  <div class="logo" onclick="showView('home')" title="Home">Rohrer Seed <span>◆</span> Solutions</div>
+  <div class="season">Fall 2026 / Spring 2027</div>
+  <div class="contact">
+    <span>Greg Rohrer</span>
+    <a href="/cdn-cgi/l/email-protection#27405542406755484f5542555442424354484b52534e4849540944484a"><span class="__cf_email__" data-cfemail="67001502002715080f1502151402020314080b12130e0809144904080a">[email&#160;protected]</span></a>
+  </div>
+</header>
+
+<!-- ================= SECTION PICKER (DROPDOWN) ================= -->
+<div class="picker-wrap">
+  <button class="picker-home-btn" onclick="showView('home')" title="Home">⌂ Home</button>
+  <span class="picker-label">Jump to</span>
+  <select class="picker" id="viewPicker" onchange="showView(this.value)">
+    <option value="home">◆ Home / All categories</option>
+    <optgroup label="Seed">
+      <option value="corn">Seed Corn — Zone 1</option>
+      <option value="soybeans">Soybeans</option>
+      <option value="wheat">Wheat</option>
+      <option value="specialty">White Corn &amp; SOYLEIC</option>
+    </optgroup>
+    <optgroup label="Fall / Forage">
+      <option value="cover">Cover Crops</option>
+      <option value="forage">Forage &amp; Alfalfa</option>
+      <option value="rye">reSTORE Rye</option>
+    </optgroup>
+    <optgroup label="Treatments &amp; Biologicals">
+      <option value="treatments">Seed Treatments</option>
+      <option value="biologicals">Meristem Biologicals</option>
+      <option value="programs">TCO &amp; System Programs</option>
+    </optgroup>
+    <optgroup label="Reference">
+      <option value="policies">Programs, Discounts &amp; Policies</option>
+    </optgroup>
+    <optgroup label="Live Quote Builders">
+      <option value="quote-seed">Seed Quote</option>
+      <option value="quote-bio">Biological Quote</option>
+      <option value="quote-farm">Whole-Farm Plan</option>
+    </optgroup>
+  </select>
+</div>
+
+<main>
+
+<!-- ================= HOME / HERO ================= -->
+<section id="home" class="hero">
+  <div class="hero-grid" style="grid-template-columns:1.4fr 1fr">
+    <div>
+      <div class="kicker">Rohrer Seed Solutions <span class="diamond">◆</span> Fall Sales Tool</div>
+      <h1>Pick a category<br>to get started.</h1>
+      <p class="lede">Everything you sell — pricing, volume ladders, live discount math, and quote builders. Tap a tile below, or use the "Jump to" dropdown up top to fly anywhere.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>2026-27</b><span>Sales Year</span></div>
+      <div class="stat"><b>Aug 1</b><span>Effective Date</span></div>
+      <div class="stat"><b>Oct 15</b><span>Early Order — $10/u Corn</span></div>
+      <div class="stat"><b>Jun 30</b><span>Accounts Due</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem">
+    <button class="btn primary" onclick="showView('quote-farm')">Build a farm plan →</button>
+    <button class="btn ghost" onclick="printAll()" title="Print the whole tool as a binder">🖨 Print full binder (35 pages)</button>
+  </div>
+
+  <!-- CATEGORY TILE GRID (the "app home screen") -->
+  <h4 style="color:var(--field);margin:2.2rem 0 .7rem">Seed</h4>
+  <div class="tile-grid">
+    <button class="tile" onclick="showView('corn')">
+      <span class="tile-num">01</span>
+      <span class="tile-title">Seed Corn</span>
+      <span class="tile-sub">Zone 1 · 96-116 RM · $213–$450 / 80K bag</span>
+      <span class="tile-tag">67 hybrids · 4 tiers</span>
+    </button>
+    <button class="tile" onclick="showView('soybeans')">
+      <span class="tile-num">02</span>
+      <span class="tile-title">Soybeans</span>
+      <span class="tile-sub">Enlist · XtendFLEX · Conv · $45.50–$61.50 / 140K</span>
+      <span class="tile-tag">38 varieties</span>
+    </button>
+    <button class="tile" onclick="showView('wheat')">
+      <span class="tile-num">03</span>
+      <span class="tile-title">Wheat</span>
+      <span class="tile-sub">7B440 · 7B520 · 7S510 · with U of I trial data</span>
+      <span class="tile-tag signal">7B520 = #3 statewide</span>
+    </button>
+    <button class="tile" onclick="showView('specialty')">
+      <span class="tile-num">04</span>
+      <span class="tile-title">White Corn &amp; SOYLEIC</span>
+      <span class="tile-sub">3 white hybrids · 6 high-oleic beans</span>
+      <span class="tile-tag">Contract premium</span>
+    </button>
+  </div>
+
+  <h4 style="color:var(--field);margin:2rem 0 .7rem">Fall / Forage</h4>
+  <div class="tile-grid">
+    <button class="tile" onclick="showView('cover')">
+      <span class="tile-num">05</span>
+      <span class="tile-title">Cover Crops</span>
+      <span class="tile-sub">6 house-blend programs + 23 individual species</span>
+      <span class="tile-tag">$12–$56 / A</span>
+    </button>
+    <button class="tile" onclick="showView('forage')">
+      <span class="tile-num">06</span>
+      <span class="tile-title">Forage &amp; Alfalfa</span>
+      <span class="tile-sub">Alfalfa · clovers · grasses · hay/pasture · wildlife</span>
+      <span class="tile-tag">50+ SKUs</span>
+    </button>
+    <button class="tile" onclick="showView('rye')">
+      <span class="tile-num">07</span>
+      <span class="tile-title">reSTORE Rye</span>
+      <span class="tile-sub">Premium cleaned · retail / dealer / semi-load</span>
+      <span class="tile-tag">Semi $12/bu</span>
+    </button>
+  </div>
+
+  <h4 style="color:var(--field);margin:2rem 0 .7rem">Treatments &amp; Biologicals</h4>
+  <div class="tile-grid">
+    <button class="tile" onclick="showView('treatments')">
+      <span class="tile-num">08</span>
+      <span class="tile-title">Seed Treatments</span>
+      <span class="tile-sub">ProHarvest wet · Meristem Hopper Throttle copacks</span>
+      <span class="tile-tag">Applied at plant</span>
+    </button>
+    <button class="tile" onclick="showView('biologicals')">
+      <span class="tile-num">09</span>
+      <span class="tile-title">Meristem Biologicals</span>
+      <span class="tile-sub">Starters · PGRs · N mgmt · adjuvants</span>
+      <span class="tile-tag">CY27 line</span>
+    </button>
+    <button class="tile" onclick="showView('programs')">
+      <span class="tile-num">10</span>
+      <span class="tile-title">TCO &amp; System Programs</span>
+      <span class="tile-sub">Take Cost Out · MaxStax · Excavator AMS</span>
+      <span class="tile-tag signal">25% in-season impact</span>
+    </button>
+  </div>
+
+  <h4 style="color:var(--field);margin:2rem 0 .7rem">Reference</h4>
+  <div class="tile-grid">
+    <button class="tile" onclick="showView('policies')">
+      <span class="tile-num">11</span>
+      <span class="tile-title">Programs, Discounts &amp; Policies</span>
+      <span class="tile-sub">Early order · cash · volume · replant · returns · financing</span>
+      <span class="tile-tag">Aug 1 → Jul 31</span>
+    </button>
+  </div>
+
+  <h4 style="color:var(--field);margin:2rem 0 .7rem">Live Quote Builders</h4>
+  <div class="tile-grid">
+    <button class="tile tile-accent" onclick="showView('quote-seed')">
+      <span class="tile-num">Q1</span>
+      <span class="tile-title">Seed Quote</span>
+      <span class="tile-sub">Auto volume discount + early order + cash %</span>
+      <span class="tile-tag signal">Signable</span>
+    </button>
+    <button class="tile tile-accent" onclick="showView('quote-bio')">
+      <span class="tile-num">Q2</span>
+      <span class="tile-title">Biological Quote</span>
+      <span class="tile-sub">Per-acre Meristem stack, live math</span>
+      <span class="tile-tag signal">Per-acre</span>
+    </button>
+    <button class="tile tile-accent" onclick="showView('quote-farm')">
+      <span class="tile-num">Q3</span>
+      <span class="tile-title">Whole-Farm Plan</span>
+      <span class="tile-sub">Seed + biologicals + covers in one signed quote</span>
+      <span class="tile-tag signal">Recommended</span>
+    </button>
+  </div>
+
+  <div class="proof-grid" style="margin-top:2.4rem">
+    <div class="proof"><span class="pnum">3<sup>rd</sup></span><span class="plbl">7B520 <span class="diamond">◆</span> Statewide Yield Rank</span><span class="pdesc">U of I 2026 Regional trial — 117 bu/A, MR scab.</span></div>
+    <div class="proof"><span class="pnum">5<sup>th</sup></span><span class="plbl">7B440 <span class="diamond">◆</span> Statewide Yield Rank</span><span class="pdesc">U of I 2026 Regional trial — 116 bu/A, huge heads.</span></div>
+    <div class="proof"><span class="pnum">25%</span><span class="plbl">In-season yield impacted</span><span class="pdesc">Meristem TCO: reproductive-phase decisions matter most.</span></div>
+    <div class="proof"><span class="pnum">$60</span><span class="plbl">Volume corn discount</span><span class="pdesc">Per unit, on qualifying orders (ProHarvest 2026-27).</span></div>
+  </div>
+</section>
+<!-- MORE_SECTIONS_HERE -->
+
+<!-- ================= SEED CORN ================= -->
+<section id="corn" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Zone 1 <span class="diamond">◆</span> ProHarvest 2026-27</div>
+      <h2>Seed Corn</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">80,000 kernel bags. Available in 36- or 50-unit equivalent Black Boxes (unless seed size restricts). RM 96–116. All prices are 2026-27 customer retail.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('corn')">Print Corn section</button>
+  </div>
+
+  <div class="line-grid">
+
+    <!-- ABOVE & BELOW GROUND RIB -->
+    <div class="price-card dark">
+      <div class="card-head">
+        <h3>Above &amp; Below Ground RIB</h3>
+        <span class="tag signal">Full Trait</span>
+      </div>
+      <div class="card-sub">StaxRIB / StaxProRIB / VT4ProRIB / DS &nbsp;•&nbsp; Corn root worm + above-ground</div>
+      <table class="price-table">
+        <thead><tr><th>Hybrid</th><th class="num rm">RM</th><th class="num">$/80K bag</th></tr></thead>
+        <tbody>
+          <tr><td class="name">67P33 DS</td><td class="num rm">97</td><td class="num">$390</td></tr>
+          <tr><td class="name">67P84 StaxProRIB</td><td class="num rm">97</td><td class="num">$420</td></tr>
+          <tr><td class="name">70P47 DS</td><td class="num rm">100</td><td class="num">$390</td></tr>
+          <tr><td class="name">71P16 Stax RIB</td><td class="num rm">101</td><td class="num">$390</td></tr>
+          <tr><td class="name">71P50 StaxPro RIB</td><td class="num rm">101</td><td class="num">$410</td></tr>
+          <tr><td class="name">72P32 D</td><td class="num rm">102</td><td class="num">$385</td></tr>
+          <tr><td class="name">75P72 StaxPro RIB</td><td class="num rm">105</td><td class="num">$410</td></tr>
+          <tr><td class="name">77P25 VT4Pro RIB</td><td class="num rm">107</td><td class="num">$390</td></tr>
+          <tr><td class="name">77P60 StaxRIB</td><td class="num rm">107</td><td class="num">$405</td></tr>
+          <tr><td class="name">79P54 StaxProRIB</td><td class="num rm">109</td><td class="num">$410</td></tr>
+          <tr><td class="name">79P87 StaxRIB</td><td class="num rm">109</td><td class="num">$400</td></tr>
+          <tr><td class="name">80P81 StaxProRIB</td><td class="num rm">110</td><td class="num">$410</td></tr>
+          <tr><td class="name">81P19 VT4ProRIB</td><td class="num rm">111</td><td class="num">$390</td></tr>
+          <tr><td class="name">81P65 DV</td><td class="num rm">111</td><td class="num">$375</td></tr>
+          <tr><td class="name">82P40 StaxRIB</td><td class="num rm">112</td><td class="num">$390</td></tr>
+          <tr><td class="name">82P68 StaxPro RIB</td><td class="num rm">112</td><td class="num">$390</td></tr>
+          <tr><td class="name">82P74 StaxPro RIB</td><td class="num rm">112</td><td class="num">$410</td></tr>
+          <tr><td class="name">83P48 StaxProRIB</td><td class="num rm">113</td><td class="num">$410</td></tr>
+          <tr><td class="name">8360 StaxRIB</td><td class="num rm">113</td><td class="num">$400</td></tr>
+          <tr><td class="name">85P58 StaxRIB</td><td class="num rm">115</td><td class="num">$410</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ABOVE GROUND ONLY RIB -->
+    <div class="price-card">
+      <div class="card-head">
+        <h3>Above Ground Only RIB</h3>
+        <span class="tag">PCE / VT2P / Tre</span>
+      </div>
+      <div class="card-sub">Above-ground pest package only &nbsp;•&nbsp; Ideal on rotated ground</div>
+      <table class="price-table">
+        <thead><tr><th>Hybrid</th><th class="num rm">RM</th><th class="num">$/80K bag</th></tr></thead>
+        <tbody>
+          <tr><td class="name">66P46 PCE</td><td class="num rm">96</td><td class="num">$353</td></tr>
+          <tr><td class="name">71P11 PCE</td><td class="num rm">101</td><td class="num">$358</td></tr>
+          <tr><td class="name">73P40 PCE</td><td class="num rm">103</td><td class="num">$358</td></tr>
+          <tr><td class="name">73P67 TrePRIB</td><td class="num rm">103</td><td class="num">$373</td></tr>
+          <tr><td class="name">74P10 PCE</td><td class="num rm">104</td><td class="num">$358</td></tr>
+          <tr><td class="name">75P60 TrePRIB</td><td class="num rm">105</td><td class="num">$373</td></tr>
+          <tr><td class="name">75P85 DGVT2PRIB</td><td class="num rm">105</td><td class="num">$373</td></tr>
+          <tr><td class="name">76P42 PCE</td><td class="num rm">106</td><td class="num">$363</td></tr>
+          <tr><td class="name">78P30 VT2PRIB</td><td class="num rm">108</td><td class="num">$373</td></tr>
+          <tr><td class="name">78P95 PCE</td><td class="num rm">109</td><td class="num">$363</td></tr>
+          <tr><td class="name">79P15 V</td><td class="num rm">109</td><td class="num">$333</td></tr>
+          <tr><td class="name">80P75 PCE</td><td class="num rm">110</td><td class="num">$363</td></tr>
+          <tr><td class="name">80P89 TreRIB</td><td class="num rm">110</td><td class="num">$383</td></tr>
+          <tr><td class="name">81P19 TreRIB</td><td class="num rm">111</td><td class="num">$383</td></tr>
+          <tr><td class="name">81P20 PCE</td><td class="num rm">111</td><td class="num">$358</td></tr>
+          <tr><td class="name">81P45 TreRIB</td><td class="num rm">111</td><td class="num">$383</td></tr>
+          <tr><td class="name">81P65 V</td><td class="num rm">111</td><td class="num">$323</td></tr>
+          <tr><td class="name">82P42 PCE</td><td class="num rm">112</td><td class="num">$367</td></tr>
+          <tr><td class="name">82P96 PCE</td><td class="num rm">112</td><td class="num">$363</td></tr>
+          <tr><td class="name">83P33 DGVT2PRIB</td><td class="num rm">113</td><td class="num">$373</td></tr>
+          <tr><td class="name">83P66 VT2PRIB</td><td class="num rm">113</td><td class="num">$375</td></tr>
+          <tr><td class="name">84P41 PCE</td><td class="num rm">114</td><td class="num">$358</td></tr>
+          <tr><td class="name">84P78 TreRIB</td><td class="num rm">114</td><td class="num">$373</td></tr>
+          <tr><td class="name">84P90 TreRIB</td><td class="num rm">114</td><td class="num">$378</td></tr>
+          <tr><td class="name">85P58 VT2ProRIB</td><td class="num rm">115</td><td class="num">$375</td></tr>
+          <tr><td class="name">86P55 VT2PRIB</td><td class="num rm">116</td><td class="num">$373</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CONVENTIONAL & GT -->
+    <div class="price-card">
+      <div class="card-head">
+        <h3>Conventional &amp; Glyphosate Tolerant</h3>
+        <span class="tag ok">Non-GMO / GT</span>
+      </div>
+      <div class="card-sub">Non-GMO orders require contract specs and tolerances submitted with order</div>
+
+      <h4 style="margin-top:.6rem">Conventional</h4>
+      <table class="price-table">
+        <thead><tr><th>Hybrid</th><th class="num rm">RM</th><th class="num">$/80K bag</th></tr></thead>
+        <tbody>
+          <tr><td class="name">71P11</td><td class="num rm">101</td><td class="num">$221</td></tr>
+          <tr><td class="name">74P10</td><td class="num rm">104</td><td class="num">$221</td></tr>
+          <tr><td class="name">76P42</td><td class="num rm">106</td><td class="num">$223</td></tr>
+          <tr><td class="name">78P95</td><td class="num rm">108</td><td class="num">$221</td></tr>
+          <tr><td class="name">8015</td><td class="num rm">110</td><td class="num">$213</td></tr>
+          <tr><td class="name">80P75</td><td class="num rm">110</td><td class="num">$220</td></tr>
+          <tr><td class="name">81P20</td><td class="num rm">111</td><td class="num">$218</td></tr>
+          <tr><td class="name">81P65</td><td class="num rm">111</td><td class="num">$218</td></tr>
+          <tr><td class="name">82P96</td><td class="num rm">112</td><td class="num">$225</td></tr>
+          <tr><td class="name">8360</td><td class="num rm">113</td><td class="num">$218</td></tr>
+          <tr><td class="name">83P66</td><td class="num rm">113</td><td class="num">$223</td></tr>
+          <tr><td class="name">84P78</td><td class="num rm">114</td><td class="num">$223</td></tr>
+          <tr><td class="name">84P90</td><td class="num rm">114</td><td class="num">$225</td></tr>
+          <tr><td class="name">85P13</td><td class="num rm">115</td><td class="num">$213</td></tr>
+          <tr><td class="name">85P58</td><td class="num rm">115</td><td class="num">$225</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top:1rem">Glyphosate Tolerant</h4>
+      <table class="price-table">
+        <thead><tr><th>Hybrid</th><th class="num rm">RM</th><th class="num">$/80K bag</th></tr></thead>
+        <tbody>
+          <tr><td class="name">73F02 G</td><td class="num rm">103</td><td class="num">$255</td></tr>
+          <tr><td class="name">77F02 G</td><td class="num rm">107</td><td class="num">$255</td></tr>
+          <tr><td class="name">8015 RR2</td><td class="num rm">110</td><td class="num">$265</td></tr>
+          <tr><td class="name">80F02 G</td><td class="num rm">110</td><td class="num">$255</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CORN VOLUME LADDER + CALCULATOR -->
+  <div class="line-grid" style="grid-template-columns:1fr 1fr;">
+    <div class="price-card">
+      <div class="card-head"><h3>Volume Discount Schedule</h3><span class="tag">Corn</span></div>
+      <div class="card-sub">Applied per bag. Additional $10/unit early-order discount before Oct 15, 2026 ($7/unit before Dec 15).</div>
+      <div class="ladder-rows" style="grid-template-columns:1fr 90px 60px;font-size:.9rem">
+        <div class="lr-b" style="font-weight:600">Bags ordered</div><div class="lr-b" style="font-weight:600;text-align:right">Discount/bag</div><div class="lr-b" style="font-weight:600;text-align:center">Grp</div>
+        <div class="lr-b">1 – 35</div><div class="lr-d">$5.00</div><div style="text-align:center;color:var(--furrow)">A</div>
+        <div class="lr-b">36 – 71</div><div class="lr-d">$18.00</div><div style="text-align:center;color:var(--furrow)">B</div>
+        <div class="lr-b">72 – 149</div><div class="lr-d">$20.00</div><div style="text-align:center;color:var(--furrow)">C</div>
+        <div class="lr-b">150 – 299</div><div class="lr-d">$24.00</div><div style="text-align:center;color:var(--furrow)">D</div>
+        <div class="lr-b">300 – 599</div><div class="lr-d">$26.00</div><div style="text-align:center;color:var(--furrow)">E</div>
+        <div class="lr-b">600 – 799</div><div class="lr-d">$28.00</div><div style="text-align:center;color:var(--furrow)">F</div>
+        <div class="lr-b">800 – 999</div><div class="lr-d">$30.00</div><div style="text-align:center;color:var(--furrow)">G</div>
+        <div class="lr-b" style="font-weight:700">1,000+</div><div class="lr-d" style="font-weight:800;color:var(--ink)">$32.00</div><div style="text-align:center;color:var(--furrow);font-weight:700">H</div>
+      </div>
+    </div>
+
+    <div class="price-card" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">
+      <div class="card-head"><h3 style="color:#fff">Live Price Calculator <span style="color:var(--signal-2)">◆</span> Corn</h3></div>
+      <div class="card-sub" style="color:#c9c2b0">Type a bag price and quantity — auto-applies the volume tier.</div>
+      <div class="calc" style="background:#3a3835;border-color:#4a4744;margin-top:.4rem">
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Retail $/bag</label>
+          <input type="number" id="cornPrice" value="400" step="1" min="0">
+          <label style="color:#e7e5df;text-align:right">×</label>
+        </div>
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Bags ordered</label>
+          <input type="number" id="cornBags" value="100" step="1" min="0">
+          <label style="color:#e7e5df;text-align:right">= …</label>
+        </div>
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Early order (Oct 15 / Dec 15)</label>
+          <select id="cornEarly" style="grid-column:2 / span 2;background:#4a4744;color:#fff;border-color:#5a5754">
+            <option value="0">None</option>
+            <option value="10" selected>$10/unit — before Oct 15</option>
+            <option value="7">$7/unit — before Dec 15</option>
+          </select>
+        </div>
+        <div class="calc-out" style="background:#0a0908">
+          <div><div class="out-lbl">Volume tier</div><div class="out-val" id="cornTier">C ($20)</div></div>
+          <div><div class="out-lbl">Total discount</div><div class="out-val signal" id="cornDiscount">$3,000</div></div>
+          <div><div class="out-lbl">Net $/bag</div><div class="out-val" id="cornNet">$370</div></div>
+          <div><div class="out-lbl">Order total</div><div class="out-val signal" id="cornTotal">$37,000</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout field">
+    <h4>Cost breakdown — dealer reference (not customer-facing)</h4>
+    <p style="margin:0;font-size:.85rem"><strong>Retail = Production ($55) + Trait Royalty + Genetic Royalty + ProHarvest ($15) + RSS Margin</strong>. Example: 79P87 StaxRIB &nbsp;·&nbsp; 55 + 166.34 + 46 + 15 = $282.34 net → retail $400 → margin $117.66. Toggle Dealer View (bottom-right) to see cost columns on every hybrid.</p>
+  </div>
+</section>
+
+<!-- ================= SOYBEANS ================= -->
+<section id="soybeans" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">140,000 seed bag <span class="diamond">◆</span> ProHarvest 2026-27</div>
+      <h2>Soybeans</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Paper bag (1 unit), 40-unit mini-bulk, or 40-unit Black Box. Boxes only available with proTect DI or Ultra treatment. RM 0.8–4.2.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('soybeans')">Print Soybean section</button>
+  </div>
+
+  <div class="line-grid">
+
+    <!-- ENLIST E3 -->
+    <div class="price-card dark">
+      <div class="card-head">
+        <h3>Enlist E3<sup style="font-size:.55em">™</sup></h3>
+        <span class="tag signal">$54 base</span>
+      </div>
+      <div class="card-sub">28 varieties across RM 1.6–4.2 &nbsp;•&nbsp; 2.4D + glyphosate + glufosinate tolerance</div>
+      <table class="price-table">
+        <thead><tr><th>Variety</th><th class="num rm">RM</th><th class="num">$/140K bag</th></tr></thead>
+        <tbody>
+          <tr><td class="name">AE1650</td><td class="num rm">1.6</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE1870</td><td class="num rm">1.8</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2050</td><td class="num rm">2.0</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2361</td><td class="num rm">2.3</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2470</td><td class="num rm">2.4</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2560</td><td class="num rm">2.5</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">25E35</td><td class="num rm">2.7</td><td class="num">$58.50</td></tr>
+          <tr><td class="name">27E77</td><td class="num rm">2.7</td><td class="num">$58.50</td></tr>
+          <tr><td class="name">AE2750</td><td class="num rm">2.7</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2770</td><td class="num rm">2.7</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2860</td><td class="num rm">2.8</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE2940S</td><td class="num rm">2.9</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">29E71</td><td class="num rm">2.9</td><td class="num">$58.50</td></tr>
+          <tr><td class="name">AE3060</td><td class="num rm">3.0</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3070</td><td class="num rm">3.0</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3131S</td><td class="num rm">3.1</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3150</td><td class="num rm">3.1</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">32E79</td><td class="num rm">3.2</td><td class="num">$58.50</td></tr>
+          <tr><td class="name">AE3340</td><td class="num rm">3.3</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3370</td><td class="num rm">3.3</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3550S</td><td class="num rm">3.5</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3660</td><td class="num rm">3.6</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3670S</td><td class="num rm">3.6</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">37E72</td><td class="num rm">3.7</td><td class="num">$58.50</td></tr>
+          <tr><td class="name">AE3870S</td><td class="num rm">3.8</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE3950S</td><td class="num rm">3.9</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE4150S</td><td class="num rm">4.1</td><td class="num">$54.00</td></tr>
+          <tr><td class="name">AE4270S</td><td class="num rm">4.2</td><td class="num">$54.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <!-- XTENDFLEX -->
+      <div class="price-card">
+        <div class="card-head"><h3>XtendFLEX<sup style="font-size:.55em">®</sup></h3><span class="tag">$59.50 all</span></div>
+        <div class="card-sub">Dicamba + glufosinate + glyphosate</div>
+        <table class="price-table">
+          <thead><tr><th>Variety</th><th class="num rm">RM</th><th class="num">$/140K bag</th></tr></thead>
+          <tbody>
+            <tr><td class="name">27F66</td><td class="num rm">2.7</td><td class="num">$59.50</td></tr>
+            <tr><td class="name">28F70</td><td class="num rm">2.8</td><td class="num">$59.50</td></tr>
+            <tr><td class="name">30F73</td><td class="num rm">3.0</td><td class="num">$59.50</td></tr>
+            <tr><td class="name">34F74</td><td class="num rm">3.4</td><td class="num">$59.50</td></tr>
+            <tr><td class="name">36F58</td><td class="num rm">3.6</td><td class="num">$59.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CONVENTIONAL -->
+      <div class="price-card">
+        <div class="card-head"><h3>Conventional</h3><span class="tag ok">Non-GMO</span></div>
+        <div class="card-sub">Contract required for non-GMO delivery</div>
+        <table class="price-table">
+          <thead><tr><th>Variety</th><th class="num rm">RM</th><th class="num">$/140K bag</th></tr></thead>
+          <tbody>
+            <tr><td class="name">26C52</td><td class="num rm">2.6</td><td class="num">$49.50</td></tr>
+            <tr><td class="name">27C10</td><td class="num rm">2.7</td><td class="num">$45.50</td></tr>
+            <tr><td class="name">29C57</td><td class="num rm">2.9</td><td class="num">$49.50</td></tr>
+            <tr><td class="name">32C71</td><td class="num rm">3.2</td><td class="num">$49.50</td></tr>
+            <tr><td class="name">35C56S</td><td class="num rm">3.5</td><td class="num">$49.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SOYBEAN LADDER + CALC + TREATMENTS -->
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="price-card">
+        <div class="card-head"><h3>Volume Discount Schedule</h3><span class="tag">Soybeans</span></div>
+        <div class="card-sub">Per bag. Early order: $2/unit before Oct 15 &nbsp;•&nbsp; $1/unit before Dec 15.</div>
+        <div class="ladder-rows" style="grid-template-columns:1fr 90px 60px;font-size:.87rem">
+          <div class="lr-b" style="font-weight:600">Bags ordered</div><div class="lr-b" style="font-weight:600;text-align:right">Discount/bag</div><div class="lr-b" style="font-weight:600;text-align:center">Grp</div>
+          <div class="lr-b">1 – 99</div><div class="lr-d">$0.50</div><div style="text-align:center;color:var(--furrow)">A</div>
+          <div class="lr-b">100 – 299</div><div class="lr-d">$1.50</div><div style="text-align:center;color:var(--furrow)">B</div>
+          <div class="lr-b">300 – 599</div><div class="lr-d">$2.50</div><div style="text-align:center;color:var(--furrow)">C</div>
+          <div class="lr-b">600 – 999</div><div class="lr-d">$3.00</div><div style="text-align:center;color:var(--furrow)">D</div>
+          <div class="lr-b">1,000 – 1,499</div><div class="lr-d">$3.50</div><div style="text-align:center;color:var(--furrow)">E</div>
+          <div class="lr-b">1,500 – 2,499</div><div class="lr-d">$4.00</div><div style="text-align:center;color:var(--furrow)">F</div>
+          <div class="lr-b">2,500 – 4,999</div><div class="lr-d">$4.50</div><div style="text-align:center;color:var(--furrow)">G</div>
+          <div class="lr-b" style="font-weight:700">5,000+</div><div class="lr-d" style="font-weight:800;color:var(--ink)">$5.00</div><div style="text-align:center;color:var(--furrow);font-weight:700">H</div>
+        </div>
+        <div style="font-size:.75rem;color:var(--furrow);margin-top:.8rem;line-height:1.4">
+          <strong>Note:</strong> Treated soybean orders after Jan 15, 2027 add $1/unit for package/handling. No returns or cancellations of treated soybeans.
+        </div>
+      </div>
+
+      <div class="price-card" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">
+        <div class="card-head"><h3 style="color:#fff">Live Price Calculator <span style="color:var(--signal-2)">◆</span> Beans</h3></div>
+        <div class="calc" style="background:#3a3835;border-color:#4a4744;margin-top:.4rem">
+          <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+            <label style="color:#e7e5df">Retail $/bag</label>
+            <input type="number" id="soyPrice" value="54" step="0.5" min="0">
+            <label style="color:#e7e5df;text-align:right">×</label>
+          </div>
+          <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+            <label style="color:#e7e5df">Bags ordered</label>
+            <input type="number" id="soyBags" value="500" step="1" min="0">
+            <label style="color:#e7e5df;text-align:right">= …</label>
+          </div>
+          <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+            <label style="color:#e7e5df">Early order</label>
+            <select id="soyEarly" style="grid-column:2 / span 2;background:#4a4744;color:#fff;border-color:#5a5754">
+              <option value="0">None</option>
+              <option value="2" selected>$2/unit — before Oct 15</option>
+              <option value="1">$1/unit — before Dec 15</option>
+            </select>
+          </div>
+          <div class="calc-out" style="background:#0a0908">
+            <div><div class="out-lbl">Volume tier</div><div class="out-val" id="soyTier">C ($2.50)</div></div>
+            <div><div class="out-lbl">Total discount</div><div class="out-val signal" id="soyDiscount">$2,250</div></div>
+            <div><div class="out-lbl">Net $/bag</div><div class="out-val" id="soyNet">$49.50</div></div>
+            <div><div class="out-lbl">Order total</div><div class="out-val signal" id="soyTotal">$24,750</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soybean seed treatments -->
+  <div class="line-grid" style="grid-template-columns:1fr 1fr">
+    <div class="price-card">
+      <div class="card-head"><h3>ProHarvest Soybean Treatments</h3><span class="tag">Per Unit</span></div>
+      <div class="card-sub">Applied at treatment site &nbsp;•&nbsp; Treated bean orders = no returns / cancellations</div>
+      <table class="price-table">
+        <thead><tr><th>Treatment</th><th class="num">Base</th><th class="num">+ Saltro</th></tr></thead>
+        <tbody>
+          <tr><td class="name">proTect DI</td><td class="num">$15.50</td><td class="num">—</td></tr>
+          <tr><td class="name">proTect ULTRA</td><td class="num">$29.50</td><td class="num">—</td></tr>
+          <tr><td class="name">FX3I</td><td class="num">$12.50</td><td class="num">$25.00</td></tr>
+          <tr><td class="name">MYDRYVE F</td><td class="num">$15.00</td><td class="num">$27.50</td></tr>
+          <tr><td class="name">MYDRYVE X</td><td class="num">$15.75</td><td class="num">$28.25</td></tr>
+          <tr><td class="name">SoyFX</td><td class="num">$9.50</td><td class="num">—</td></tr>
+          <tr><td class="name">Trunemco Nematicide</td><td class="num">$8.00</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Hopper Throttle Box Treatments</h3><span class="tag signal">Meristem</span></div>
+      <div class="card-sub">Applied at hopper &nbsp;•&nbsp; Bio-Capsule delivery — see Biologicals section for full spec</div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num">$/Unit</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Hopper Throttle F&amp;I (Soybean)</td><td class="num">$18.50</td></tr>
+          <tr><td class="name">Hopper Throttle MAX (Soybean)</td><td class="num">$32.00</td></tr>
+        </tbody>
+      </table>
+      <div class="ladder" style="margin-top:.9rem">
+        <h4>Also available (see Biologicals)</h4>
+        <div style="font-size:.85rem;color:#e7e5df;line-height:1.5">HT MaxStax Corn &amp; Soybean copacks · HT Corn w/ GuardX + Prephyte · Revline HT Corn/Soy Ether · HT Organic Corn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHEAT ================= -->
+<section id="wheat" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Effective July 22, 2026 <span class="diamond">◆</span> Availability Aug 1, 2026</div>
+      <h2>Wheat</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Three ProHarvest varieties with independent U of I trial data. Order treated seed by <strong>Aug 22, 2026</strong>. 50 lb bags, 40-unit mini-bulks, or 40-unit Black Boxes (boxes only with proTect W treatment).</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('wheat')">Print Wheat section</button>
+  </div>
+
+  <!-- Big variety cards -->
+  <div class="line-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+
+    <!-- 7B440 -->
+    <div class="price-card">
+      <div class="card-head">
+        <h3>7B440 <span style="color:var(--furrow);font-size:.7em;font-weight:400">◆ Early</span></h3>
+        <span class="tag wheat">#5 U of I</span>
+      </div>
+      <div class="card-sub">Huge impressive heads &nbsp;•&nbsp; Late heading = less freeze risk &nbsp;•&nbsp; All soil types</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0">
+        <div style="background:var(--paper-2);padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:var(--furrow);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Treated (proTect W)</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700">$29.25</div>
+        </div>
+        <div style="background:var(--paper-2);padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:var(--furrow);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Untreated</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700">$26.50</div>
+        </div>
+      </div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Height</td><td class="num">Medium-Tall</td></tr>
+          <tr><td>Head Type</td><td class="num">Bearded</td></tr>
+          <tr><td>Test Weight</td><td class="num">Very Good</td></tr>
+          <tr><td>No-Till</td><td class="num">Very Good</td></tr>
+          <tr><td>Yield</td><td class="num">Excellent</td></tr>
+        </tbody>
+      </table>
+      <div class="ladder" style="background:#efeee8;margin-top:.8rem">
+        <h4 style="color:var(--field)">U of I 2026 Regional</h4>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:.15rem .5rem;font-size:.85rem">
+          <div>Yield</div><div class="mono" style="text-align:right;font-weight:700">116.3 bu/A</div>
+          <div>Test weight</div><div class="mono" style="text-align:right;font-weight:700">55.6 lb/bu</div>
+          <div>Rank</div><div class="mono" style="text-align:right;font-weight:700;color:var(--signal)">#5 / 104</div>
+          <div>Scab (FHB)</div><div class="mono" style="text-align:right;font-weight:700">4.8 · M</div>
+          <div>Winter survival</div><div class="mono" style="text-align:right;font-weight:700">97.2%</div>
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--warn);margin-top:.7rem;font-weight:600">Availability: Limited</div>
+    </div>
+
+    <!-- 7B520 -->
+    <div class="price-card dark">
+      <div class="card-head">
+        <h3>7B520 <span style="color:#c9c2b0;font-size:.7em;font-weight:400">◆ Medium-Early</span></h3>
+        <span class="tag signal">#3 U of I</span>
+      </div>
+      <div class="card-sub">Excellent Head Scab resistance &nbsp;•&nbsp; Fits all soil types &nbsp;•&nbsp; Big Time yields</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0">
+        <div style="background:#3d4a3b;padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:#c9c2b0;text-transform:uppercase;letter-spacing:.08em;font-weight:600">Treated (proTect W)</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700;color:#fff">$29.25</div>
+        </div>
+        <div style="background:#3d4a3b;padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:#c9c2b0;text-transform:uppercase;letter-spacing:.08em;font-weight:600">Untreated</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700;color:#fff">$26.50</div>
+        </div>
+      </div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Height</td><td class="num">Medium-Tall</td></tr>
+          <tr><td>Head Type</td><td class="num">Bearded</td></tr>
+          <tr><td>Test Weight</td><td class="num">Very Good</td></tr>
+          <tr><td>No-Till</td><td class="num">Excellent</td></tr>
+          <tr><td>Yield</td><td class="num">Excellent</td></tr>
+        </tbody>
+      </table>
+      <div class="ladder">
+        <h4>U of I 2026 Regional</h4>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:.15rem .5rem;font-size:.85rem">
+          <div>Yield</div><div class="mono" style="text-align:right;font-weight:700">117.0 bu/A</div>
+          <div>Test weight</div><div class="mono" style="text-align:right;font-weight:700">56.2 lb/bu</div>
+          <div>Rank</div><div class="mono" style="text-align:right;font-weight:700;color:var(--signal-2)">#3 / 104</div>
+          <div>Scab (FHB)</div><div class="mono" style="text-align:right;font-weight:700">3.8 · MR</div>
+          <div>Winter survival</div><div class="mono" style="text-align:right;font-weight:700">99.2%</div>
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--signal-2);margin-top:.7rem;font-weight:600">Availability: Good ★ Feature variety</div>
+    </div>
+
+    <!-- 7S510 -->
+    <div class="price-card">
+      <div class="card-head">
+        <h3>7S510 <span style="color:var(--furrow);font-size:.7em;font-weight:400">◆ Medium-Early</span></h3>
+        <span class="tag">Rank #59</span>
+      </div>
+      <div class="card-sub">Excellent disease package &nbsp;•&nbsp; High-yielding environments &nbsp;•&nbsp; Head Scab resistant</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0">
+        <div style="background:var(--paper-2);padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:var(--furrow);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Treated (proTect W)</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700">$29.25</div>
+        </div>
+        <div style="background:var(--paper-2);padding:.7rem;border-radius:8px">
+          <div style="font-size:.7rem;color:var(--furrow);text-transform:uppercase;letter-spacing:.08em;font-weight:600">Untreated</div>
+          <div class="mono" style="font-size:1.35rem;font-weight:700">$26.50</div>
+        </div>
+      </div>
+      <div class="ladder" style="background:#efeee8;margin-top:.8rem">
+        <h4 style="color:var(--field)">U of I 2026 Regional</h4>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:.15rem .5rem;font-size:.85rem">
+          <div>Yield</div><div class="mono" style="text-align:right;font-weight:700">103.9 bu/A</div>
+          <div>Test weight</div><div class="mono" style="text-align:right;font-weight:700">56.3 lb/bu</div>
+          <div>Scab (FHB)</div><div class="mono" style="text-align:right;font-weight:700">5.1 · M</div>
+          <div>Winter survival</div><div class="mono" style="text-align:right;font-weight:700">84%</div>
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--ok);margin-top:.7rem;font-weight:600">Availability: Good</div>
+    </div>
+  </div>
+
+  <!-- Wheat terms -->
+  <div class="line-grid" style="grid-template-columns:1.2fr 1fr">
+    <div class="price-card">
+      <div class="card-head"><h3>Wheat Terms &amp; Discounts</h3></div>
+      <div class="ladder-rows" style="grid-template-columns:1fr auto;font-size:.9rem">
+        <div class="lr-b"><strong>Early order</strong> <span style="color:var(--furrow)">by Aug 22, 2026</span></div><div class="lr-d">−$0.50/unit</div>
+        <div class="lr-b"><strong>Volume</strong> <span style="color:var(--furrow)">900+ units</span></div><div class="lr-d">−$1.00/unit</div>
+        <div class="lr-b"><strong>Delivery included</strong> <span style="color:var(--furrow)">200+ units within 200 mi Ashkum IL</span></div><div class="lr-d">FOB else</div>
+        <div class="lr-b"><strong>Returns</strong> <span style="color:var(--furrow)">by Oct 10, 2026</span></div><div class="lr-d">≤10% of order</div>
+        <div class="lr-b"><strong>Accounts</strong></div><div class="lr-d">30 days from ship</div>
+      </div>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--hair)"><strong>Financing:</strong> First Mid Prime +0.25% or JDF Prime +6.10% (min $1,000 purchase). No returns of treated seed.</div>
+    </div>
+
+    <div class="price-card" style="background:var(--ink);color:var(--paper);border-color:var(--ink)">
+      <div class="card-head"><h3 style="color:#fff">Wheat Calculator</h3></div>
+      <div class="calc" style="background:#3a3835;border-color:#4a4744;margin-top:.4rem">
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Variety price / unit</label>
+          <input type="number" id="wheatPrice" value="29.25" step="0.25" min="0">
+          <label style="color:#e7e5df;text-align:right">×</label>
+        </div>
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Units ordered</label>
+          <input type="number" id="wheatUnits" value="100" step="1" min="0">
+          <label style="color:#e7e5df;text-align:right">= …</label>
+        </div>
+        <div class="calc-row" style="grid-template-columns:1fr 110px 1fr">
+          <label style="color:#e7e5df">Early order (Aug 22)</label>
+          <select id="wheatEarly" style="grid-column:2 / span 2;background:#4a4744;color:#fff;border-color:#5a5754">
+            <option value="0">No</option>
+            <option value="0.50" selected>Yes ($0.50/unit)</option>
+          </select>
+        </div>
+        <div class="calc-out" style="background:#0a0908">
+          <div><div class="out-lbl">Volume discount</div><div class="out-val" id="wheatVol">$0</div></div>
+          <div><div class="out-lbl">Early order</div><div class="out-val signal" id="wheatEarlyOut">$50</div></div>
+          <div><div class="out-lbl">Net $/unit</div><div class="out-val" id="wheatNet">$28.75</div></div>
+          <div><div class="out-lbl">Order total</div><div class="out-val signal" id="wheatTotal">$2,875</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHITE CORN / SOYLEIC ================= -->
+<section id="specialty" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">ProHarvest specialty <span class="diamond">◆</span> Premium end-use markets</div>
+      <h2>White Corn &amp; SOYLEIC High Oleic</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Specialty markets with contract premiums. All limited supply — get orders in early. All conventional trait platforms except two Enlist HO varieties.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('specialty')">Print</button>
+  </div>
+
+  <div class="line-grid">
+    <div class="price-card dark">
+      <div class="card-head"><h3>White Corn Hybrids</h3><span class="tag signal">$230 / 80K</span></div>
+      <div class="card-sub">Conv / White identity-preserved &nbsp;•&nbsp; Contract with premium — call for market letter</div>
+      <table class="price-table">
+        <thead><tr><th>Hybrid</th><th class="num rm">RM</th><th>Highlights</th></tr></thead>
+        <tbody>
+          <tr><td class="name">82W49</td><td class="num rm">112</td><td style="font-size:.82rem">Bright white kernels, fills to tip — Stalk 7 · Root 6 · Disease 8</td></tr>
+          <tr><td class="name">84W24</td><td class="num rm">114</td><td style="font-size:.82rem">Very strong stalks &amp; roots, blocky kernels — Stalk 9 · Root 7 · Disease 7.5</td></tr>
+          <tr><td class="name">84W70</td><td class="num rm">114</td><td style="font-size:.82rem">Consistent &amp; dependable, glossy white — Stalk 9 · Root 9 · Disease 8</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:#c9c2b0;margin-top:.6rem;font-weight:600">All three: Limited Supply · $230/80K bag</div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>SOYLEIC High Oleic Soybeans</h3><span class="tag">Conv $51.50 · Enlist $59.50</span></div>
+      <div class="card-sub">Premium end-use for high-oleic oil market &nbsp;•&nbsp; SOYLEIC-trait, non-GMO except Enlist rows</div>
+      <table class="price-table">
+        <thead><tr><th>Variety</th><th class="num rm">RM</th><th>Trait</th><th class="num">$/140K</th></tr></thead>
+        <tbody>
+          <tr><td class="name">22C70HO</td><td class="num rm">2.2</td><td style="font-size:.82rem">Conv</td><td class="num">$51.50</td></tr>
+          <tr><td class="name">28C76HO</td><td class="num rm">2.8</td><td style="font-size:.82rem">Conv</td><td class="num">$51.50</td></tr>
+          <tr><td class="name">32C76HO</td><td class="num rm">3.2</td><td style="font-size:.82rem">Conv</td><td class="num">$51.50</td></tr>
+          <tr><td class="name">35C71HO</td><td class="num rm">3.5</td><td style="font-size:.82rem">Conv</td><td class="num">$51.50</td></tr>
+          <tr><td class="name">36E72HO</td><td class="num rm">3.6</td><td style="font-size:.82rem;color:var(--signal)">Enlist</td><td class="num">$59.50</td></tr>
+          <tr><td class="name">38E78HO</td><td class="num rm">3.8</td><td style="font-size:.82rem;color:var(--signal)">Enlist</td><td class="num">$59.50</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.6rem;font-weight:600">All limited supply · Emergence &amp; Standability ratings 8-10 across the line</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Why SOYLEIC?</h4>
+    <p style="margin:0;font-size:.9rem">Non-GMO high-oleic oil trait with contract premium delivered to processor. Great fit for farms already growing conventional beans and looking to add margin without changing the equipment or planting window. Ask about buyer letters and delivery points.</p>
+  </div>
+</section>
+
+<!-- ================= COVER CROPS ================= -->
+<section id="cover" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Fall 2026 retail <span class="diamond">◆</span> Custom-mixed to order</div>
+      <h2>Cover Crops</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">House blends by prior crop, plus 20+ individual species. Custom blending $0.10/lb. Retail prices — the "How to Read" key at the top of the tool covers $/lb vs $/bag vs $/bu.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('cover')">Print Cover Crops</button>
+  </div>
+
+  <!-- HOUSE BLEND PROGRAMS -->
+  <h4 style="color:var(--field);margin-top:1rem">House Blend Programs</h4>
+  <div class="line-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Corn Program 1</h3><span class="tag signal">$20.14/A</span></div>
+      <div class="card-sub">Simple cereal + brassica</div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Barley</td><td class="num">35 #/A</td><td class="num">$17.14</td></tr>
+          <tr><td>Rape Seed</td><td class="num">2 #/A</td><td class="num">$3.00</td></tr>
+          <tr style="font-weight:700;color:var(--signal-2)"><td>TOTAL / ACRE</td><td></td><td class="num">$20.14</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Corn Program 2</h3><span class="tag">$23.14/A</span></div>
+      <div class="card-sub">Plant no later than <strong>Sept 30</strong></div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Barley</td><td class="num">35 #/A</td><td class="num">$17.14</td></tr>
+          <tr><td>Rape Seed</td><td class="num">2 #/A</td><td class="num">$3.00</td></tr>
+          <tr><td>Radish</td><td class="num">2 #/A</td><td class="num">$3.00</td></tr>
+          <tr style="font-weight:700;color:var(--signal)"><td>TOTAL / ACRE</td><td></td><td class="num">$23.14</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Corn Program 3</h3><span class="tag">$19.99/A</span></div>
+      <div class="card-sub">Plant no later than <strong>Sept 15</strong></div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Oats</td><td class="num">12 #/A</td><td class="num">$4.75</td></tr>
+          <tr><td>Barley</td><td class="num">25 #/A</td><td class="num">$12.24</td></tr>
+          <tr><td>Rape Seed</td><td class="num">2 #/A</td><td class="num">$3.00</td></tr>
+          <tr style="font-weight:700;color:var(--signal)"><td>TOTAL / ACRE</td><td></td><td class="num">$19.99</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Corn Program 4</h3><span class="tag wheat">$55.84/A</span></div>
+      <div class="card-sub">Plant no later than <strong>Sept 15</strong> · N-fixing blend, 50-100#/A of free N</div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Barley</td><td class="num">15 #/A</td><td class="num">$7.34</td></tr>
+          <tr><td>Balansa Clover</td><td class="num">3 #/A</td><td class="num">$13.50</td></tr>
+          <tr><td>Hairy Vetch</td><td class="num">10 #/A</td><td class="num">$32.00</td></tr>
+          <tr><td>Rape Seed</td><td class="num">2 #/A</td><td class="num">$3.00</td></tr>
+          <tr style="font-weight:700;color:var(--signal)"><td>TOTAL / ACRE</td><td></td><td class="num">$55.84</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.75rem;color:var(--furrow);margin-top:.5rem">Allow Balansa &amp; Hairy Vetch to bloom to maximize N.</div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Soybean Program &amp; Govt Program</h3><span class="tag ok">$21/A</span></div>
+      <div class="card-sub">Bonus Blend baseline for after-beans</div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Bonus Blend</td><td class="num">35 #/A</td><td class="num">$21.00</td></tr>
+          <tr style="font-weight:700;color:var(--ok)"><td>TOTAL / ACRE</td><td></td><td class="num">$21.00</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.75rem;color:var(--furrow);margin-top:.5rem">Bonus Blend: 70% Winter Rye, 20% Fall Barley, 5% Radish, 5% Rape</div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Soybean Program 2</h3><span class="tag ok">$12.86/A</span></div>
+      <div class="card-sub">Pure reSTORE Winter Rye — cheapest cover</div>
+      <table class="price-table">
+        <tbody>
+          <tr><td>reSTORE Winter Rye</td><td class="num">45 #/A</td><td class="num">$12.86</td></tr>
+          <tr style="font-weight:700;color:var(--ok)"><td>TOTAL / ACRE</td><td></td><td class="num">$12.86</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INDIVIDUAL COVER CROP CATALOG -->
+  <h4 style="color:var(--field);margin-top:2rem">Individual Cover Crop Catalog</h4>
+  <div class="line-grid" style="grid-template-columns:1fr 1fr">
+    <div class="price-card">
+      <div class="card-head"><h3>Grasses / Cereals / Blends</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th>Bag</th><th class="num">Price</th><th>Per</th><th class="num">Rate/A</th></tr></thead>
+        <tbody>
+          <tr><td class="name">AwakeN Plus</td><td>50 lb</td><td class="num">$1.80</td><td>lb</td><td class="num">25-50 #</td></tr>
+          <tr><td class="name">Bonus Blend</td><td>50 lb</td><td class="num">$0.60</td><td>lb</td><td class="num">30-40 #</td></tr>
+          <tr><td class="name">Land &amp; Livestock</td><td>50 lb</td><td class="num">$0.52</td><td>lb</td><td class="num">40-50 #</td></tr>
+          <tr><td class="name">Quick Cover Blend</td><td>50 lb</td><td class="num">$0.75</td><td>lb</td><td class="num">25-35 #</td></tr>
+          <tr><td class="name">N-Fix Blend</td><td>50 lb</td><td class="num">$2.50</td><td>lb</td><td class="num">11-17 #</td></tr>
+          <tr><td class="name">Secure Blend</td><td>50 lb</td><td class="num">$1.20</td><td>lb</td><td class="num">15-18 #</td></tr>
+          <tr><td class="name">reSTORE Winter Rye</td><td>56 lb</td><td class="num">$16.00</td><td>bu</td><td class="num">45-84 #</td></tr>
+          <tr><td class="name">Triticale</td><td>50 lb</td><td class="num">$25.50</td><td>bu</td><td class="num">45-84 #</td></tr>
+          <tr><td class="name">Barley</td><td>50 lb</td><td class="num">$27.00</td><td>bag</td><td class="num">50-75 #</td></tr>
+          <tr><td class="name">Spring Oats</td><td>48 lb</td><td class="num">$19.00</td><td>bag</td><td class="num">50-70 #</td></tr>
+          <tr><td class="name">Oats &amp; Peas</td><td>50 lb</td><td class="num">$0.80</td><td>lb</td><td class="num">100 #</td></tr>
+          <tr><td class="name">Centurion Annual Rye</td><td>50 lb</td><td class="num">$1.00</td><td>lb</td><td class="num">12-15 #</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Legumes / Brassicas / Broadleaves</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th>Bag</th><th class="num">Price</th><th>Per</th><th class="num">Rate/A</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Hairy Vetch (Inoc)</td><td>50 lb</td><td class="num">$3.20</td><td>lb</td><td class="num">15-20 #</td></tr>
+          <tr><td class="name">Balansa Clover</td><td>50 lb</td><td class="num">$4.50</td><td>lb</td><td class="num">6-10 #</td></tr>
+          <tr><td class="name">Crimson Clover</td><td>50 lb</td><td class="num">$2.00</td><td>lb</td><td class="num">15-20 #</td></tr>
+          <tr><td class="name">Cowpeas</td><td>50 lb</td><td class="num">$1.60</td><td>lb</td><td class="num">50-70 #</td></tr>
+          <tr><td class="name">Winter Peas</td><td>50 lb</td><td class="num">$40.00</td><td>bag</td><td class="num">50-70 #</td></tr>
+          <tr><td class="name">Buckwheat</td><td>50 lb</td><td class="num">$1.20</td><td>lb</td><td class="num">30 #</td></tr>
+          <tr><td class="name">reCLAIM Radishes</td><td>50 lb</td><td class="num">$1.70</td><td>lb</td><td class="num">6-10 #</td></tr>
+          <tr><td class="name">Rapeseed</td><td>50 lb</td><td class="num">$1.50</td><td>lb</td><td class="num">4-5 #</td></tr>
+          <tr><td class="name">Twister Hybrid Brassica</td><td>50 lb</td><td class="num">$2.20</td><td>lb</td><td class="num">4-5 #</td></tr>
+          <tr><td class="name">Jackpot Turnip</td><td>50 lb</td><td class="num">$1.90</td><td>lb</td><td class="num">4-5 #</td></tr>
+          <tr><td class="name">Brassica Mix</td><td>50 lb</td><td class="num">$1.90</td><td>lb</td><td class="num">5-10 #</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout field">
+    <h4>How to read cover crop pricing</h4>
+    <p style="margin:0;font-size:.88rem"><strong>$/lb</strong> = alfalfa, clovers, grasses, most cover crops (multiply by pounds needed) · <strong>$/bag</strong> = Sorghum-Sudan, Sorghum, Pearl Millet, food-plot mixes, Winter Peas, Sunflowers, Lawn Mixes, Barley · <strong>$/bu</strong> = reSTORE Winter Rye (56 lb bu), Triticale (48 lb bu).</p>
+  </div>
+</section>
+
+<!-- ================= FORAGE / ALFALFA ================= -->
+<section id="forage" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Alfalfa, clovers, grasses, forage blends</div>
+      <h2>Forage &amp; Alfalfa</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Alfalfa ordered after Sept 15, 2026 for spring 2027 planting qualifies for the same cash discounts as corn and soybeans through Jan 15, 2027.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('forage')">Print</button>
+  </div>
+
+  <div class="line-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Alfalfa</h3><span class="tag signal">$4.50–$12.25/lb</span></div>
+      <div class="card-sub">50 lb bags &nbsp;•&nbsp; Seed 18-22 lb/A alfalfa · 15-20 lb/A alfalfa+clover</div>
+      <table class="price-table">
+        <thead><tr><th>Variety</th><th class="num">Price</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Eldora III CT*</td><td class="num">$6.00/lb</td><td style="font-size:.8rem">Branch root, exceptional yield</td></tr>
+          <tr><td class="name">Entree RL CT*</td><td class="num">$6.00/lb</td><td style="font-size:.8rem">Reduced lignin, longer harvest</td></tr>
+          <tr><td class="name">L-442RR CT*</td><td class="num">$12.25/lb</td><td style="font-size:.8rem">Round-Up tolerant</td></tr>
+          <tr><td class="name">HopperNot Max CT*</td><td class="num">$6.00/lb</td><td style="font-size:.8rem">Leaf hopper resistance</td></tr>
+          <tr><td class="name">X-Force 5420-Wet UCT*</td><td class="num">$7.70/lb</td><td style="font-size:.8rem">Branch rooted, exc. winter</td></tr>
+          <tr><td class="name">2200 UCT</td><td class="num">$4.50/lb</td><td style="font-size:.8rem">Economical, uncoated</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.72rem;color:#c9c2b0;margin-top:.5rem">CT = Coated · UCT = Uncoated · *Premium variety</div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Clovers</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Variety</th><th class="num">Price</th><th class="num">Rate/A</th></tr></thead>
+        <tbody>
+          <tr><td class="name">(Premium) Red CT*</td><td class="num">$3.25/lb</td><td class="num">15-20 #</td></tr>
+          <tr><td class="name">Medium Red UCT</td><td class="num">$3.15/lb</td><td class="num">15-20 #</td></tr>
+          <tr><td class="name">Ladino</td><td class="num">$8.00/lb</td><td class="num">2-5 #</td></tr>
+          <tr><td class="name">Stamina White CT*</td><td class="num">$5.40/lb</td><td class="num">2-5 #</td></tr>
+          <tr><td class="name">Frosty Berseem</td><td class="num">$5.25/lb</td><td class="num">15-20 #</td></tr>
+          <tr><td class="name">Alsike</td><td class="num">$5.45/lb</td><td class="num">6-8 #</td></tr>
+          <tr><td class="name">Yellow Blossom Sweet</td><td class="num">$5.50/lb</td><td class="num">15-25 #</td></tr>
+          <tr><td class="name">Red &amp; White Mix</td><td class="num">$3.90/lb</td><td class="num">10-20 #</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Grasses</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Variety</th><th class="num">Price</th><th class="num">Rate/A</th></tr></thead>
+        <tbody>
+          <tr><td class="name">PHQ Orchard Grass*</td><td class="num">$4.25/lb</td><td class="num">5-20 #</td></tr>
+          <tr><td class="name">PHQ Tall Fescue*</td><td class="num">$2.75/lb</td><td class="num">25-35 #</td></tr>
+          <tr><td class="name">PHQ Timothy*</td><td class="num">$3.00/lb</td><td class="num">10-15 #</td></tr>
+          <tr><td class="name">PHQ Per Ryegrass*</td><td class="num">$2.50/lb</td><td class="num">30-40 #</td></tr>
+          <tr><td class="name">Hostyn Festulolium*</td><td class="num">$2.50/lb</td><td class="num">25-35 #</td></tr>
+          <tr><td class="name">Fojitan Festulolium*</td><td class="num">$2.25/lb</td><td class="num">25-35 #</td></tr>
+          <tr><td class="name">Green Spirit Italian Rye*</td><td class="num">$2.50/lb</td><td class="num">35-45 #</td></tr>
+          <tr><td class="name">Centurion Annual Rye</td><td class="num">$1.00/lb</td><td class="num">35-45 #</td></tr>
+          <tr><td class="name">Smooth Brome</td><td class="num">$4.25/lb</td><td class="num">30-40 #</td></tr>
+          <tr><td class="name">Palaton Reed Canary</td><td class="num">$10.00/lb</td><td class="num">12-18 #</td></tr>
+          <tr><td class="name">Waterway Mix</td><td class="num">$3.00/lb</td><td class="num">35-50 #</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Hay &amp; Pasture Blends</h3><span class="tag signal">$3.50–$5.50/lb</span></div>
+      <table class="price-table">
+        <tbody>
+          <tr><td class="name">AlfaCut Hay Mix*</td><td class="num">$5.50/lb</td><td style="font-size:.78rem">65% Alfalfa · 25% OG · 10% Timothy</td></tr>
+          <tr><td class="name">4Grass Hay Mix*</td><td class="num">$3.50/lb</td><td style="font-size:.78rem">45% TF · 25% FTM · 25% OG · 5% T</td></tr>
+          <tr><td class="name">RapidGraz Pasture*</td><td class="num">$3.50/lb</td><td style="font-size:.78rem">50% FTM · 25% PRG · 15% OG · 5% WC · 5% RC</td></tr>
+          <tr><td class="name">PowerGraz Pasture*</td><td class="num">$3.50/lb</td><td style="font-size:.78rem">50% TF · 20% PRG · 20% OG · 10% FTM</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Summer Annuals</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Rate/A</th></tr></thead>
+        <tbody>
+          <tr><td class="name">SP4408 PF Sorghum×Sudan</td><td class="num">$90/bag</td><td class="num">20-40 #</td></tr>
+          <tr><td class="name">KGS 5139 BMR Forage Sorg</td><td class="num">$175/bag</td><td class="num">10 #</td></tr>
+          <tr><td class="name">KGS 9707PS AT Sorg×Sudan</td><td class="num">$70/bag</td><td class="num">25-50 #</td></tr>
+          <tr><td class="name">KGS 9716PS BMR Sorg×Sudan</td><td class="num">$90/bag</td><td class="num">25-50 #</td></tr>
+          <tr><td class="name">KGS 9131PS BMR Sudangrass</td><td class="num">$90/bag</td><td class="num">20-30 #</td></tr>
+          <tr><td class="name">KGS 23PM Pearl Millet</td><td class="num">$105/bag</td><td class="num">20-30 #</td></tr>
+          <tr><td class="name">Teff Grass Moxie</td><td class="num">$3.50/lb</td><td class="num">6-12 #</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Wildlife / Specialty / Lawn</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num">Price</th><th style="font-size:.7rem">Bag/Rate</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Birdsfoot Trefoil</td><td class="num">$9.00/lb</td><td style="font-size:.78rem">6-8 #/A</td></tr>
+          <tr><td class="name">Chicory</td><td class="num">$8.25/lb</td><td style="font-size:.78rem">2-5 #/A</td></tr>
+          <tr><td class="name">Sun &amp; Shade Lawn 25#</td><td class="num">$75/bag</td><td style="font-size:.78rem">25 lb</td></tr>
+          <tr><td class="name">DuraTurf Lawn 25#</td><td class="num">$75/bag</td><td style="font-size:.78rem">25 lb</td></tr>
+          <tr><td class="name">Anthem XR II Sweet Corn</td><td class="num">$75/bag</td><td style="font-size:.78rem">2500 sd · Bayer Lic req</td></tr>
+          <tr><td class="name">RWWP Plot Topper</td><td class="num">$45/bag</td><td style="font-size:.78rem">3 lb</td></tr>
+          <tr><td class="name">RWWP Deadly Dozen</td><td class="num">$45/bag</td><td style="font-size:.78rem">12.5 lb</td></tr>
+          <tr><td class="name">Japanese Millet</td><td class="num">$58/bag</td><td style="font-size:.78rem">20-25 #/A</td></tr>
+          <tr><td class="name">Peredovik Sunflowers</td><td class="num">$1.10/lb</td><td style="font-size:.78rem">10-15 #/A</td></tr>
+          <tr><td class="name">Clearfield Hybrid Sunflower</td><td class="num">$300/bag</td><td style="font-size:.78rem">25 lb</td></tr>
+          <tr><td class="name">Double Barrel</td><td class="num">$105/bag</td><td style="font-size:.78rem">10-15 #/A</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RYE ================= -->
+<section id="rye" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">2026 semi-load pricing <span class="diamond">◆</span> Effective July 13, 2026</div>
+      <h2>reSTORE Rye</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Premium cleaned winter rye — best value at the semi-load level. Trucks average 765-810 units and can be any mix of 56-lb bags or 45-unit mini-bulks.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('rye')">Print</button>
+  </div>
+
+  <div class="line-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="price-card">
+      <div class="card-head"><h3>Retail (less than load)</h3></div>
+      <div style="text-align:center;padding:1rem 0">
+        <div class="mono" style="font-size:2.5rem;font-weight:700;color:var(--ink)">$16.00</div>
+        <div style="color:var(--furrow);font-size:.85rem">per bushel · customer price</div>
+      </div>
+    </div>
+    <div class="price-card">
+      <div class="card-head"><h3>Dealer (less than load)</h3></div>
+      <div style="text-align:center;padding:1rem 0">
+        <div class="mono" style="font-size:2.5rem;font-weight:700;color:var(--field)">$13.00</div>
+        <div style="color:var(--furrow);font-size:.85rem">per bushel · dealer price</div>
+      </div>
+    </div>
+    <div class="price-card dark">
+      <div class="card-head"><h3>Semi Load · Early Order</h3><span class="tag signal">Best</span></div>
+      <div style="text-align:center;padding:1rem 0">
+        <div class="mono" style="font-size:2.5rem;font-weight:700;color:#fff">$12.00</div>
+        <div style="color:#c9c2b0;font-size:.85rem">per bushel · dealer semi-load</div>
+      </div>
+      <div style="font-size:.78rem;color:#c9c2b0;margin-top:.5rem">Includes pallets of 56 lb bags, 45-unit mini-bulks, or any combo. Trucks average 765-810 units.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Talking points</h4>
+    <p style="margin:0;font-size:.9rem">reSTORE is <strong>premium cleaned</strong> — higher purity vs commodity rye means better emergence and cleaner stands. Bin-run and VNS rye is a false economy: dockage, weed seed, and germ drops eat any savings. At semi-load, the $4/bu spread vs less-than-load pays for itself on the first field.</p>
+  </div>
+</section>
+
+<!-- ================= SEED TREATMENTS ================= -->
+<section id="treatments" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Applied at planter or hopper</div>
+      <h2>Seed Treatments</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Two families: ProHarvest wet treatments (applied at the seed plant) and Meristem Hopper Throttle Bio-Capsule copacks (poured into the hopper on-farm). Full biological program lives in the next section.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('treatments')">Print</button>
+  </div>
+
+  <div class="line-grid">
+    <div class="price-card">
+      <div class="card-head"><h3>ProHarvest Wet Treatments — Soybeans</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num">Base</th><th class="num">+ Saltro</th></tr></thead>
+        <tbody>
+          <tr><td class="name">proTect DI</td><td class="num">$15.50</td><td class="num">—</td></tr>
+          <tr><td class="name">proTect ULTRA</td><td class="num">$29.50</td><td class="num">—</td></tr>
+          <tr><td class="name">FX3I</td><td class="num">$12.50</td><td class="num">$25.00</td></tr>
+          <tr><td class="name">MYDRYVE F</td><td class="num">$15.00</td><td class="num">$27.50</td></tr>
+          <tr><td class="name">MYDRYVE X</td><td class="num">$15.75</td><td class="num">$28.25</td></tr>
+          <tr><td class="name">SoyFX</td><td class="num">$9.50</td><td class="num">—</td></tr>
+          <tr><td class="name">Trunemco Nematicide</td><td class="num">$8.00</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.5rem">Prices per unit. Treated soybean orders: no returns or cancellations.</div>
+    </div>
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Meristem Hopper Throttle — Copacks</h3><span class="tag signal">Bio-Capsule</span></div>
+      <div class="card-sub">Poured into planter hopper &nbsp;•&nbsp; Talc/graphite base with IonLock Zn/Mn/Fe + EPA-registered actives in Bio-Capsules</div>
+      <table class="price-table">
+        <thead><tr><th>Copack</th><th class="num">Units</th></tr></thead>
+        <tbody>
+          <tr><td class="name">HT MaxStax Soybean <span style="color:#c9c2b0;font-size:.78rem">(Metalaxyl + Prephyte + BorneX + GuardC + Protectis + Revline + inoculant + Ether)</span></td><td class="num">40 u</td></tr>
+          <tr><td class="name">HT MaxStax Corn <span style="color:#c9c2b0;font-size:.78rem">(Prephyte + GuardC + GuardX + Protectis + Revline + Ether)</span></td><td class="num">50 u</td></tr>
+          <tr><td class="name">HT Soybean F&amp;I <span style="color:#c9c2b0;font-size:.78rem">(Metalaxyl + Prephyte + Protectis + inoculant)</span></td><td class="num">40 u</td></tr>
+          <tr><td class="name">HT Corn (GuardX + PowerGuard + Prephyte)</td><td class="num">50 u</td></tr>
+          <tr><td class="name">HT Soybean (BorneX + GuardC + Prephyte)</td><td class="num">40 u</td></tr>
+          <tr><td class="name">HT Corn (GuardX + Prephyte)</td><td class="num">50 u</td></tr>
+          <tr><td class="name">HT Soybean (Protectis + Metalaxyl)</td><td class="num">40 u</td></tr>
+          <tr><td class="name">Revline HT Corn Ace Ether (+ Prephyte)</td><td class="num">50 u</td></tr>
+          <tr><td class="name">Revline HT Soybean Ether</td><td class="num">40 u</td></tr>
+          <tr><td class="name">Revline HT Corn Ether</td><td class="num">50 u</td></tr>
+          <tr><td class="name">HT Organic Corn (GuardM + Prephyte)</td><td class="num">50 u</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:#c9c2b0;margin-top:.5rem">See Meristem Hopper Throttle Matrix for full compatibility &amp; rate cross-ref. Call for current pricing.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MERISTEM BIOLOGICALS ================= -->
+<section id="biologicals" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Meristem CY27 <span class="diamond">◆</span> The full biological line</div>
+      <h2>Biologicals &amp; Crop Nutrition</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Season-long plant health, nutrient efficiency, and residue management. Grouped by when they get applied — burndown, planting, early season, reproductive.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('biologicals')">Print</button>
+  </div>
+
+  <div class="line-grid">
+
+    <!-- AT PLANTING / STARTER -->
+    <div class="price-card">
+      <div class="card-head"><h3>At Planting — Starter &amp; Fluency</h3><span class="tag ok">In-furrow / hopper</span></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num" style="width:120px">Use Rate</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Upshift C Pro</strong> <span style="color:var(--furrow);font-size:.78rem">powered by Ether — 11-56-0 starter with three-part enzyme system, chelated Zn</span></td><td class="num">2.5 lb/A</td></tr>
+          <tr><td><strong>Upshift C+K Pro</strong> <span style="color:var(--furrow);font-size:.78rem">Concentrated starter — Ether Enzyme Tech, P + K availability</span></td><td class="num">2.5 lb/A</td></tr>
+          <tr><td><strong>IonLock Zn-C+</strong> <span style="color:var(--furrow);font-size:.78rem">Concentrated Zn in-furrow · seed fluency</span></td><td class="num">Corn 50 u</td></tr>
+          <tr><td><strong>IonLock Zn-C+ powered by Ether</strong> <span style="color:var(--furrow);font-size:.78rem">Adds Ether enzyme (lipase + mannanase)</span></td><td class="num">Corn 50 u</td></tr>
+        </tbody>
+      </table>
+      <div class="ladder" style="margin-top:.7rem">
+        <h4>Also as foliar / pH buffer</h4>
+        <div style="font-size:.85rem">Upshift C Pro: Foliar 1-4 lb/A · pH Buffer 0.5 lb/100 gal water</div>
+      </div>
+    </div>
+
+    <!-- EARLY SEASON / GROWTH -->
+    <div class="price-card dark">
+      <div class="card-head"><h3>Early Season — Growth &amp; PGRs</h3><span class="tag signal">Rev / Stress</span></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num" style="width:120px">Use Rate</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Revline 4.0 PGR</strong> <span style="color:#c9c2b0;font-size:.78rem">Germination, early emergence, root drive</span></td><td class="num">3 oz/A</td></tr>
+          <tr><td><strong>Revline Early-Season PGR</strong> <span style="color:#c9c2b0;font-size:.78rem">Two natural PGRs + vitamins for transplanting</span></td><td class="num">2 oz/A</td></tr>
+          <tr><td><strong>Revline Late-SeasonX PGR</strong> <span style="color:#c9c2b0;font-size:.78rem">Fortified cytokinin, GABA, choline chloride</span></td><td class="num">12.8 oz/A</td></tr>
+          <tr><td><strong>Harvestshield Evo</strong> <span style="color:#c9c2b0;font-size:.78rem">Abiotic stress: drought, temp, water, salinity, UV</span></td><td class="num">1 qt/A</td></tr>
+          <tr><td><strong>Homestretch NKB-S Evo</strong> <span style="color:#c9c2b0;font-size:.78rem">Foliar K + boron + S with dextrose + fulvic — grain fill</span></td><td class="num">1 qt/A</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- NITROGEN MANAGEMENT -->
+    <div class="price-card">
+      <div class="card-head"><h3>Nitrogen Management</h3><span class="tag">Microbe-friendly</span></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num" style="width:130px">Use Rate</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Maintain Elite</strong> <span style="color:var(--furrow);font-size:.78rem">Below-ground N stabilizer for NH3 &amp; liquid fert</span></td><td class="num">NH3: 6 oz/50 u N · UAN: 2 qt/ton</td></tr>
+          <tr><td><strong>N-Gear Dual Action</strong> <span style="color:var(--furrow);font-size:.78rem">Above + below ground protection for urea &amp; UAN</span></td><td class="num">Urea: 2-3 qt/ton · UAN 28-32: 1.5 qt/ton</td></tr>
+          <tr><td><strong>Fuel-Line powered by Ether</strong> <span style="color:var(--furrow);font-size:.78rem">Dry fertilizer impregnation — micros + enzymes for P/K</span></td><td class="num">2 qt/ton dry</td></tr>
+          <tr><td><strong>Excavator AMS + CycleStrike LR + BioFlex</strong> <span style="color:var(--furrow);font-size:.78rem">AMS surfactant + microbe residue breakdown</span></td><td class="num">Exc: 32 oz/A · Cyc: 0.10 oz/A</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.5rem"><strong>Talk track:</strong> CycleStrike LR uses microbes delivered through Bio-Capsule technology to speed residue breakdown and unlock N &amp; P from last year's stover.</div>
+    </div>
+
+    <!-- ADJUVANTS -->
+    <div class="price-card">
+      <div class="card-head"><h3>Adjuvants &amp; Water Conditioners</h3></div>
+      <table class="price-table">
+        <thead><tr><th>Product</th><th class="num" style="width:120px">Use Rate</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Aquadraft Extreme</strong> <span style="color:var(--furrow);font-size:.78rem">AMS + surfactant + drift + humectant · Enlist approved</span></td><td class="num">20 oz/A</td></tr>
+          <tr><td><strong>Aquadraft Premium</strong> <span style="color:var(--furrow);font-size:.78rem">Water conditioner + NIS + 3.4 lb/gal AMS premix · Enlist approved</span></td><td class="num">20 oz/A</td></tr>
+          <tr><td><strong>Aquadraft VRA, a VaporGrip Xtra Agent</strong> <span style="color:var(--furrow);font-size:.78rem">Reduces dicamba volatility · pair with Trutrack Complete</span></td><td class="num">40 oz/A</td></tr>
+          <tr><td><strong>Trutrack Complete</strong> <span style="color:var(--furrow);font-size:.78rem">Premier drift reduction / deposition agent · Enlist approved</span></td><td class="num">Fung/Ins: 6 oz/A · Herb: 3 oz/A · Aerial 0.3% v/v</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout dealer">
+    <h4>⚠  Keep biologicals alive</h4>
+    <p style="margin:0;font-size:.88rem">Bio-Capsules and microbe products are stable until mixed. <strong>Never</strong> pre-blend hopper products the day before — talc/graphite base is fine, but Bio-Capsule contents belong at the planter, not overnight in the shed. Water for tank-mixes: neutralize chlorine with BioFlex before adding CycleStrike or any microbial product.</p>
+  </div>
+</section>
+
+<!-- ================= PROGRAMS (TCO / MaxStax) ================= -->
+<section id="programs" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Meristem system programs</div>
+      <h2>Take Cost Out (TCO) &amp; System Programs</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Season-long recipes stacking Meristem products by growth stage. "TCO" = build large plant factories early, retain kernels/pods late, manage residue for next year.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('programs')">Print</button>
+  </div>
+
+  <div class="line-grid">
+
+    <!-- CORN TCO -->
+    <div class="price-card dark">
+      <div class="card-head"><h3>Take Cost Out — Corn Program</h3><span class="tag signal">25% yield impact in-season</span></div>
+      <div class="card-sub">Six touchpoints: burndown → planting → V1-V4 → V8-V12 → VT-R2 → R4-R6</div>
+      <table class="price-table">
+        <thead><tr><th>Stage</th><th>Products</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Preplant / Post-harvest</td><td style="font-size:.85rem">Excavator AMS + CycleStrike LR + BioFlex — residue breakdown, unlock nutrients</td></tr>
+          <tr><td class="name">At planting</td><td style="font-size:.85rem">Upshift C Pro (2.5 lb/A) + Hopper Throttle Corn — starter + fluency + micros + biologicals</td></tr>
+          <tr><td class="name">Burndown / VE</td><td style="font-size:.85rem">Aquadraft Extreme or Premium — AMS/surfactant/drift-reduction · Trutrack Complete</td></tr>
+          <tr><td class="name">V1-V4 · early veg</td><td style="font-size:.85rem">Revline 4.0 or Early-Season PGR — root drive, stress relief, factory build-out</td></tr>
+          <tr><td class="name">V8-V12</td><td style="font-size:.85rem">Maintain Elite (below-ground N) or N-Gear Dual (above/below)</td></tr>
+          <tr><td class="name">VT-R2 · reproductive</td><td style="font-size:.85rem">Homestretch NKB-S Evo — K + B + S + dextrose/fulvic to fill grain</td></tr>
+          <tr><td class="name">R4-R6</td><td style="font-size:.85rem">Harvestshield Evo — abiotic stress protection through finish</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SOY TCO -->
+    <div class="price-card">
+      <div class="card-head"><h3>Take Cost Out — Soybean Program</h3><span class="tag">Same 25% principle</span></div>
+      <div class="card-sub">Six touchpoints: burndown → planting → VC-V3 → V8 → R1-R3 → R6-R8</div>
+      <table class="price-table">
+        <thead><tr><th>Stage</th><th>Products</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Preplant / Post-harvest</td><td style="font-size:.85rem">Excavator AMS + CycleStrike LR + BioFlex</td></tr>
+          <tr><td class="name">At planting</td><td style="font-size:.85rem">HT Soybean copack (MaxStax, F&amp;I, or a Revline HT tier) — inoculant + Bio-Capsule fungicides/insecticides</td></tr>
+          <tr><td class="name">Burndown / VE-VC</td><td style="font-size:.85rem">Aquadraft Extreme or Premium · Trutrack Complete</td></tr>
+          <tr><td class="name">V1-V3</td><td style="font-size:.85rem">Revline Early-Season PGR</td></tr>
+          <tr><td class="name">R1-R3 · reproductive</td><td style="font-size:.85rem">Homestretch NKB-S Evo — pod fill</td></tr>
+          <tr><td class="name">R6-R8</td><td style="font-size:.85rem">Harvestshield Evo — late-season stress</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MAXSTAX -->
+    <div class="price-card">
+      <div class="card-head"><h3>Hopper Throttle MaxStax</h3><span class="tag">All-in-one</span></div>
+      <div class="card-sub">The "buy one, cover everything" hopper copack. Corn (50 u) and Soybean (40 u) versions.</div>
+      <table class="price-table">
+        <thead><tr><th>Bio-Capsule</th><th>Corn</th><th>Soy</th></tr></thead>
+        <tbody>
+          <tr><td>Metalaxyl ST (fungicide)</td><td>—</td><td>✓</td></tr>
+          <tr><td>Prephyte ST (biofungicide)</td><td>✓</td><td>✓</td></tr>
+          <tr><td>BorneX (biofungicide)</td><td>—</td><td>✓</td></tr>
+          <tr><td>GuardC (bionematicide)</td><td>✓</td><td>✓</td></tr>
+          <tr><td>GuardX (bioinsecticide)</td><td>✓</td><td>—</td></tr>
+          <tr><td>Protectis (Beauveria bassiana)</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Revline biostimulant</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Bradyrhizobia inoculant</td><td>—</td><td>✓</td></tr>
+          <tr><td>IonLock Zn/Mn/Fe + Ether</td><td>✓</td><td>✓</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.5rem"><strong>Sales angle:</strong> One SKU replaces layering four to five separate products. Handling risk down, coverage up.</div>
+    </div>
+
+    <!-- EXCAVATOR -->
+    <div class="price-card dark">
+      <div class="card-head"><h3>Excavator AMS · Nutrient Withdraw</h3><span class="tag signal">Cost-out</span></div>
+      <div class="card-sub">Take a nutrient withdraw from your soil bank — the standing residue is money left on the field</div>
+      <div class="ladder" style="background:#3d4a3b;font-size:.87rem">
+        <h4 style="color:#c9c2b0">Corn Residue @ Yield</h4>
+        <div style="display:grid;grid-template-columns:1fr 60px 60px 60px;gap:.15rem .5rem">
+          <div style="color:#c9c2b0;font-weight:600">Nutrient</div>
+          <div class="mono" style="text-align:right;color:#c9c2b0;font-weight:600">200 bu</div>
+          <div class="mono" style="text-align:right;color:#c9c2b0;font-weight:600">250 bu</div>
+          <div class="mono" style="text-align:right;color:#c9c2b0;font-weight:600">300 bu</div>
+          <div>N</div><div class="mono" style="text-align:right">90</div><div class="mono" style="text-align:right">114</div><div class="mono" style="text-align:right">136</div>
+          <div>P₂O₅</div><div class="mono" style="text-align:right">18</div><div class="mono" style="text-align:right">23</div><div class="mono" style="text-align:right">27</div>
+        </div>
+      </div>
+      <div style="font-size:.78rem;color:#c9c2b0;margin-top:.5rem"><strong>Excavator AMS + CycleStrike LR</strong> uses Bio-Capsule microbes to break down residue and unlock those nutrients for the next crop — with a non-ionic surfactant built in.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROGRAMS & POLICIES ================= -->
+<section id="policies" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">2026-27 sales program <span class="diamond">◆</span> ProHarvest / Rohrer Seed</div>
+      <h2>Programs, Discounts &amp; Policies</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Everything on one page — early order, cash discount, volume, replant, returns, financing. Effective Aug 1, 2026 through Jul 31, 2027.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('policies')">Print</button>
+  </div>
+
+  <div class="line-grid">
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Early Order Discounts</h3><span class="tag signal">$/unit</span></div>
+      <table class="price-table">
+        <thead><tr><th>Deadline</th><th class="num">Corn</th><th class="num">Soybeans</th></tr></thead>
+        <tbody>
+          <tr><td class="name">By Oct 15, 2026</td><td class="num" style="color:var(--signal-2);font-weight:700">$10/unit</td><td class="num" style="color:var(--signal-2);font-weight:700">$2/unit</td></tr>
+          <tr><td class="name">By Dec 15, 2026</td><td class="num">$7/unit</td><td class="num">$1/unit</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:.78rem;color:#c9c2b0;margin-top:.5rem">Wheat: −$0.50/unit by Aug 22, 2026.</div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Cash Discount Ladder</h3><span class="tag">All accounts</span></div>
+      <div class="card-sub">All accounts due <strong>June 30, 2027</strong> (or 30 days from ship, whichever is later)</div>
+      <div class="ladder-rows" style="grid-template-columns:1fr auto;font-size:.9rem">
+        <div class="lr-b"><strong>Oct 15, 2026</strong></div><div class="lr-d">10%</div>
+        <div class="lr-b"><strong>Dec 15, 2026</strong></div><div class="lr-d">9%</div>
+        <div class="lr-b"><strong>Jan 15, 2027</strong></div><div class="lr-d">8%</div>
+        <div class="lr-b"><strong>Feb 15, 2027</strong></div><div class="lr-d">7%</div>
+        <div class="lr-b"><strong>Mar 15, 2027</strong></div><div class="lr-d">5%</div>
+        <div class="lr-b"><strong>Apr 15, 2027</strong></div><div class="lr-d">2%</div>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Volume Discount Summary</h3></div>
+      <h4 style="margin-top:.4rem">Corn — max</h4>
+      <div style="font-size:1.2rem;font-weight:700;font-family:'JetBrains Mono',monospace">$32/bag <span style="color:var(--furrow);font-weight:400;font-size:.8rem">at 1,000+ bags</span></div>
+      <h4 style="margin-top:.9rem">Soybeans — max</h4>
+      <div style="font-size:1.2rem;font-weight:700;font-family:'JetBrains Mono',monospace">$5/bag <span style="color:var(--furrow);font-weight:400;font-size:.8rem">at 5,000+ bags</span></div>
+      <h4 style="margin-top:.9rem">Wheat</h4>
+      <div style="font-size:1.2rem;font-weight:700;font-family:'JetBrains Mono',monospace">$1/unit <span style="color:var(--furrow);font-weight:400;font-size:.8rem">at 900+ units</span></div>
+      <div style="font-size:.78rem;color:var(--furrow);margin-top:.7rem"><strong>Rohrer Seed program:</strong> $60/unit corn volume discount, RO pricing on soybeans (Combo &amp; ProGrowth excluded).</div>
+    </div>
+
+    <div class="price-card dark">
+      <div class="card-head"><h3>Financing Options</h3><span class="tag signal">Multiple</span></div>
+      <div style="font-size:.83rem;color:#e7e5df;line-height:1.55">
+        <p style="color:#fff;font-weight:600;margin-bottom:.2rem">First Mid 0% — Corn &amp; Soy only</p>
+        <p style="margin-bottom:.7rem">Order by Jan 15, 2027. Min $1,000. Volume &amp; early order still apply. Due Dec 2027.</p>
+        <p style="color:#fff;font-weight:600;margin-bottom:.2rem">JDF 1.9% Fixed — Corn &amp; Soy only</p>
+        <p style="margin-bottom:.7rem">Order by Jan 15, 2027. Min $2,500. Cash discounts do NOT apply.</p>
+        <p style="color:#fff;font-weight:600;margin-bottom:.2rem">JDF Prime −1% — Corn &amp; Soy only</p>
+        <p style="margin-bottom:.7rem">Order by Mar 31, 2027. Min $2,500. Cash discounts do NOT apply.</p>
+        <p style="color:#fff;font-weight:600;margin-bottom:.2rem">First Mid Prime +0.25% / JDF Prime +6.10% — All crops</p>
+        <p style="margin-bottom:0">Min $1,000. Volume &amp; early order still apply. Cash discounts do NOT apply.</p>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Replant Policy</h3><span class="tag ok">Corn &amp; treated Soy</span></div>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.87rem;line-height:1.6">
+        <li>Free replant up to first <strong>25% of original order</strong>.</li>
+        <li>Additional replant: <strong>25% of retail</strong>.</li>
+        <li>Soybeans must be treated (proTect DI or Ultra) to qualify.</li>
+        <li>50% of retail if planted before insurable multi-peril date.</li>
+        <li>Covers flood, frost, crusting, animal feeding. NOT herbicide misapplication.</li>
+        <li>One replant credit per season. Replant seed does NOT qualify for discounts.</li>
+      </ul>
+    </div>
+
+    <div class="price-card">
+      <div class="card-head"><h3>Return &amp; Cancellation</h3><span class="tag wheat">Deadlines</span></div>
+      <ul style="margin:0;padding-left:1.2rem;font-size:.87rem;line-height:1.6">
+        <li><strong>Seed corn:</strong> no returns after Jun 15, 2027.</li>
+        <li><strong>Soybeans:</strong> no returns after Jun 30, 2027.</li>
+        <li>Returns &gt; 10% of order: restocking charge.</li>
+        <li>No returns/cancellation of treated soybeans or sold-out products after Jan 15, 2027.</li>
+        <li>Wheat: returns by Oct 10, 2026; no returns of treated wheat.</li>
+        <li>Damaged/dirty/opened containers not accepted.</li>
+        <li>Black boxes not returned: $550 each.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUOTE BUILDER — SEED ================= -->
+<section id="quote-seed" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Live quote <span class="diamond">◆</span> Corn, soybeans, wheat, specialty</div>
+      <h2>Seed Quote</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Build a customer seed quote. Volume discount tier auto-applies for corn and soybeans. Print or take a photo of the total to leave with the customer.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('quote-seed')">Print quote</button>
+  </div>
+
+  <div class="quote-panel">
+    <div class="quote-head">
+      <div><label>Customer / farm</label><input type="text" id="qsCustomer" placeholder="Grower name"></div>
+      <div><label>Farm acres (info only)</label><input type="number" id="qsAcres" placeholder="1200"></div>
+      <div><label>Quote #</label><input type="text" id="qsNumber" placeholder="Auto"></div>
+      <div><label>Quote date</label><input type="text" id="qsDate" placeholder="Today"></div>
+    </div>
+
+    <div class="q-add">
+      <select id="qsCat" onchange="qsFilterProducts()">
+        <option value="corn">Seed Corn</option>
+        <option value="soy">Soybeans</option>
+        <option value="wheat">Wheat</option>
+        <option value="specialty">White Corn / SOYLEIC</option>
+      </select>
+      <select id="qsProduct"></select>
+      <button class="btn primary" onclick="qsAdd()">+ Add to quote</button>
+    </div>
+
+    <div id="qsEmpty" class="q-empty">No line items yet. Choose a product and click "Add to quote" — volume discount auto-applies.</div>
+    <table class="q-table" id="qsTable" style="display:none">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th class="num">Retail</th>
+          <th class="num">Bags/Units</th>
+          <th class="num">Vol Disc</th>
+          <th class="num">Net / bag</th>
+          <th class="num">Line total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="qsRows"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right">Corn subtotal <span style="color:var(--furrow);font-weight:400;font-size:.8rem">(before early-order)</span></td>
+          <td class="num" id="qsCornBags">0</td>
+          <td class="num" id="qsCornDisc">$0</td>
+          <td></td>
+          <td class="num" id="qsCornSubtotal">$0</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:right">Soybean subtotal</td>
+          <td class="num" id="qsSoyBags">0</td>
+          <td class="num" id="qsSoyDisc">$0</td>
+          <td></td>
+          <td class="num" id="qsSoySubtotal">$0</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:right">Wheat / Specialty subtotal</td>
+          <td class="num" id="qsOtherBags">0</td>
+          <td class="num" id="qsOtherDisc">$0</td>
+          <td></td>
+          <td class="num" id="qsOtherSubtotal">$0</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem" class="print-hide">
+      <div>
+        <label style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--furrow);font-weight:600">Early order deadline</label>
+        <select id="qsEarly" onchange="qsRecalc()" style="width:100%;padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;background:var(--paper);color:var(--ink);margin-top:.25rem">
+          <option value="none">No early-order discount</option>
+          <option value="oct15" selected>Before Oct 15 — $10 corn / $2 soy</option>
+          <option value="dec15">Before Dec 15 — $7 corn / $1 soy</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--furrow);font-weight:600">Cash discount</label>
+        <select id="qsCash" onchange="qsRecalc()" style="width:100%;padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;background:var(--paper);color:var(--ink);margin-top:.25rem">
+          <option value="0">None (defer)</option>
+          <option value="10" selected>Oct 15 — 10%</option>
+          <option value="9">Dec 15 — 9%</option>
+          <option value="8">Jan 15 — 8%</option>
+          <option value="7">Feb 15 — 7%</option>
+          <option value="5">Mar 15 — 5%</option>
+          <option value="2">Apr 15 — 2%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="q-totals" style="grid-template-columns:auto 1fr auto 1fr">
+      <div class="qt-lbl">After volume + early order</div><div class="qt-val" id="qsAfterEarly">$0</div>
+      <div class="qt-lbl">Cash discount</div><div class="qt-val" id="qsCashAmt">−$0</div>
+      <div class="qt-lbl" style="grid-column:1 / span 2;padding-top:.6rem;border-top:1px solid #4a4744;margin-top:.4rem">Grand total</div>
+      <div class="qt-val big" style="grid-column:3 / span 2;padding-top:.6rem;border-top:1px solid #4a4744;margin-top:.4rem" id="qsGrandTotal">$0</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUOTE BUILDER — BIOLOGICAL ================= -->
+<section id="quote-bio" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Live quote <span class="diamond">◆</span> Meristem biological program</div>
+      <h2>Biological Quote</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">Build a per-acre program from Meristem's line. Enter acres and rate, we do the math. Uses your call-in / dealer-current pricing (fill in the price cells).</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('quote-bio')">Print</button>
+  </div>
+
+  <div class="quote-panel">
+    <div class="quote-head">
+      <div><label>Customer / farm</label><input type="text" id="qbCustomer" placeholder="Grower name"></div>
+      <div><label>Acres to treat</label><input type="number" id="qbAcres" value="500" step="10" min="1" onchange="qbRecalc()"></div>
+      <div><label>Quote #</label><input type="text" id="qbNumber" placeholder="Auto"></div>
+      <div><label>Quote date</label><input type="text" id="qbDate" placeholder="Today"></div>
+    </div>
+
+    <div class="q-add">
+      <select id="qbProduct"></select>
+      <button class="btn primary" onclick="qbAdd()">+ Add to program</button>
+    </div>
+
+    <div id="qbEmpty" class="q-empty">No products yet — pick a Meristem product and add it. Enter price and rate per acre; total per acre and program total calculate automatically.</div>
+    <table class="q-table" id="qbTable" style="display:none">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Stage</th>
+          <th class="num">Rate/A</th>
+          <th class="num">$/unit</th>
+          <th>Unit</th>
+          <th class="num">$/A</th>
+          <th class="num">Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="qbRows"></tbody>
+    </table>
+
+    <div class="q-totals" style="grid-template-columns:auto 1fr auto 1fr">
+      <div class="qt-lbl">Program cost per acre</div><div class="qt-val" id="qbPerAcre">$0.00</div>
+      <div class="qt-lbl">Total acres</div><div class="qt-val" id="qbAcresOut">500</div>
+      <div class="qt-lbl" style="grid-column:1 / span 2;padding-top:.6rem;border-top:1px solid #4a4744;margin-top:.4rem">Grand total</div>
+      <div class="qt-val big" style="grid-column:3 / span 2;padding-top:.6rem;border-top:1px solid #4a4744;margin-top:.4rem" id="qbGrandTotal">$0</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUOTE BUILDER — WHOLE FARM ================= -->
+<section id="quote-farm" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Live quote <span class="diamond">◆</span> Whole-farm plan</div>
+      <h2>Whole-Farm Plan</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin:.4em 0 0">The full plan by field: corn acres, bean acres, wheat / cover-crop acres, plus the biological stack across all of it. One printout for the customer, one for you.</p>
+    </div>
+    <button class="btn ghost print-btn" onclick="printSection('quote-farm')">Print full plan</button>
+  </div>
+
+  <div class="quote-panel">
+    <div class="quote-head" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+      <div><label>Customer / farm</label><input type="text" id="qfCustomer" placeholder="Grower name"></div>
+      <div><label>Quote #</label><input type="text" id="qfNumber" placeholder="Auto"></div>
+      <div><label>Quote date</label><input type="text" id="qfDate" placeholder="Today"></div>
+      <div><label>Corn acres</label><input type="number" id="qfCornAc" value="600" step="10" min="0" onchange="qfRecalc()"></div>
+      <div><label>Soy acres</label><input type="number" id="qfSoyAc" value="600" step="10" min="0" onchange="qfRecalc()"></div>
+      <div><label>Wheat acres</label><input type="number" id="qfWheatAc" value="0" step="10" min="0" onchange="qfRecalc()"></div>
+    </div>
+
+    <!-- Row 1: Seed component -->
+    <h4 style="color:var(--field);margin:1rem 0 .5rem">1 <span class="diamond">◆</span> Seed Component</h4>
+    <div class="q-add">
+      <select id="qfSeedCat" onchange="qfFilterProducts()">
+        <option value="corn">Seed Corn</option>
+        <option value="soy">Soybeans</option>
+        <option value="wheat">Wheat</option>
+      </select>
+      <select id="qfSeedProduct"></select>
+      <input type="number" id="qfSeedRate" placeholder="Rate (bags/A)" step="0.05" min="0" style="width:140px;padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;font-family:'JetBrains Mono',monospace">
+      <button class="btn primary" onclick="qfAddSeed()">+ Add seed</button>
+    </div>
+    <table class="q-table" id="qfSeedTable" style="display:none">
+      <thead>
+        <tr><th>Product</th><th>Crop</th><th class="num">Rate/A</th><th class="num">Acres</th><th class="num">Total bags</th><th class="num">Retail/bag</th><th class="num">Line total</th><th></th></tr>
+      </thead>
+      <tbody id="qfSeedRows"></tbody>
+    </table>
+    <div id="qfSeedEmpty" class="q-empty">Add a corn hybrid (0.32 bags/A ≈ 26k pop), a bean variety (0.9-1.2 bags/A), or wheat (2 bu/A).</div>
+
+    <!-- Row 2: Biological component -->
+    <h4 style="color:var(--field);margin:1.4rem 0 .5rem">2 <span class="diamond">◆</span> Biological / Nutrition Component</h4>
+    <div class="q-add">
+      <select id="qfBioProduct"></select>
+      <select id="qfBioApply" style="min-width:160px">
+        <option value="corn">Applied to corn ac</option>
+        <option value="soy">Applied to soy ac</option>
+        <option value="wheat">Applied to wheat ac</option>
+        <option value="all">Applied to all acres</option>
+      </select>
+      <button class="btn primary" onclick="qfAddBio()">+ Add product</button>
+    </div>
+    <table class="q-table" id="qfBioTable" style="display:none">
+      <thead>
+        <tr><th>Product</th><th>Applied to</th><th class="num">Acres</th><th class="num">Rate/A</th><th class="num">$/unit</th><th class="num">$/A</th><th class="num">Line total</th><th></th></tr>
+      </thead>
+      <tbody id="qfBioRows"></tbody>
+    </table>
+    <div id="qfBioEmpty" class="q-empty">Add Meristem products by stage (starter → PGR → N mgmt → grain fill).</div>
+
+    <!-- Row 3: Cover crop component -->
+    <h4 style="color:var(--field);margin:1.4rem 0 .5rem">3 <span class="diamond">◆</span> Cover Crop Component</h4>
+    <div class="q-add">
+      <select id="qfCoverProduct"></select>
+      <input type="number" id="qfCoverAc" placeholder="Cover acres" step="10" min="0" style="width:140px;padding:.5rem .7rem;border:1px solid var(--hair-2);border-radius:8px;font-family:'JetBrains Mono',monospace">
+      <button class="btn primary" onclick="qfAddCover()">+ Add cover</button>
+    </div>
+    <table class="q-table" id="qfCoverTable" style="display:none">
+      <thead>
+        <tr><th>Program / Product</th><th class="num">Acres</th><th class="num">$/A</th><th class="num">Line total</th><th></th></tr>
+      </thead>
+      <tbody id="qfCoverRows"></tbody>
+    </table>
+    <div id="qfCoverEmpty" class="q-empty">Add a house-blend program or a single-species cover.</div>
+
+    <!-- GRAND TOTAL -->
+    <div class="q-totals" style="grid-template-columns:1fr auto;font-size:.9rem;margin-top:1.4rem">
+      <div class="qt-lbl">Seed subtotal</div><div class="qt-val" id="qfSeedTotal">$0</div>
+      <div class="qt-lbl">Biological subtotal</div><div class="qt-val" id="qfBioTotal">$0</div>
+      <div class="qt-lbl">Cover crop subtotal</div><div class="qt-val" id="qfCoverTotal">$0</div>
+      <div class="qt-lbl" style="padding-top:.7rem;border-top:1px solid #4a4744;margin-top:.5rem">Whole-farm program</div>
+      <div class="qt-val big" style="padding-top:.7rem;border-top:1px solid #4a4744;margin-top:.5rem" id="qfGrandTotal">$0</div>
+      <div class="qt-lbl" style="font-size:.62rem">Per crop acre (corn+soy+wheat)</div>
+      <div class="qt-val" id="qfPerAc">$0.00 / A</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Floating Dealer View toggle -->
+<button class="btn dealer-btn" onclick="document.body.classList.toggle('show-dealer')" title="Show cost / margin info (dealer only)">Dealer View</button>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ================= PRODUCT CATALOG (data source for quote builders) ================ */
+const PRODUCTS = {
+  corn: [
+    // Above & Below Ground RIB
+    {name:"67P33 DS", rm:97, price:390, group:"A&B RIB"},
+    {name:"67P84 StaxProRIB", rm:97, price:420, group:"A&B RIB"},
+    {name:"70P47 DS", rm:100, price:390, group:"A&B RIB"},
+    {name:"71P16 Stax RIB", rm:101, price:390, group:"A&B RIB"},
+    {name:"71P50 StaxPro RIB", rm:101, price:410, group:"A&B RIB"},
+    {name:"72P32 D", rm:102, price:385, group:"A&B RIB"},
+    {name:"75P72 StaxPro RIB", rm:105, price:410, group:"A&B RIB"},
+    {name:"77P25 VT4Pro RIB", rm:107, price:390, group:"A&B RIB"},
+    {name:"77P60 StaxRIB", rm:107, price:405, group:"A&B RIB"},
+    {name:"79P54 StaxProRIB", rm:109, price:410, group:"A&B RIB"},
+    {name:"79P87 StaxRIB", rm:109, price:400, group:"A&B RIB"},
+    {name:"80P81 StaxProRIB", rm:110, price:410, group:"A&B RIB"},
+    {name:"81P19 VT4ProRIB", rm:111, price:390, group:"A&B RIB"},
+    {name:"81P65 DV", rm:111, price:375, group:"A&B RIB"},
+    {name:"82P40 StaxRIB", rm:112, price:390, group:"A&B RIB"},
+    {name:"82P68 StaxPro RIB", rm:112, price:390, group:"A&B RIB"},
+    {name:"82P74 StaxPro RIB", rm:112, price:410, group:"A&B RIB"},
+    {name:"83P48 StaxProRIB", rm:113, price:410, group:"A&B RIB"},
+    {name:"8360 StaxRIB", rm:113, price:400, group:"A&B RIB"},
+    {name:"85P58 StaxRIB", rm:115, price:410, group:"A&B RIB"},
+    // Above Ground Only
+    {name:"66P46 PCE", rm:96, price:353, group:"AG Only"},
+    {name:"71P11 PCE", rm:101, price:358, group:"AG Only"},
+    {name:"73P40 PCE", rm:103, price:358, group:"AG Only"},
+    {name:"73P67 TrePRIB", rm:103, price:373, group:"AG Only"},
+    {name:"74P10 PCE", rm:104, price:358, group:"AG Only"},
+    {name:"75P60 TrePRIB", rm:105, price:373, group:"AG Only"},
+    {name:"75P85 DGVT2PRIB", rm:105, price:373, group:"AG Only"},
+    {name:"76P42 PCE", rm:106, price:363, group:"AG Only"},
+    {name:"78P30 VT2PRIB", rm:108, price:373, group:"AG Only"},
+    {name:"78P95 PCE", rm:109, price:363, group:"AG Only"},
+    {name:"79P15 V", rm:109, price:333, group:"AG Only"},
+    {name:"80P75 PCE", rm:110, price:363, group:"AG Only"},
+    {name:"80P89 TreRIB", rm:110, price:383, group:"AG Only"},
+    {name:"81P19 TreRIB", rm:111, price:383, group:"AG Only"},
+    {name:"81P20 PCE", rm:111, price:358, group:"AG Only"},
+    {name:"81P45 TreRIB", rm:111, price:383, group:"AG Only"},
+    {name:"81P65 V", rm:111, price:323, group:"AG Only"},
+    {name:"82P42 PCE", rm:112, price:367, group:"AG Only"},
+    {name:"82P96 PCE", rm:112, price:363, group:"AG Only"},
+    {name:"83P33 DGVT2PRIB", rm:113, price:373, group:"AG Only"},
+    {name:"83P66 VT2PRIB", rm:113, price:375, group:"AG Only"},
+    {name:"84P41 PCE", rm:114, price:358, group:"AG Only"},
+    {name:"84P78 TreRIB", rm:114, price:373, group:"AG Only"},
+    {name:"84P90 TreRIB", rm:114, price:378, group:"AG Only"},
+    {name:"85P58 VT2ProRIB", rm:115, price:375, group:"AG Only"},
+    {name:"86P55 VT2PRIB", rm:116, price:373, group:"AG Only"},
+    // Conventional
+    {name:"71P11 Conv", rm:101, price:221, group:"Conv"},
+    {name:"74P10 Conv", rm:104, price:221, group:"Conv"},
+    {name:"76P42 Conv", rm:106, price:223, group:"Conv"},
+    {name:"78P95 Conv", rm:108, price:221, group:"Conv"},
+    {name:"8015 Conv", rm:110, price:213, group:"Conv"},
+    {name:"80P75 Conv", rm:110, price:220, group:"Conv"},
+    {name:"81P20 Conv", rm:111, price:218, group:"Conv"},
+    {name:"81P65 Conv", rm:111, price:218, group:"Conv"},
+    {name:"82P96 Conv", rm:112, price:225, group:"Conv"},
+    {name:"8360 Conv", rm:113, price:218, group:"Conv"},
+    {name:"83P66 Conv", rm:113, price:223, group:"Conv"},
+    {name:"84P78 Conv", rm:114, price:223, group:"Conv"},
+    {name:"84P90 Conv", rm:114, price:225, group:"Conv"},
+    {name:"85P13 Conv", rm:115, price:213, group:"Conv"},
+    {name:"85P58 Conv", rm:115, price:225, group:"Conv"},
+    // GT
+    {name:"73F02 G", rm:103, price:255, group:"GT"},
+    {name:"77F02 G", rm:107, price:255, group:"GT"},
+    {name:"8015 RR2", rm:110, price:265, group:"GT"},
+    {name:"80F02 G", rm:110, price:255, group:"GT"}
+  ],
+  soy: [
+    // Enlist E3 base $54
+    {name:"AE1650", rm:1.6, price:54, group:"Enlist E3"},
+    {name:"AE1870", rm:1.8, price:54, group:"Enlist E3"},
+    {name:"AE2050", rm:2.0, price:54, group:"Enlist E3"},
+    {name:"AE2361", rm:2.3, price:54, group:"Enlist E3"},
+    {name:"AE2470", rm:2.4, price:54, group:"Enlist E3"},
+    {name:"AE2560", rm:2.5, price:54, group:"Enlist E3"},
+    {name:"25E35", rm:2.7, price:58.50, group:"Enlist E3"},
+    {name:"27E77", rm:2.7, price:58.50, group:"Enlist E3"},
+    {name:"AE2750", rm:2.7, price:54, group:"Enlist E3"},
+    {name:"AE2770", rm:2.7, price:54, group:"Enlist E3"},
+    {name:"AE2860", rm:2.8, price:54, group:"Enlist E3"},
+    {name:"AE2940S", rm:2.9, price:54, group:"Enlist E3"},
+    {name:"29E71", rm:2.9, price:58.50, group:"Enlist E3"},
+    {name:"AE3060", rm:3.0, price:54, group:"Enlist E3"},
+    {name:"AE3070", rm:3.0, price:54, group:"Enlist E3"},
+    {name:"AE3131S", rm:3.1, price:54, group:"Enlist E3"},
+    {name:"AE3150", rm:3.1, price:54, group:"Enlist E3"},
+    {name:"32E79", rm:3.2, price:58.50, group:"Enlist E3"},
+    {name:"AE3340", rm:3.3, price:54, group:"Enlist E3"},
+    {name:"AE3370", rm:3.3, price:54, group:"Enlist E3"},
+    {name:"AE3550S", rm:3.5, price:54, group:"Enlist E3"},
+    {name:"AE3660", rm:3.6, price:54, group:"Enlist E3"},
+    {name:"AE3670S", rm:3.6, price:54, group:"Enlist E3"},
+    {name:"37E72", rm:3.7, price:58.50, group:"Enlist E3"},
+    {name:"AE3870S", rm:3.8, price:54, group:"Enlist E3"},
+    {name:"AE3950S", rm:3.9, price:54, group:"Enlist E3"},
+    {name:"AE4150S", rm:4.1, price:54, group:"Enlist E3"},
+    {name:"AE4270S", rm:4.2, price:54, group:"Enlist E3"},
+    // XtendFlex $59.50
+    {name:"27F66", rm:2.7, price:59.50, group:"XtendFLEX"},
+    {name:"28F70", rm:2.8, price:59.50, group:"XtendFLEX"},
+    {name:"30F73", rm:3.0, price:59.50, group:"XtendFLEX"},
+    {name:"34F74", rm:3.4, price:59.50, group:"XtendFLEX"},
+    {name:"36F58", rm:3.6, price:59.50, group:"XtendFLEX"},
+    // Conventional
+    {name:"26C52 Conv", rm:2.6, price:49.50, group:"Conv"},
+    {name:"27C10 Conv", rm:2.7, price:45.50, group:"Conv"},
+    {name:"29C57 Conv", rm:2.9, price:49.50, group:"Conv"},
+    {name:"32C71 Conv", rm:3.2, price:49.50, group:"Conv"},
+    {name:"35C56S Conv", rm:3.5, price:49.50, group:"Conv"}
+  ],
+  wheat: [
+    {name:"7B440 · Treated", price:29.25, unit:"unit"},
+    {name:"7B440 · Untreated", price:26.50, unit:"unit"},
+    {name:"7B520 · Treated", price:29.25, unit:"unit"},
+    {name:"7B520 · Untreated", price:26.50, unit:"unit"},
+    {name:"7S510 · Treated", price:29.25, unit:"unit"},
+    {name:"7S510 · Untreated", price:26.50, unit:"unit"}
+  ],
+  specialty: [
+    {name:"82W49 White Corn", rm:112, price:230, group:"White Corn"},
+    {name:"84W24 White Corn", rm:114, price:230, group:"White Corn"},
+    {name:"84W70 White Corn", rm:114, price:230, group:"White Corn"},
+    {name:"22C70HO SOYLEIC", rm:2.2, price:51.50, group:"SOYLEIC"},
+    {name:"28C76HO SOYLEIC", rm:2.8, price:51.50, group:"SOYLEIC"},
+    {name:"32C76HO SOYLEIC", rm:3.2, price:51.50, group:"SOYLEIC"},
+    {name:"35C71HO SOYLEIC", rm:3.5, price:51.50, group:"SOYLEIC"},
+    {name:"36E72HO SOYLEIC Enlist", rm:3.6, price:59.50, group:"SOYLEIC"},
+    {name:"38E78HO SOYLEIC Enlist", rm:3.8, price:59.50, group:"SOYLEIC"}
+  ],
+  bio: [
+    // stage / product / default rate / default $/unit / unit label
+    {name:"Upshift C Pro", stage:"At planting", rate:2.5, price:0, unit:"lb"},
+    {name:"Upshift C+K Pro", stage:"At planting", rate:2.5, price:0, unit:"lb"},
+    {name:"IonLock Zn-C+ powered by Ether", stage:"At planting", rate:1, price:0, unit:"lb"},
+    {name:"HT MaxStax Corn (50u copack)", stage:"At planting · corn", rate:0.32, price:0, unit:"unit"},
+    {name:"HT MaxStax Soybean (40u copack)", stage:"At planting · soy", rate:0.9, price:0, unit:"unit"},
+    {name:"HT Corn (GuardX + Prephyte)", stage:"At planting · corn", rate:0.32, price:0, unit:"unit"},
+    {name:"HT Soybean F&I", stage:"At planting · soy", rate:0.9, price:18.5, unit:"unit"},
+    {name:"HT Soybean MAX", stage:"At planting · soy", rate:0.9, price:32, unit:"unit"},
+    {name:"Revline 4.0 PGR", stage:"Burndown / V1", rate:3, price:0, unit:"oz"},
+    {name:"Revline Early-Season PGR", stage:"V1-V4", rate:2, price:0, unit:"oz"},
+    {name:"Revline Late-SeasonX PGR", stage:"R1+", rate:12.8, price:0, unit:"oz"},
+    {name:"Harvestshield Evo", stage:"R4-R8 stress", rate:32, price:0, unit:"oz (1qt)"},
+    {name:"Homestretch NKB-S Evo", stage:"VT-R2 grain fill", rate:32, price:0, unit:"oz (1qt)"},
+    {name:"Maintain Elite", stage:"N mgmt · NH3", rate:6, price:0, unit:"oz/50u N"},
+    {name:"N-Gear Dual Action (urea)", stage:"N mgmt · urea", rate:2.5, price:0, unit:"qt/ton"},
+    {name:"Fuel-Line powered by Ether", stage:"Dry fert impreg", rate:2, price:0, unit:"qt/ton"},
+    {name:"Excavator AMS", stage:"Preplant residue", rate:32, price:0, unit:"oz"},
+    {name:"CycleStrike LR", stage:"Preplant residue", rate:0.10, price:0, unit:"oz"},
+    {name:"BioFlex water pre-treat", stage:"Tank mix", rate:3, price:0, unit:"fl oz/100gal"},
+    {name:"Aquadraft Extreme", stage:"Burndown / spray", rate:20, price:0, unit:"oz"},
+    {name:"Aquadraft Premium", stage:"Burndown / spray", rate:20, price:0, unit:"oz"},
+    {name:"Aquadraft VRA (VaporGrip Xtra)", stage:"Dicamba spray", rate:40, price:0, unit:"oz"},
+    {name:"Trutrack Complete (herbicide)", stage:"Herbicide", rate:3, price:0, unit:"oz"},
+    {name:"Trutrack Complete (fung/ins)", stage:"Fung/Ins", rate:6, price:0, unit:"oz"}
+  ],
+  cover: [
+    // House Blend programs — priced per acre already
+    {name:"Corn Program 1 (Barley + Rape)", pricePerAc:20.14, kind:"program"},
+    {name:"Corn Program 2 (Barley+Rape+Radish · plant by Sept 30)", pricePerAc:23.14, kind:"program"},
+    {name:"Corn Program 3 (Oats+Barley+Rape · plant by Sept 15)", pricePerAc:19.99, kind:"program"},
+    {name:"Corn Program 4 (Barley+Balansa+Vetch+Rape · N-fix)", pricePerAc:55.84, kind:"program"},
+    {name:"Soybean Program & Govt (Bonus Blend @ 35#/A)", pricePerAc:21.00, kind:"program"},
+    {name:"Soybean Program 2 (reSTORE Winter Rye @ 45#/A)", pricePerAc:12.86, kind:"program"},
+    // Individual singles — priced per acre using typical mid-range rate
+    {name:"Bonus Blend @ 35#/A", pricePerAc:21.00, kind:"single"},
+    {name:"Land & Livestock @ 45#/A", pricePerAc:23.40, kind:"single"},
+    {name:"Quick Cover Blend @ 30#/A", pricePerAc:22.50, kind:"single"},
+    {name:"N-Fix Blend @ 14#/A", pricePerAc:35.00, kind:"single"},
+    {name:"Secure Blend @ 16#/A", pricePerAc:19.20, kind:"single"},
+    {name:"reSTORE Winter Rye @ 56#/A", pricePerAc:16.00, kind:"single"},
+    {name:"Barley @ 60#/A", pricePerAc:32.40, kind:"single"},
+    {name:"Spring Oats @ 60#/A", pricePerAc:23.75, kind:"single"},
+    {name:"Crimson Clover @ 18#/A", pricePerAc:36.00, kind:"single"},
+    {name:"Hairy Vetch @ 18#/A", pricePerAc:57.60, kind:"single"},
+    {name:"reCLAIM Radishes @ 8#/A", pricePerAc:13.60, kind:"single"},
+    {name:"Rapeseed @ 4#/A", pricePerAc:6.00, kind:"single"},
+    {name:"AwakeN Plus @ 40#/A", pricePerAc:72.00, kind:"single"}
+  ]
+};
+
+/* ================= VOLUME LADDERS ================ */
+const CORN_LADDER=[[1,35,5],[36,71,18],[72,149,20],[150,299,24],[300,599,26],[600,799,28],[800,999,30],[1000,Infinity,32]];
+const CORN_GROUPS=["A","B","C","D","E","F","G","H"];
+const SOY_LADDER=[[1,99,0.5],[100,299,1.5],[300,599,2.5],[600,999,3],[1000,1499,3.5],[1500,2499,4],[2500,4999,4.5],[5000,Infinity,5]];
+const SOY_GROUPS=["A","B","C","D","E","F","G","H"];
+
+function cornDisc(bags){for(let i=0;i<CORN_LADDER.length;i++){const [lo,hi,d]=CORN_LADDER[i];if(bags>=lo&&bags<=hi)return{d,grp:CORN_GROUPS[i]}}return{d:0,grp:"-"}}
+function soyDisc(bags){for(let i=0;i<SOY_LADDER.length;i++){const [lo,hi,d]=SOY_LADDER[i];if(bags>=lo&&bags<=hi)return{d,grp:SOY_GROUPS[i]}}return{d:0,grp:"-"}}
+const fmt$=v=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:v<1000?2:0}).format(v);
+const fmtN=v=>new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(v);
+
+/* ================= LIVE CORN CALCULATOR ================ */
+function calcCorn(){
+  const p=parseFloat(document.getElementById("cornPrice").value)||0;
+  const b=parseFloat(document.getElementById("cornBags").value)||0;
+  const e=parseFloat(document.getElementById("cornEarly").value)||0;
+  const {d,grp}=cornDisc(b);
+  const disc=(d+e)*b;
+  const net=p-d-e;
+  const total=net*b;
+  document.getElementById("cornTier").textContent=grp+" ($"+d+")";
+  document.getElementById("cornDiscount").textContent=fmt$(disc);
+  document.getElementById("cornNet").textContent=fmt$(net);
+  document.getElementById("cornTotal").textContent=fmt$(total);
+}
+["cornPrice","cornBags","cornEarly"].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener("input",calcCorn)});
+calcCorn();
+
+/* ================= LIVE SOY CALCULATOR ================ */
+function calcSoy(){
+  const p=parseFloat(document.getElementById("soyPrice").value)||0;
+  const b=parseFloat(document.getElementById("soyBags").value)||0;
+  const e=parseFloat(document.getElementById("soyEarly").value)||0;
+  const {d,grp}=soyDisc(b);
+  const disc=(d+e)*b;
+  const net=p-d-e;
+  const total=net*b;
+  document.getElementById("soyTier").textContent=grp+" ($"+d.toFixed(2)+")";
+  document.getElementById("soyDiscount").textContent=fmt$(disc);
+  document.getElementById("soyNet").textContent=fmt$(net);
+  document.getElementById("soyTotal").textContent=fmt$(total);
+}
+["soyPrice","soyBags","soyEarly"].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener("input",calcSoy)});
+calcSoy();
+
+/* ================= LIVE WHEAT CALCULATOR ================ */
+function calcWheat(){
+  const p=parseFloat(document.getElementById("wheatPrice").value)||0;
+  const u=parseFloat(document.getElementById("wheatUnits").value)||0;
+  const e=parseFloat(document.getElementById("wheatEarly").value)||0;
+  const vol=u>=900?1:0;
+  const early=e*u;
+  const net=p-e-vol;
+  const total=net*u;
+  document.getElementById("wheatVol").textContent=fmt$(vol*u);
+  document.getElementById("wheatEarlyOut").textContent=fmt$(early);
+  document.getElementById("wheatNet").textContent=fmt$(net);
+  document.getElementById("wheatTotal").textContent=fmt$(total);
+}
+["wheatPrice","wheatUnits","wheatEarly"].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener("input",calcWheat)});
+calcWheat();
+
+/* ================= HELPERS ================ */
+function todayStr(){const d=new Date();return d.toISOString().slice(0,10)}
+function populate(selEl,items,label=x=>x.name){selEl.innerHTML=items.map(it=>`<option value="${label(it)}">${label(it)}</option>`).join("")}
+function findProduct(cat,name){return PRODUCTS[cat].find(p=>p.name===name)}
+function printSection(id){showView(id);setTimeout(()=>window.print(),80)}
+function printAll(){document.body.classList.add("print-all");setTimeout(()=>{window.print();setTimeout(()=>document.body.classList.remove("print-all"),300)},100)}
+
+/* ================= SEED QUOTE BUILDER ================ */
+let qsItems=[];
+function qsFilterProducts(){
+  const cat=document.getElementById("qsCat").value;
+  const sel=document.getElementById("qsProduct");
+  const items=PRODUCTS[cat];
+  sel.innerHTML=items.map(p=>{
+    const rmTxt=p.rm!==undefined?` · RM ${p.rm}`:"";
+    return `<option value="${p.name}">${p.name}${rmTxt} · ${fmt$(p.price)}</option>`;
+  }).join("");
+}
+function qsAdd(){
+  const cat=document.getElementById("qsCat").value;
+  const name=document.getElementById("qsProduct").value;
+  const p=findProduct(cat,name);if(!p)return;
+  qsItems.push({...p,category:cat,bags:cat==="wheat"?100:cat==="corn"?50:200,id:Date.now()+Math.random()});
+  qsRender();
+}
+function qsRemove(id){qsItems=qsItems.filter(x=>x.id!==id);qsRender()}
+function qsRender(){
+  const tbl=document.getElementById("qsTable");
+  const empty=document.getElementById("qsEmpty");
+  const rows=document.getElementById("qsRows");
+  if(qsItems.length===0){tbl.style.display="none";empty.style.display="block";qsRecalc();return}
+  tbl.style.display="table";empty.style.display="none";
+  rows.innerHTML=qsItems.map(it=>{
+    let d=0;
+    if(it.category==="corn"){d=cornDisc(it.bags).d}
+    else if(it.category==="soy"){d=soyDisc(it.bags).d}
+    else if(it.category==="wheat"){d=it.bags>=900?1:0}
+    const net=it.price-d;
+    const line=net*it.bags;
+    return `<tr>
+      <td class="name">${it.name}</td>
+      <td style="font-size:.78rem;color:var(--furrow)">${it.category==="specialty"?(it.group||""):(it.category==="wheat"?"Wheat":it.category.toUpperCase())}</td>
+      <td class="num">${fmt$(it.price)}</td>
+      <td class="num"><input type="number" min="0" step="1" value="${it.bags}" oninput="qsUpdate(${it.id},this.value)"></td>
+      <td class="num">${fmt$(d)}</td>
+      <td class="num">${fmt$(net)}</td>
+      <td class="num" style="font-weight:700">${fmt$(line)}</td>
+      <td><button class="q-remove" onclick="qsRemove(${it.id})" title="Remove">×</button></td>
+    </tr>`;
+  }).join("");
+  qsRecalc();
+}
+function qsUpdate(id,val){const it=qsItems.find(x=>x.id===id);if(!it)return;it.bags=parseFloat(val)||0;qsRender()}
+function qsRecalc(){
+  const eSel=document.getElementById("qsEarly").value;
+  const earlyMap={none:{corn:0,soy:0},oct15:{corn:10,soy:2},dec15:{corn:7,soy:1}};
+  const em=earlyMap[eSel]||{corn:0,soy:0};
+  let cornBags=0,cornDiscAmt=0,cornSub=0;
+  let soyBags=0,soyDiscAmt=0,soySub=0;
+  let otherBags=0,otherDiscAmt=0,otherSub=0;
+  qsItems.forEach(it=>{
+    if(it.category==="corn"){
+      const {d}=cornDisc(it.bags);
+      cornBags+=it.bags;cornDiscAmt+=d*it.bags;cornSub+=(it.price-d)*it.bags;
+    } else if(it.category==="soy" || (it.category==="specialty" && it.group==="SOYLEIC")){
+      const {d}=soyDisc(it.bags);
+      soyBags+=it.bags;soyDiscAmt+=d*it.bags;soySub+=(it.price-d)*it.bags;
+    } else {
+      const d=it.category==="wheat"?(it.bags>=900?1:0):0;
+      otherBags+=it.bags;otherDiscAmt+=d*it.bags;otherSub+=(it.price-d)*it.bags;
+    }
+  });
+  document.getElementById("qsCornBags").textContent=cornBags;
+  document.getElementById("qsCornDisc").textContent="−"+fmt$(cornDiscAmt);
+  document.getElementById("qsCornSubtotal").textContent=fmt$(cornSub);
+  document.getElementById("qsSoyBags").textContent=soyBags;
+  document.getElementById("qsSoyDisc").textContent="−"+fmt$(soyDiscAmt);
+  document.getElementById("qsSoySubtotal").textContent=fmt$(soySub);
+  document.getElementById("qsOtherBags").textContent=otherBags;
+  document.getElementById("qsOtherDisc").textContent="−"+fmt$(otherDiscAmt);
+  document.getElementById("qsOtherSubtotal").textContent=fmt$(otherSub);
+  const earlyAmt=em.corn*cornBags+em.soy*soyBags;
+  const afterEarly=cornSub+soySub+otherSub-earlyAmt;
+  const cashPct=parseFloat(document.getElementById("qsCash").value)||0;
+  const cashAmt=afterEarly*(cashPct/100);
+  const grand=afterEarly-cashAmt;
+  document.getElementById("qsAfterEarly").textContent=fmt$(afterEarly)+" (−"+fmt$(earlyAmt)+" early)";
+  document.getElementById("qsCashAmt").textContent="−"+fmt$(cashAmt)+" ("+cashPct+"%)";
+  document.getElementById("qsGrandTotal").textContent=fmt$(grand);
+}
+
+/* ================= BIOLOGICAL QUOTE ================ */
+let qbItems=[];
+function qbInit(){
+  const sel=document.getElementById("qbProduct");
+  sel.innerHTML=PRODUCTS.bio.map(p=>`<option value="${p.name}">${p.name} · ${p.stage}</option>`).join("");
+}
+function qbAdd(){
+  const name=document.getElementById("qbProduct").value;
+  const p=PRODUCTS.bio.find(x=>x.name===name);if(!p)return;
+  qbItems.push({...p,id:Date.now()+Math.random()});qbRender();
+}
+function qbRemove(id){qbItems=qbItems.filter(x=>x.id!==id);qbRender()}
+function qbUpdate(id,field,val){const it=qbItems.find(x=>x.id===id);if(!it)return;it[field]=parseFloat(val)||0;qbRender()}
+function qbRender(){
+  const tbl=document.getElementById("qbTable");
+  const empty=document.getElementById("qbEmpty");
+  const rows=document.getElementById("qbRows");
+  if(qbItems.length===0){tbl.style.display="none";empty.style.display="block";qbRecalc();return}
+  tbl.style.display="table";empty.style.display="none";
+  const acres=parseFloat(document.getElementById("qbAcres").value)||0;
+  rows.innerHTML=qbItems.map(it=>{
+    const perAc=it.rate*it.price;
+    const line=perAc*acres;
+    return `<tr>
+      <td class="name">${it.name}</td>
+      <td style="font-size:.78rem;color:var(--furrow)">${it.stage}</td>
+      <td class="num"><input type="number" min="0" step="0.1" value="${it.rate}" oninput="qbUpdate(${it.id},'rate',this.value)"></td>
+      <td class="num"><input type="number" min="0" step="0.05" value="${it.price}" oninput="qbUpdate(${it.id},'price',this.value)"></td>
+      <td style="font-size:.78rem;color:var(--furrow)">${it.unit}</td>
+      <td class="num">${fmt$(perAc)}</td>
+      <td class="num" style="font-weight:700">${fmt$(line)}</td>
+      <td><button class="q-remove" onclick="qbRemove(${it.id})">×</button></td>
+    </tr>`;
+  }).join("");
+  qbRecalc();
+}
+function qbRecalc(){
+  const acres=parseFloat(document.getElementById("qbAcres").value)||0;
+  const perAc=qbItems.reduce((s,it)=>s+it.rate*it.price,0);
+  const total=perAc*acres;
+  document.getElementById("qbPerAcre").textContent=fmt$(perAc);
+  document.getElementById("qbAcresOut").textContent=fmtN(acres);
+  document.getElementById("qbGrandTotal").textContent=fmt$(total);
+}
+
+/* ================= WHOLE FARM QUOTE ================ */
+let qfSeedItems=[],qfBioItems=[],qfCoverItems=[];
+function qfInit(){
+  const bioSel=document.getElementById("qfBioProduct");
+  bioSel.innerHTML=PRODUCTS.bio.map(p=>`<option value="${p.name}">${p.name} · ${p.stage}</option>`).join("");
+  const covSel=document.getElementById("qfCoverProduct");
+  covSel.innerHTML=PRODUCTS.cover.map(p=>`<option value="${p.name}" data-price="${p.pricePerAc}">${p.name} · ${fmt$(p.pricePerAc)}/A</option>`).join("");
+}
+function qfFilterProducts(){
+  const cat=document.getElementById("qfSeedCat").value;
+  const sel=document.getElementById("qfSeedProduct");
+  const items=PRODUCTS[cat];
+  sel.innerHTML=items.map(p=>{
+    const rmTxt=p.rm!==undefined?` · RM ${p.rm}`:"";
+    return `<option value="${p.name}">${p.name}${rmTxt} · ${fmt$(p.price)}</option>`;
+  }).join("");
+  const rateIn=document.getElementById("qfSeedRate");
+  if(cat==="corn")rateIn.value=0.32;
+  else if(cat==="soy")rateIn.value=1.0;
+  else if(cat==="wheat")rateIn.value=2.0;
+}
+function qfAcresFor(crop){
+  if(crop==="corn")return parseFloat(document.getElementById("qfCornAc").value)||0;
+  if(crop==="soy")return parseFloat(document.getElementById("qfSoyAc").value)||0;
+  if(crop==="wheat")return parseFloat(document.getElementById("qfWheatAc").value)||0;
+  const c=parseFloat(document.getElementById("qfCornAc").value)||0;
+  const s=parseFloat(document.getElementById("qfSoyAc").value)||0;
+  const w=parseFloat(document.getElementById("qfWheatAc").value)||0;
+  return c+s+w;
+}
+function qfAddSeed(){
+  const cat=document.getElementById("qfSeedCat").value;
+  const name=document.getElementById("qfSeedProduct").value;
+  const rate=parseFloat(document.getElementById("qfSeedRate").value)||0;
+  const p=findProduct(cat,name);if(!p)return;
+  qfSeedItems.push({...p,crop:cat,rate,id:Date.now()+Math.random()});
+  qfRenderSeed();qfRecalc();
+}
+function qfRemoveSeed(id){qfSeedItems=qfSeedItems.filter(x=>x.id!==id);qfRenderSeed();qfRecalc()}
+function qfUpdateSeed(id,field,val){const it=qfSeedItems.find(x=>x.id===id);if(!it)return;it[field]=parseFloat(val)||0;qfRenderSeed();qfRecalc()}
+function qfRenderSeed(){
+  const tbl=document.getElementById("qfSeedTable"),empty=document.getElementById("qfSeedEmpty"),rows=document.getElementById("qfSeedRows");
+  if(qfSeedItems.length===0){tbl.style.display="none";empty.style.display="block";return}
+  tbl.style.display="table";empty.style.display="none";
+  rows.innerHTML=qfSeedItems.map(it=>{
+    const ac=qfAcresFor(it.crop);
+    const bags=it.rate*ac;
+    let d=0;
+    if(it.crop==="corn")d=cornDisc(bags).d;
+    else if(it.crop==="soy")d=soyDisc(bags).d;
+    else if(it.crop==="wheat")d=bags>=900?1:0;
+    const line=(it.price-d)*bags;
+    return `<tr>
+      <td class="name">${it.name}</td>
+      <td style="font-size:.78rem;color:var(--furrow);text-transform:uppercase">${it.crop}</td>
+      <td class="num"><input type="number" min="0" step="0.01" value="${it.rate}" oninput="qfUpdateSeed(${it.id},'rate',this.value)"></td>
+      <td class="num">${fmtN(ac)}</td>
+      <td class="num">${fmtN(bags)}</td>
+      <td class="num">${fmt$(it.price-d)}${d>0?` <span style="font-size:.7rem;color:var(--furrow)">(−${fmt$(d)} vol)</span>`:""}</td>
+      <td class="num" style="font-weight:700">${fmt$(line)}</td>
+      <td><button class="q-remove" onclick="qfRemoveSeed(${it.id})">×</button></td>
+    </tr>`;
+  }).join("");
+}
+function qfAddBio(){
+  const name=document.getElementById("qfBioProduct").value;
+  const apply=document.getElementById("qfBioApply").value;
+  const p=PRODUCTS.bio.find(x=>x.name===name);if(!p)return;
+  qfBioItems.push({...p,apply,id:Date.now()+Math.random()});qfRenderBio();qfRecalc();
+}
+function qfRemoveBio(id){qfBioItems=qfBioItems.filter(x=>x.id!==id);qfRenderBio();qfRecalc()}
+function qfUpdateBio(id,field,val){const it=qfBioItems.find(x=>x.id===id);if(!it)return;it[field]=parseFloat(val)||0;qfRenderBio();qfRecalc()}
+function qfRenderBio(){
+  const tbl=document.getElementById("qfBioTable"),empty=document.getElementById("qfBioEmpty"),rows=document.getElementById("qfBioRows");
+  if(qfBioItems.length===0){tbl.style.display="none";empty.style.display="block";return}
+  tbl.style.display="table";empty.style.display="none";
+  rows.innerHTML=qfBioItems.map(it=>{
+    const ac=qfAcresFor(it.apply);
+    const perAc=it.rate*it.price;
+    const line=perAc*ac;
+    return `<tr>
+      <td class="name">${it.name}<div style="font-size:.72rem;color:var(--furrow)">${it.stage}</div></td>
+      <td style="font-size:.78rem;color:var(--furrow);text-transform:uppercase">${it.apply}</td>
+      <td class="num">${fmtN(ac)}</td>
+      <td class="num"><input type="number" min="0" step="0.1" value="${it.rate}" oninput="qfUpdateBio(${it.id},'rate',this.value)"></td>
+      <td class="num"><input type="number" min="0" step="0.05" value="${it.price}" oninput="qfUpdateBio(${it.id},'price',this.value)"></td>
+      <td class="num">${fmt$(perAc)}</td>
+      <td class="num" style="font-weight:700">${fmt$(line)}</td>
+      <td><button class="q-remove" onclick="qfRemoveBio(${it.id})">×</button></td>
+    </tr>`;
+  }).join("");
+}
+function qfAddCover(){
+  const name=document.getElementById("qfCoverProduct").value;
+  const ac=parseFloat(document.getElementById("qfCoverAc").value)||0;
+  const p=PRODUCTS.cover.find(x=>x.name===name);if(!p||ac<=0){alert("Enter cover acres > 0");return}
+  qfCoverItems.push({...p,acres:ac,id:Date.now()+Math.random()});qfRenderCover();qfRecalc();
+}
+function qfRemoveCover(id){qfCoverItems=qfCoverItems.filter(x=>x.id!==id);qfRenderCover();qfRecalc()}
+function qfUpdateCover(id,field,val){const it=qfCoverItems.find(x=>x.id===id);if(!it)return;it[field]=parseFloat(val)||0;qfRenderCover();qfRecalc()}
+function qfRenderCover(){
+  const tbl=document.getElementById("qfCoverTable"),empty=document.getElementById("qfCoverEmpty"),rows=document.getElementById("qfCoverRows");
+  if(qfCoverItems.length===0){tbl.style.display="none";empty.style.display="block";return}
+  tbl.style.display="table";empty.style.display="none";
+  rows.innerHTML=qfCoverItems.map(it=>{
+    const line=it.pricePerAc*it.acres;
+    return `<tr>
+      <td class="name">${it.name}</td>
+      <td class="num"><input type="number" min="0" step="10" value="${it.acres}" oninput="qfUpdateCover(${it.id},'acres',this.value)"></td>
+      <td class="num">${fmt$(it.pricePerAc)}</td>
+      <td class="num" style="font-weight:700">${fmt$(line)}</td>
+      <td><button class="q-remove" onclick="qfRemoveCover(${it.id})">×</button></td>
+    </tr>`;
+  }).join("");
+}
+function qfRecalc(){
+  let seed=0;
+  qfSeedItems.forEach(it=>{
+    const ac=qfAcresFor(it.crop);const bags=it.rate*ac;
+    let d=0;
+    if(it.crop==="corn")d=cornDisc(bags).d;
+    else if(it.crop==="soy")d=soyDisc(bags).d;
+    else if(it.crop==="wheat")d=bags>=900?1:0;
+    seed+=(it.price-d)*bags;
+  });
+  let bio=0;
+  qfBioItems.forEach(it=>{const ac=qfAcresFor(it.apply);bio+=it.rate*it.price*ac});
+  let cov=0;
+  qfCoverItems.forEach(it=>cov+=it.pricePerAc*it.acres);
+  const grand=seed+bio+cov;
+  const totalCropAc=qfAcresFor("all");
+  document.getElementById("qfSeedTotal").textContent=fmt$(seed);
+  document.getElementById("qfBioTotal").textContent=fmt$(bio);
+  document.getElementById("qfCoverTotal").textContent=fmt$(cov);
+  document.getElementById("qfGrandTotal").textContent=fmt$(grand);
+  document.getElementById("qfPerAc").textContent=(totalCropAc>0?fmt$(grand/totalCropAc):"$0")+" / A";
+  qfRenderSeed();qfRenderBio();
+}
+
+/* ================= INIT ================ */
+document.addEventListener("DOMContentLoaded",()=>{
+  qsFilterProducts();
+  qbInit();
+  qfInit();qfFilterProducts();
+  const d=todayStr();
+  ["qsDate","qbDate","qfDate"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=d});
+  const qn="Q"+new Date().getFullYear().toString().slice(-2)+"-"+String(Math.floor(Math.random()*9000)+1000);
+  ["qsNumber","qbNumber","qfNumber"].forEach(id=>{const el=document.getElementById(id);if(el)el.value=qn});
+});
+
+/* ================= VIEW SWITCHER ================ */
+const VIEWS=["home","corn","soybeans","wheat","specialty","cover","forage","rye","treatments","biologicals","programs","policies","quote-seed","quote-bio","quote-farm"];
+const VIEW_LABELS={corn:"Seed Corn",soybeans:"Soybeans",wheat:"Wheat",specialty:"White Corn & SOYLEIC",cover:"Cover Crops",forage:"Forage & Alfalfa",rye:"reSTORE Rye",treatments:"Seed Treatments",biologicals:"Meristem Biologicals",programs:"TCO & System Programs",policies:"Programs, Discounts & Policies","quote-seed":"Seed Quote","quote-bio":"Biological Quote","quote-farm":"Whole-Farm Plan"};
+function showView(v){
+  if(!VIEWS.includes(v))v="home";
+  document.body.dataset.view=v;
+  const picker=document.getElementById("viewPicker");
+  if(picker)picker.value=v;
+  if(location.hash.slice(1)!==v)history.replaceState(null,"","#"+v);
+  window.scrollTo({top:0,behavior:"instant"});
+}
+// Auto-inject a breadcrumb at the top of every non-home section
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("main section.section").forEach(sec=>{
+    const label=VIEW_LABELS[sec.id]||sec.id;
+    const crumb=document.createElement("div");
+    crumb.className="crumb";
+    crumb.innerHTML=`<a onclick="showView('home')">⌂ Home</a><span class="sep">/</span><span>${label}</span>`;
+    sec.insertBefore(crumb,sec.firstChild);
+  });
+  const h=location.hash.slice(1);
+  showView(VIEWS.includes(h)?h:"home");
+});
+window.addEventListener("hashchange",()=>{
+  const h=location.hash.slice(1);
+  showView(VIEWS.includes(h)?h:"home");
+});
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
