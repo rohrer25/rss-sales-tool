@@ -1,0 +1,40 @@
+HOW TO UPDATE YOUR RSS SALES TOOL ON GITHUB PAGES
+==================================================
+
+You already have the site live at rohrer25.github.io/rss-sales-tool
+This update keeps the SAME URL and the SAME QR code — nothing to
+reinstall on the iPad.
+
+STEP 1 - Download the zip
+  Grab: rss-sales-tool-github.zip
+
+STEP 2 - Unzip it
+  You'll get:
+    - RSS-Fall-2026-Sales-Tool.html   (the main sales tool)
+    - index.html                       (identical, so the GitHub Pages
+                                        root URL still works)
+    - pdfs/                            (all 40 PDFs)
+
+STEP 3 - Push to GitHub
+  Option A (easiest — via the web):
+    1. Go to github.com/rohrer25/rss-sales-tool
+    2. Click "Add file" -> "Upload files"
+    3. Drag EVERYTHING from the unzipped folder in
+    4. Commit message: "Fall 2026 sales tool - unified iPad+desktop"
+    5. Click "Commit changes"
+    6. Wait 1-2 minutes for GitHub Pages to rebuild
+    7. Open rohrer25.github.io/rss-sales-tool in Safari — done.
+
+  Option B (git command line):
+    cd rss-sales-tool
+    unzip -o rss-sales-tool-github.zip
+    git add .
+    git commit -m "Fall 2026 sales tool - unified iPad+desktop"
+    git push
+
+STEP 4 - iPad (already installed)
+  If you already added the tool to the iPad home screen, just tap the
+  icon — it loads the new version automatically. If not, see
+  MAKE-IT-AN-APP.txt.
+
+That's it. Same URL. Same QR code. New unified tool.

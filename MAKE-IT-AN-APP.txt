@@ -1,0 +1,39 @@
+INSTALL THE RSS SALES TOOL AS AN APP ON YOUR iPad
+==================================================
+
+The tool is a web app that installs to your home screen — no App
+Store, no login, works offline once loaded.
+
+FIRST-TIME INSTALL
+------------------
+1. On your iPad, open Safari (must be Safari — not Chrome)
+2. Go to:  rohrer25.github.io/rss-sales-tool
+   (Or scan the QR code — RSS-QR-Code.png)
+3. Tap the SHARE button (square with arrow up), bottom of screen
+4. Scroll down, tap "ADD TO HOME SCREEN"
+5. Name it "RSS Sales" (or anything you want), tap ADD
+6. Done — an icon lands on your home screen
+
+USING IT DURING A CALL
+----------------------
+- Tap the RSS Sales icon on the home screen — it opens full-screen
+  like a real app
+- Airplane mode is fine once the PDFs have loaded at least once
+- Use the bottom tab bar: Home / Products / Pricing / Programs / Call
+- The big green START CALL button at the top runs the guided flow
+- The TALKING POINTS button pulls up objections from any screen
+
+UPDATING THE TOOL
+-----------------
+When you push a new version to GitHub (see UPDATE-GITHUB.txt),
+the iPad picks it up automatically the next time you open the app
+while online. No reinstall.
+
+TROUBLESHOOTING
+---------------
+- If PDFs won't load, make sure you're on the internet at least once
+  after an update — the iPad caches them locally after that.
+- If Safari won't show "Add to Home Screen", make sure you're on the
+  https://rohrer25.github.io URL (not http, not a file:// URL).
+- If the icon is a screenshot instead of a nice icon, that's a Safari
+  quirk — the tool still works fine.

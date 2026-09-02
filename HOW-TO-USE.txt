@@ -1,0 +1,68 @@
+HOW TO USE THE RSS SALES TOOL
+==============================
+
+Open it two ways:
+  - Desktop: rohrer25.github.io/rss-sales-tool  (or open the local file)
+  - iPad:    tap the "RSS Sales" icon on your home screen (or scan the QR)
+
+WHAT'S ON EACH SCREEN
+---------------------
+
+HOME
+  Hero + Quick Access tiles. Tap a tile to jump into that category.
+  "Recently Viewed" fills in as you open PDFs on this device.
+  Two big buttons up top:
+    - START CALL  -> jumps into the guided 5-stop sales flow
+    - TALKING POINTS -> pulls up objection handling in a side drawer,
+                        works from any screen
+
+PRODUCTS
+  Every product PDF as a tappable card. Use the filter chips at the
+  top: All / Corn / Soybean / Wheat / Cover Crop / Rye / Biologicals /
+  Adjuvants / Programs / Pricing.
+
+PRICING
+  Live pricelist tables:
+    - Corn: RIB, Conventional, Above-Ground Only, Glyphosate Tolerant
+    - Soybean: Enlist E3, XtendFLEX, Conventional, Treatments
+    - Alfalfa
+    - Volume Discount Schedules (Corn + Soybean)
+  Type in the filter box to filter across every table (e.g. "P33",
+  "3.6", "RIB"). Tap a column header to sort.
+
+PROGRAMS
+  All Meristem / TCO / systems programs as cards.
+
+SALES CALL
+  The guided flow:
+    1. Discovery       - ask & listen
+    2. Product Match   - RM, trait, pest pressure
+    3. Pricing         - anchor on units, then discounts
+    4. Programs        - upgrade the ask (TCO, biologicals)
+    5. Close           - units, treatment, financing, delivery
+  Each stop has talking points, on-screen reference PDFs, and a
+  Back / Next / Finish control at the bottom.
+
+POLICIES & FINANCE
+  ProHarvest 2026-27 pricing policy, replant, returns, and all
+  financing programs (First Mid 0%, JDF 1.9% Fixed, etc.)
+
+PDF LIBRARY
+  All PDFs A-Z if you need to find something fast.
+
+GLOBAL SEARCH (top of every screen)
+  Type once, hit anything: product names, PDF filenames, prices,
+  hybrid numbers, program names, even sales-call talking points.
+  Tap a result to jump.
+
+PDF VIEWER
+  Any card or reference opens the PDF in-app. Buttons on top:
+    - PRINT   - open PDF for printing
+    - EMAIL   - opens a pre-filled email with a link to the PDF
+                (great for "I'll send that over right now")
+    - NEW TAB - open the PDF standalone
+    - CLOSE   - back to the tool
+
+UPDATES
+  See UPDATE-GITHUB.txt when you need to replace prices, add a
+  program, or drop in a new PDF.
