@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RSS Sales">
+<title>Rohrer Seed Solutions — Fall 2026 / Spring 2027 Sales Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C1424;
+  --ink-2:#334155;
+  --paper:#FFFFFF;
+  --paper-2:#F1F5FB;
+  --paper-3:#E6EEF7;
+  --field:#002870;
+  --field-2:#0A3E9C;
+  --field-3:#001A4A;
+  --furrow:#5A6A82;
+  --signal:#009040;
+  --signal-2:#00B050;
+  --signal-3:#007A36;
+  --hair:#E2E8F0;
+  --hair-2:#CBD5E1;
+  --wheat:#D4A017;
+  --ok:#009040;
+  --warn:#B45309;
+  --danger:#C1273B;
+  --shadow:0 1px 2px rgba(0,40,112,.04),0 8px 24px -12px rgba(0,40,112,.12);
+  --shadow-lg:0 4px 12px rgba(0,40,112,.08),0 20px 40px -16px rgba(0,40,112,.18);
+  --radius:14px;
+  --radius-sm:10px;
+  --nav-w:260px;
+  --tabbar-h:64px;
+  --header-h:56px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;height:100%}
+body{
+  margin:0;background:var(--paper-2);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  min-height:100vh;overscroll-behavior-y:none;
+}
+h1,h2,h3,.display{font-family:'Barlow Condensed','Inter',sans-serif;font-weight:700;letter-spacing:.01em;line-height:1.05;color:var(--ink);margin:0 0 .4em;text-transform:uppercase}
+h1{font-size:clamp(1.75rem,4vw,2.6rem);font-weight:800}
+h2{font-size:clamp(1.35rem,2.5vw,1.9rem)}
+h3{font-size:1.1rem;letter-spacing:.02em}
+h4{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--field);font-family:'Inter',sans-serif;margin:0 0 .6em}
+p{margin:0 0 .8em}
+a{color:var(--field-2);text-decoration:none}
+a:hover{text-decoration:underline}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--field);margin-bottom:.5em}
+
+/* ============= APP FRAME (sidebar + main on desktop; stacked + bottom tabs on iPad) ============= */
+.app{display:grid;grid-template-columns:var(--nav-w) 1fr;min-height:100vh}
+@media (max-width:1023px){
+  .app{grid-template-columns:1fr;padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom))}
+}
+
+/* ============= SIDEBAR (desktop) ============= */
+.sidebar{
+  background:var(--field);color:#fff;
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  border-right:3px solid var(--signal);
+}
+.sidebar .brand{padding:1.1rem 1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.14)}
+.sidebar .brand .logo-img{
+  display:block;width:100%;max-width:190px;height:auto;
+  background:#fff;padding:.55rem .7rem;border-radius:8px;
+  box-shadow:0 1px 2px rgba(0,0,0,.2);cursor:pointer;
+}
+.sidebar .brand .season{margin-top:.6rem;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:700}
+.sidebar .brand .contact{margin-top:.75rem;font-size:.78rem;color:rgba(255,255,255,.85);line-height:1.5}
+.sidebar .brand .contact a{color:#fff;font-weight:600}
+.navlist{padding:.7rem .5rem 1rem;flex:1}
+.navsec{padding:.6rem .8rem .3rem;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
+.navbtn{
+  width:100%;text-align:left;background:transparent;border:0;color:#fff;
+  padding:.7rem .85rem;font-family:inherit;font-size:.93rem;font-weight:600;letter-spacing:.01em;
+  border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:.7rem;
+  transition:background .1s;min-height:44px;
+}
+.navbtn:hover{background:rgba(255,255,255,.08)}
+.navbtn.active{background:var(--signal);color:#fff;box-shadow:inset 0 0 0 1px var(--signal-3)}
+.navbtn .ico{width:20px;height:20px;flex:none;opacity:.9}
+.navbtn .badge{margin-left:auto;font-size:.68rem;background:rgba(255,255,255,.14);padding:2px 7px;border-radius:99px;font-weight:700}
+.sidebar .foot{padding:.9rem 1.2rem 1.3rem;border-top:1px solid rgba(255,255,255,.14);font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.5}
+.sidebar .foot .row{display:flex;gap:.5rem;margin-top:.5rem}
+.sidebar .foot button{background:rgba(255,255,255,.08);border:0;color:#fff;padding:.5rem .7rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;flex:1}
+.sidebar .foot button:hover{background:rgba(255,255,255,.16)}
+
+@media (max-width:1023px){
+  .sidebar{display:none}
+}
+
+/* ============= MOBILE HEADER + BOTTOM TAB BAR (iPad) ============= */
+.mheader{
+  display:none;background:var(--field);color:#fff;
+  height:var(--header-h);padding:0 .9rem;
+  align-items:center;gap:.7rem;
+  position:sticky;top:0;z-index:80;
+  border-bottom:3px solid var(--signal);
+  padding-top:env(safe-area-inset-top);
+  box-sizing:content-box;
+}
+.mheader .logo-img{
+  height:38px;width:auto;display:block;
+  background:#fff;padding:4px 8px;border-radius:6px;
+}
+.mheader .mtitle{margin-left:auto;font-weight:700;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+
+.tabbar{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:#fff;border-top:1px solid var(--hair);
+  height:var(--tabbar-h);z-index:90;
+  padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -4px 16px rgba(0,40,112,.08);
+}
+.tabbar .grid{display:grid;grid-template-columns:repeat(5,1fr);height:var(--tabbar-h)}
+.tabbtn{
+  background:transparent;border:0;color:var(--ink-2);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  min-height:44px;
+}
+.tabbtn .ico{width:22px;height:22px;color:var(--ink-2)}
+.tabbtn.active{color:var(--field)}
+.tabbtn.active .ico{color:var(--signal)}
+.tabbtn:active{background:var(--paper-2)}
+
+@media (max-width:1023px){
+  .mheader{display:flex}
+  .tabbar{display:block}
+}
+
+/* ============= MAIN ============= */
+.main{background:var(--paper-2);min-height:100vh;position:relative}
+.pagehead{
+  background:#fff;border-bottom:1px solid var(--hair);
+  padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  position:sticky;top:0;z-index:70;box-shadow:0 1px 0 rgba(0,40,112,.03);
+}
+@media (max-width:1023px){
+  .pagehead{top:calc(var(--header-h) + env(safe-area-inset-top));padding:.7rem 1rem}
+}
+.pagetitle{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:.02em;text-transform:uppercase;color:var(--field);margin:0}
+.pagetitle .sub{color:var(--furrow);font-weight:600;font-size:.75rem;letter-spacing:.14em;display:block;margin-top:.15rem}
+.search-wrap{margin-left:auto;position:relative;flex:1;max-width:420px;min-width:200px}
+.search-wrap input{
+  width:100%;padding:.65rem .9rem .65rem 2.4rem;
+  border:1.5px solid var(--hair-2);border-radius:10px;background:var(--paper-2);
+  font-family:inherit;font-size:.92rem;color:var(--ink);
+  transition:border-color .12s,background .12s;
+  -webkit-appearance:none;
+}
+.search-wrap input:focus{outline:none;border-color:var(--field);background:#fff;box-shadow:0 0 0 3px rgba(0,40,112,.1)}
+.search-wrap .sico{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--furrow);pointer-events:none}
+.pagehead .call-btn{
+  background:var(--signal);color:#fff;border:0;border-radius:10px;
+  padding:.65rem 1rem;font-family:inherit;font-weight:800;font-size:.82rem;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;min-height:44px;
+  display:inline-flex;align-items:center;gap:.4rem;
+  box-shadow:0 2px 4px rgba(0,144,64,.2);
+  transition:transform .1s,box-shadow .12s;
+}
+.pagehead .call-btn:hover{background:var(--signal-3);box-shadow:0 4px 8px rgba(0,144,64,.28)}
+.pagehead .call-btn:active{transform:translateY(1px)}
+.pagehead .talk-btn{
+  background:#fff;color:var(--field);border:1.5px solid var(--field);border-radius:10px;
+  padding:.6rem .85rem;font-family:inherit;font-weight:700;font-size:.78rem;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;min-height:44px;
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.pagehead .talk-btn:hover{background:var(--paper-2)}
+@media (max-width:640px){
+  .pagehead .call-btn span,.pagehead .talk-btn span{display:none}
+  .pagehead{padding:.6rem .8rem;gap:.5rem}
+  .pagetitle{font-size:1.1rem}
+  .pagetitle .sub{display:none}
+}
+
+/* ============= VIEWS ============= */
+.view{display:none;padding:1.4rem 1.5rem 2rem;max-width:1400px;margin:0 auto}
+.view.active{display:block}
+@media (max-width:1023px){.view{padding:1rem}}
+
+/* ---- HOME ---- */
+.hero{
+  background:linear-gradient(135deg,var(--field) 0%,var(--field-3) 100%);
+  color:#fff;border-radius:var(--radius);padding:1.75rem 1.75rem 1.5rem;
+  box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+}
+.hero::before{content:"";position:absolute;top:-40%;right:-10%;width:60%;height:180%;background:radial-gradient(circle at center,rgba(0,176,80,.22) 0%,transparent 60%);pointer-events:none}
+.hero .eyebrow{color:var(--signal-2)}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.8rem);margin:0}
+.hero .lead{color:rgba(255,255,255,.9);max-width:640px;margin-top:.6rem;font-size:1.02rem;font-weight:500;line-height:1.5;position:relative}
+.hero .actions{margin-top:1.3rem;display:flex;flex-wrap:wrap;gap:.6rem;position:relative}
+.hero .actions button{
+  background:#fff;color:var(--field);border:0;border-radius:10px;
+  padding:.75rem 1.05rem;font-family:inherit;font-weight:700;font-size:.85rem;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;min-height:44px;
+  display:inline-flex;align-items:center;gap:.5rem;
+  transition:transform .1s,box-shadow .12s;
+}
+.hero .actions button:hover{box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.hero .actions button:active{transform:translateY(1px)}
+.hero .actions button.primary{background:var(--signal);color:#fff}
+.hero .actions button.primary:hover{background:var(--signal-2)}
+
+.tiles{
+  margin-top:1.4rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem;
+}
+.tile{
+  background:#fff;border:1px solid var(--hair);border-radius:var(--radius-sm);
+  padding:1.1rem 1.1rem 1rem;cursor:pointer;
+  transition:transform .1s,box-shadow .12s,border-color .12s;
+  display:flex;flex-direction:column;gap:.4rem;text-align:left;min-height:120px;
+  font-family:inherit;
+}
+.tile:hover{border-color:var(--field);box-shadow:var(--shadow);transform:translateY(-2px)}
+.tile:active{transform:translateY(0)}
+.tile .tico{width:26px;height:26px;color:var(--signal);margin-bottom:.2rem}
+.tile .tt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.02em;text-transform:uppercase;color:var(--field)}
+.tile .ts{color:var(--furrow);font-size:.82rem;line-height:1.4}
+.tile .tcount{margin-top:auto;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--signal-3)}
+
+.sectionhead{margin:2rem 0 .9rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.sectionhead h2{margin:0;color:var(--field)}
+.sectionhead .meta{color:var(--furrow);font-size:.85rem}
+
+.recent-strip{display:flex;gap:.7rem;overflow-x:auto;padding:.2rem .1rem .7rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.recent-strip::-webkit-scrollbar{height:6px}
+.recent-strip::-webkit-scrollbar-thumb{background:var(--hair-2);border-radius:3px}
+.recent-card{
+  min-width:200px;background:#fff;border:1px solid var(--hair);border-radius:var(--radius-sm);
+  padding:.75rem .9rem;cursor:pointer;scroll-snap-align:start;font-family:inherit;text-align:left;
+  display:flex;flex-direction:column;gap:.25rem;
+}
+.recent-card:hover{border-color:var(--field);box-shadow:var(--shadow)}
+.recent-card .rt{font-weight:700;font-size:.88rem;color:var(--ink);line-height:1.3}
+.recent-card .rc{font-size:.72rem;color:var(--furrow);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+.empty-recent{color:var(--furrow);font-size:.9rem;background:#fff;border:1px dashed var(--hair-2);border-radius:var(--radius-sm);padding:1rem;text-align:center}
+
+/* ---- PRODUCTS ---- */
+.prod-tabs{
+  display:flex;gap:0;margin-bottom:1rem;background:#fff;border:1px solid var(--hair);
+  border-radius:12px;padding:.35rem;overflow-x:auto;box-shadow:var(--shadow);
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.prod-tabs::-webkit-scrollbar{display:none}
+.prod-tab{
+  background:transparent;border:0;color:var(--ink-2);
+  padding:.6rem 1rem;font-family:inherit;font-size:.82rem;font-weight:700;
+  letter-spacing:.03em;cursor:pointer;min-height:40px;white-space:nowrap;
+  border-radius:8px;transition:all .1s;display:inline-flex;align-items:center;gap:.4rem;
+}
+.prod-tab:hover{color:var(--field);background:var(--paper-2)}
+.prod-tab.on{background:var(--field);color:#fff}
+.prod-tab .cnt{
+  font-size:.68rem;font-weight:800;padding:1px 6px;border-radius:99px;
+  background:var(--paper-3);color:var(--field);
+}
+.prod-tab.on .cnt{background:rgba(255,255,255,.22);color:#fff}
+
+/* Compact list (replaces the huge card grid for the Products tab) */
+.plist{background:#fff;border:1px solid var(--hair);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.plist-h{
+  padding:.9rem 1.1rem;border-bottom:1px solid var(--hair);
+  display:flex;align-items:baseline;justify-content:space-between;gap:.75rem;flex-wrap:wrap;
+}
+.plist-h h3{margin:0;color:var(--field);font-size:1.1rem;letter-spacing:.02em}
+.plist-h .meta{color:var(--furrow);font-size:.8rem}
+.plist-row{
+  display:flex;align-items:center;gap:.9rem;
+  padding:.7rem 1.1rem;border-bottom:1px solid var(--hair);cursor:pointer;
+  transition:background .1s;background:#fff;border-left:0;border-right:0;border-top:0;
+  width:100%;text-align:left;font-family:inherit;min-height:56px;
+}
+.plist-row:last-child{border-bottom:0}
+.plist-row:hover,.plist-row:focus{background:var(--paper-2);outline:none}
+.plist-row .pfico{
+  width:36px;height:44px;flex:none;background:var(--paper-3);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;color:var(--signal-3);
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.68rem;letter-spacing:.05em;
+  border:1px solid var(--hair);
+}
+.plist-row .pinfo{flex:1;min-width:0}
+.plist-row .pname{font-weight:700;font-size:.95rem;color:var(--ink);line-height:1.25;margin-bottom:.15rem}
+.plist-row .pdesc{font-size:.8rem;color:var(--furrow);line-height:1.35;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;}
+.plist-row .pact{
+  color:var(--signal-3);font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  flex:none;padding:.35rem .6rem;border-radius:99px;background:var(--paper-3);
+}
+.plist-row:hover .pact{background:var(--signal);color:#fff}
+
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.9rem}
+.pcard{
+  background:#fff;border:1px solid var(--hair);border-radius:var(--radius-sm);
+  padding:1rem;cursor:pointer;text-align:left;font-family:inherit;
+  transition:transform .1s,box-shadow .12s,border-color .12s;
+  display:flex;flex-direction:column;gap:.5rem;min-height:150px;
+}
+.pcard:hover{border-color:var(--field);box-shadow:var(--shadow);transform:translateY(-2px)}
+.pcard .ptag{
+  display:inline-block;background:var(--paper-3);color:var(--field);
+  font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 8px;border-radius:99px;align-self:flex-start;
+}
+.pcard .ptag.corn{background:#FEF6DC;color:#8B6914}
+.pcard .ptag.soy{background:#E4F3E1;color:var(--signal-3)}
+.pcard .ptag.wheat{background:#F5E5C4;color:#7B5E10}
+.pcard .ptag.specialty{background:#F1E4F5;color:#5B2971}
+.pcard .ptag.cover{background:#D9EEDD;color:#2E5F3A}
+.pcard .ptag.forage{background:#DDE7CD;color:#4A5F1F}
+.pcard .ptag.rye{background:#EAE0D2;color:#6B4E1F}
+.pcard .ptag.biologicals{background:#DFF0F5;color:#0A5D74}
+.pcard .ptag.adjuvants{background:#F5DFDF;color:#8A2727}
+.pcard .ptag.program{background:#D9E5F6;color:var(--field)}
+.pcard .ptag.pricing{background:#FFE0B0;color:#8B5410}
+.pcard .ptag.policies{background:#E5E7EB;color:#334155}
+.pcard .pt{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:.02em;text-transform:uppercase;color:var(--ink)}
+.pcard .pd{color:var(--furrow);font-size:.85rem;line-height:1.4}
+.pcard .pf{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--furrow)}
+.pcard .pf .open{font-weight:700;color:var(--signal-3);letter-spacing:.05em;text-transform:uppercase}
+
+/* ---- PRICING ---- */
+.price-toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.price-toolbar .filt{flex:1;min-width:180px;position:relative}
+.price-toolbar .filt input{
+  width:100%;padding:.55rem .8rem .55rem 2.2rem;border:1.5px solid var(--hair-2);
+  border-radius:8px;background:#fff;font-family:inherit;font-size:.9rem;
+  -webkit-appearance:none;
+}
+.price-toolbar .filt input:focus{outline:none;border-color:var(--field);box-shadow:0 0 0 3px rgba(0,40,112,.1)}
+.price-toolbar .filt .sico{position:absolute;left:.6rem;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--furrow);pointer-events:none}
+.price-toolbar .print-btn{
+  background:#fff;color:var(--field);border:1.5px solid var(--field);border-radius:8px;
+  padding:.55rem .8rem;font-family:inherit;font-weight:700;font-size:.78rem;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;min-height:38px;
+  display:inline-flex;align-items:center;gap:.35rem;
+}
+.price-toolbar .print-btn:hover{background:var(--paper-2)}
+
+.price-block{background:#fff;border:1px solid var(--hair);border-radius:var(--radius-sm);margin-bottom:1.1rem;overflow:hidden;box-shadow:var(--shadow)}
+.price-block .ph{background:var(--paper-3);padding:.9rem 1rem;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.price-block .ph h3{margin:0;color:var(--field);font-size:1.05rem}
+.price-block .ph .note{font-size:.78rem;color:var(--furrow)}
+.price-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.price-table th{
+  background:var(--paper-2);color:var(--field);text-align:left;
+  padding:.6rem .9rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--hair);position:sticky;top:0;
+  cursor:pointer;user-select:none;
+}
+.price-table th:hover{background:var(--paper-3)}
+.price-table th.sort-asc::after{content:" \25B2";font-size:.6rem;color:var(--signal)}
+.price-table th.sort-desc::after{content:" \25BC";font-size:.6rem;color:var(--signal)}
+.price-table td{padding:.55rem .9rem;border-bottom:1px solid var(--hair);color:var(--ink)}
+.price-table tr:last-child td{border-bottom:0}
+.price-table tr:hover td{background:var(--paper-2)}
+.price-table .rm{color:var(--furrow);font-weight:600}
+.price-table .price{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--field);text-align:right;font-variant-numeric:tabular-nums}
+.price-table td.center{text-align:center}
+.price-table .row-hide{display:none}
+
+.disc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:640px){.disc-grid{grid-template-columns:1fr}}
+
+/* ---- SALES CALL FLOW ---- */
+.call-flow{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+.call-stops{display:flex;background:var(--field);color:#fff;padding:0;overflow-x:auto}
+.call-stops::-webkit-scrollbar{display:none}
+.stop{
+  flex:1;min-width:120px;background:transparent;border:0;color:rgba(255,255,255,.6);
+  padding:1rem .8rem;font-family:inherit;font-weight:700;font-size:.78rem;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+  border-bottom:3px solid transparent;transition:all .12s;
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;min-height:64px;
+}
+.stop .num{font-size:.7rem;opacity:.7}
+.stop:hover{color:#fff;background:rgba(255,255,255,.06)}
+.stop.active{color:#fff;border-bottom-color:var(--signal);background:var(--field-3)}
+.stop.done{color:rgba(255,255,255,.85)}
+.stop.done .num::before{content:"\2713 "}
+
+.stop-body{padding:1.4rem 1.5rem 1.2rem}
+@media (max-width:640px){.stop-body{padding:1.1rem 1rem}}
+.stop-body h2{color:var(--field);margin:0 0 .4em}
+.stop-body .lead{color:var(--ink-2);font-size:1rem;margin-bottom:1.2rem;max-width:60ch}
+.stop-body .talk{background:var(--paper-2);border-left:4px solid var(--signal);padding:1rem 1.1rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-bottom:1.2rem}
+.stop-body .talk h4{margin-top:0;color:var(--signal-3)}
+.stop-body .talk ul{margin:0;padding-left:1.2em;color:var(--ink)}
+.stop-body .talk li{margin-bottom:.4em;line-height:1.5}
+.stop-refs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.7rem;margin-bottom:1.2rem}
+.stop-refs .refcard{
+  background:#fff;border:1.5px solid var(--hair);border-radius:var(--radius-sm);
+  padding:.75rem .9rem;cursor:pointer;font-family:inherit;text-align:left;
+  display:flex;align-items:center;gap:.6rem;min-height:56px;transition:all .1s;
+}
+.stop-refs .refcard:hover{border-color:var(--field);background:var(--paper-2)}
+.stop-refs .refcard .rico{width:22px;height:22px;color:var(--signal);flex:none}
+.stop-refs .refcard .rlabel{font-weight:700;font-size:.85rem;line-height:1.3}
+.stop-nav{display:flex;justify-content:space-between;gap:.6rem;border-top:1px solid var(--hair);padding-top:1.1rem}
+.stop-nav button{
+  background:#fff;border:1.5px solid var(--hair-2);color:var(--ink-2);
+  padding:.7rem 1.1rem;font-family:inherit;font-weight:700;font-size:.85rem;
+  letter-spacing:.05em;text-transform:uppercase;border-radius:10px;cursor:pointer;min-height:44px;
+}
+.stop-nav button:hover:not(:disabled){border-color:var(--field);color:var(--field)}
+.stop-nav button:disabled{opacity:.4;cursor:not-allowed}
+.stop-nav button.primary{background:var(--signal);border-color:var(--signal);color:#fff}
+.stop-nav button.primary:hover{background:var(--signal-3);border-color:var(--signal-3)}
+
+/* ============= PDF VIEWER (modal) ============= */
+.viewer-mask{
+  position:fixed;inset:0;background:rgba(12,20,36,.85);
+  z-index:200;display:none;flex-direction:column;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+}
+.viewer-mask.open{display:flex}
+.viewer-head{
+  background:var(--field);color:#fff;
+  padding:.7rem 1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap;
+  border-bottom:2px solid var(--signal);min-height:56px;
+}
+.viewer-head .vtitle{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.02em;text-transform:uppercase;
+  flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+}
+.viewer-head button{
+  background:rgba(255,255,255,.14);border:0;color:#fff;
+  padding:.55rem .8rem;border-radius:8px;font-family:inherit;font-size:.78rem;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;min-height:40px;
+  display:inline-flex;align-items:center;gap:.35rem;flex:none;
+}
+.viewer-head button:hover{background:rgba(255,255,255,.24)}
+.viewer-head button.close{background:var(--signal)}
+.viewer-head button.close:hover{background:var(--signal-2)}
+.viewer-head button .btxt{margin-left:.15rem}
+@media (max-width:640px){.viewer-head button .btxt{display:none}}
+.viewer-body{flex:1;background:#333;overflow:hidden;position:relative}
+.viewer-body iframe,.viewer-body embed{width:100%;height:100%;border:0;display:block;background:#525659}
+.viewer-fallback{display:none;padding:2rem;color:#fff;text-align:center;height:100%;align-items:center;justify-content:center;flex-direction:column}
+.viewer-fallback a{color:var(--signal-2);font-weight:700}
+.viewer-body.native-fail .viewer-fallback{display:flex}
+.viewer-body.native-fail iframe{display:none}
+.viewer-loader{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#333;color:#fff;z-index:5;font-family:inherit;
+  font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;
+  transition:opacity .18s;
+}
+.viewer-loader.hide{opacity:0;pointer-events:none}
+.viewer-loader .sp{
+  width:36px;height:36px;border:3px solid rgba(255,255,255,.2);
+  border-top-color:var(--signal-2);border-radius:50%;
+  animation:vspin .8s linear infinite;margin-right:.75rem;flex:none;
+}
+@keyframes vspin{to{transform:rotate(360deg)}}
+
+/* ============= TALKING POINTS DRAWER ============= */
+.drawer-mask{position:fixed;inset:0;background:rgba(12,20,36,.4);z-index:180;display:none;opacity:0;transition:opacity .18s}
+.drawer-mask.open{display:block;opacity:1}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);
+  background:#fff;z-index:190;box-shadow:-8px 0 32px rgba(0,40,112,.3);
+  transform:translateX(100%);transition:transform .22s cubic-bezier(.2,.7,.2,1);
+  display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+}
+.drawer.open{transform:translateX(0)}
+.drawer .dh{background:var(--field);color:#fff;padding:1rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--signal)}
+.drawer .dh h3{color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;margin:0;text-transform:uppercase;letter-spacing:.02em}
+.drawer .dh .dclose{background:rgba(255,255,255,.16);border:0;color:#fff;width:36px;height:36px;border-radius:8px;font-size:1.3rem;cursor:pointer;line-height:1}
+.drawer .db{flex:1;overflow-y:auto;padding:1.1rem 1.1rem 2rem;-webkit-overflow-scrolling:touch}
+.drawer .db h4{color:var(--field);margin-top:1.2rem;margin-bottom:.5rem;border-bottom:1px solid var(--hair);padding-bottom:.35rem}
+.drawer .db h4:first-child{margin-top:0}
+.drawer .db ul{margin:0 0 1rem;padding-left:1.2em}
+.drawer .db li{margin-bottom:.5em;line-height:1.5;color:var(--ink)}
+.drawer .db .obj{background:var(--paper-2);border-left:3px solid var(--danger);padding:.7rem .9rem;border-radius:0 8px 8px 0;margin-bottom:.8rem}
+.drawer .db .obj .q{font-weight:700;color:var(--danger);margin-bottom:.25em;font-size:.9rem}
+.drawer .db .obj .a{color:var(--ink);font-size:.9rem;line-height:1.5}
+
+/* ============= SEARCH RESULTS OVERLAY ============= */
+.search-results{
+  position:absolute;top:100%;left:0;right:0;background:#fff;
+  border:1px solid var(--hair);border-radius:0 0 var(--radius-sm) var(--radius-sm);
+  box-shadow:var(--shadow-lg);max-height:60vh;overflow-y:auto;z-index:60;
+  display:none;
+}
+.search-results.open{display:block}
+.search-results .sr-empty{padding:1.2rem;text-align:center;color:var(--furrow);font-size:.9rem}
+.search-results .sr-item{
+  padding:.75rem .9rem;border-bottom:1px solid var(--hair);cursor:pointer;
+  display:flex;align-items:center;gap:.6rem;font-family:inherit;background:#fff;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;
+}
+.search-results .sr-item:last-child{border-bottom:0}
+.search-results .sr-item:hover,.search-results .sr-item:focus{background:var(--paper-2);outline:none}
+.search-results .sr-tag{font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--signal-3);padding:2px 7px;background:var(--paper-3);border-radius:99px;flex:none}
+.search-results .sr-title{font-weight:700;font-size:.9rem;color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-results .sr-meta{font-size:.75rem;color:var(--furrow);flex:none}
+
+/* ============= UTILITIES ============= */
+.gcard{background:#fff;border:1px solid var(--hair);border-radius:var(--radius-sm);padding:1.1rem;box-shadow:var(--shadow)}
+.gcard h3{color:var(--field);margin-top:0}
+.nofoot{padding-bottom:2rem}
+.pill{display:inline-block;background:var(--paper-2);color:var(--field);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px}
+.contact-line{color:var(--furrow);font-size:.85rem;margin-top:.4rem}
+.contact-line a{color:var(--field);font-weight:600}
+
+/* Icons — inline SVG kept simple */
+.icoline{stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* Print */
+@media print{
+  .sidebar,.tabbar,.mheader,.pagehead .call-btn,.pagehead .talk-btn,.pagehead .search-wrap,.stop-nav,.viewer-mask,.drawer{display:none !important}
+  .app{grid-template-columns:1fr}
+  .view{display:block !important;padding:0}
+  .pagehead{position:static;box-shadow:none;border:0}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE HEADER (iPad only) -->
+<header class="mheader" role="banner">
+  <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAAEdCAYAAABDiROIAAAQAElEQVR4AeydX6wdx33ff3vIS8qqTNlNathG6xitG0mOG1EPCYygqKiiaIK8SA4Ko3YLWH65SoHCManAfaT4WCO8cosCifhiFWjTNAhsqSiCpigqsSjatH6QGNiS7BgB8we2kDiIpRgyeS95NvvZc2fPnHPPzv45e87Znf1ecLi7838+MzvfmdnZPRPTnwiIgAiIgAj0gIAEqQeVoCyIgAiIgAiYSZDUCuIloJKJgAgMioAEaVDVpcyKgAiIQLwEJEjx1q1KJgIiEC+BKEsmQYqyWlUoERABERgeAQnS8OpMORYBERCBKAlIkKKs1uaFUggREAER2DUBCdKua0Dpi4AIiIAI5AQkSDkG/ScCIhAvAZVsKAQkSEOpKeVTBERABCInIEGKvIJVPBEQAREYCgEJUvOaUggREAEREIENEJAgbQCqohQBERABEWhOQILUnJlCiEC8BFQyEdghAQnSDuEraREQAREQgTkBCdKchc5EQAREQAR2SGDDgrTDkilpERABERCBQRGQIA2qupRZERABEYiXgAQp3rpVyTZMQNGLgAh0S0CC1C1PxSYCIiACItCSgASpJTgFEwEREIF4CeymZBKk3XBXqiIgAiIgAksEJEhLQHQpAiIgAiKwGwISpN1wH1uqKq8IiIAIVBKQIFUikgcREAEREIFtEJAgbYOy0hABEYiXgErWGQEJUmcoFZEIiIAIiMA6BCRI69BTWBEQAREQgc4ISJA6Q9lVRIpHBERABMZJQII0znpXqUVABESgdwQkSL2rEmVIBOIloJKJQIiABClER24iIAIiIAJbIyBB2hpqJSQCIiACIhAiMGxBCpVMbiIgAiIgAoMiIEEaVHUpsyIgAiIQLwEJUrx1q5INm4ByLwKjIyBBGl2Vq8AiIAIi0E8CEqR+1otyJQIiIALxEigpmQSpBIysRUAEREAEtktAgrRd3kpNBERABESghIAEqQSMrIdEQHkVARGIgYAEKYZaVBlEQAREIAICEqQIKlFFEAERiJfAmEomQRpTbausIiACItBjAhKkHleOsiYCIiACYyIgQRpTbVNWGREQARHoKQEJUk8rRtkSAREQgbERkCCNrcZVXhGIl4BKNnACEqSBV6CyLwIiIAKxEJAgxVKTKocIiIAIDJyA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" alt="Rohrer Seed Solutions">
+  <div class="mtitle" id="mtitle">Home</div>
+</header>
+
+<div class="app">
+
+  <!-- SIDEBAR (desktop) -->
+  <aside class="sidebar" role="navigation">
+    <div class="brand">
+      <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAAEdCAYAAABDiROIAAAQAElEQVR4AeydX6wdx33ff3vIS8qqTNlNathG6xitG0mOG1EPCYygqKiiaIK8SA4Ko3YLWH65SoHCManAfaT4WCO8cosCifhiFWjTNAhsqSiCpigqsSjatH6QGNiS7BgB8we2kDiIpRgyeS95NvvZc2fPnHPPzv45e87Znf1ecLi7838+MzvfmdnZPRPTnwiIgAiIgAj0gIAEqQeVoCyIgAiIgAiYSZDUCuIloJKJgAgMioAEaVDVpcyKgAiIQLwEJEjx1q1KJgIiEC+BKEsmQYqyWlUoERABERgeAQnS8OpMORYBERCBKAlIkKKs1uaFUggREAER2DUBCdKua0Dpi4AIiIAI5AQkSDkG/ScCIhAvAZVsKAQkSEOpKeVTBERABCInIEGKvIJVPBEQAREYCgEJUvOaUggREAEREIENEJAgbQCqohQBERABEWhOQILUnJlCiEC8BFQyEdghAQnSDuEraREQAREQgTkBCdKchc5EQAREQAR2SGDDgrTDkilpERABERCBQRGQIA2qupRZERABEYiXgAQp3rpVyTZMQNGLgAh0S0CC1C1PxSYCIiACItCSgASpJTgFEwEREIF4CeymZBKk3XBXqiIgAiIgAksEJEhLQHQpAiIgAiKwGwISpN1wH1uqKq8IiIAIVBKQIFUikgcREAEREIFtEJAgbYOy0hABEYiXgErWGQEJUmcoFZEIiIAIiMA6BCRI69BTWBEQAREQgc4ISJA6Q9lVRIpHBERABMZJQII0znpXqUVABESgdwQkSL2rEmVIBOIloJKJQIiABClER24iIAIiIAJbIyBB2hpqJSQCIiACIhAiMGxBCpVMbiIgAiIgAoMiIEEaVHUpsyIgAiIQLwEJUrx1q5INm4ByLwKjIyBBGl2Vq8AiIAIi0E8CEqR+1otyJQIiIALxEigpmQSpBIysRUAEREAEtktAgrRd3kpNBERABESghIAEqQSMrIdEQHkVARGIgYAEKYZaVBlEQAREIAICEqQIKlFFEAERiJfAmEomQRpTbausIiACItBjAhKkHleOsiYCIiACYyIgQRpTbVNWGREQARHoKQEJUk8rRtkSAREQgbERkCCNrcZVXhGIl4BKNnACEqSBV6CyLwIiIAKxEJAgxVKTKocIiIAIDJyA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" alt="Rohrer Seed Solutions" onclick="setView('home')">
+      <div class="season">Fall 2026 &middot; Spring 2027</div>
+      <div class="contact">
+        Greg Rohrer<br>
+        <a href="tel:+18668077015">866-807-7015</a><br>
+        <a href="/cdn-cgi/l/email-protection#c1a6b3a4a681b3aea9b3a4b3b2a4a4a5b2aeadb4b5a8aeafb2efa2aeac"><span class="__cf_email__" data-cfemail="315643545671435e5943544342545455425e5d4445585e5f421f525e5c">[email&#160;protected]</span></a>
+      </div>
+    </div>
+    <nav class="navlist">
+      <div class="navsec">Sales tool</div>
+      <button class="navbtn active" data-view="home">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        Home
+      </button>
+      <button class="navbtn" data-view="products">
+        <svg class="ico icoline" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 4v6"/></svg>
+        Products <span class="badge" id="badge-products">40</span>
+      </button>
+      <button class="navbtn" data-view="pricing">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M17 7H9.5a2.5 2.5 0 000 5H14a2.5 2.5 0 010 5H6"/></svg>
+        Pricing
+      </button>
+      <button class="navbtn" data-view="programs">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        Programs <span class="badge" id="badge-programs">0</span>
+      </button>
+      <button class="navbtn" data-view="call">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
+        Sales Call
+      </button>
+      <div class="navsec">Reference</div>
+      <button class="navbtn" data-view="policies">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v6h6"/></svg>
+        Policies &amp; Finance
+      </button>
+      <button class="navbtn" data-view="library">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M4 5h6v14H4zM14 5h6v14h-6z"/></svg>
+        Full PDF Library
+      </button>
+    </nav>
+    <div class="foot">
+      Sales tool built for iPad + desktop.
+      <div class="row">
+        <button id="side-print">Print binder</button>
+        <button id="side-theme">Dark</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Header (search + actions) -->
+    <div class="pagehead">
+      <h1 class="pagetitle" id="pageTitle">Home <span class="sub" id="pageSub">Rohrer Seed Solutions</span></h1>
+      <div class="search-wrap">
+        <svg class="sico icoline" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="gsearch" type="search" placeholder="Search products, PDFs, prices, programs…" autocomplete="off">
+        <div class="search-results" id="searchResults" role="listbox"></div>
+      </div>
+      <button class="talk-btn" id="openDrawer" title="Talking points &amp; objections">
+        <svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>
+        <span>Talking Points</span>
+      </button>
+      <button class="call-btn" id="startCallBtn" title="Start a guided sales call">
+        <svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
+        <span>Start Call</span>
+      </button>
+    </div>
+
+    <!-- HOME VIEW -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <div class="eyebrow">Fall 2026 &middot; Spring 2027 Season</div>
+        <h1>One tool for the sales call.</h1>
+        <p class="lead">Every product, price, program, and PDF you carry — organized for the tailgate, the kitchen table, and the office. Optimized for iPad in the field.</p>
+        <div class="actions">
+          <button class="primary" data-goto="call">
+            <svg width="18" height="18" class="icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
+            Start a Sales Call
+          </button>
+          <button data-goto="pricing">
+            <svg width="18" height="18" class="icoline" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M17 7H9.5a2.5 2.5 0 000 5H14a2.5 2.5 0 010 5H6"/></svg>
+            Show Pricing
+          </button>
+          <button data-open-pdf="pdfs/Zone_1_Full.pdf" data-open-name="Zone 1 Full Pricelist">
+            <svg width="18" height="18" class="icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/></svg>
+            Full Zone 1 Pricelist
+          </button>
+        </div>
+      </div>
+
+      <div class="sectionhead">
+        <h2>Quick Access</h2>
+        <div class="meta">Tap a tile to jump straight in</div>
+      </div>
+      <div class="tiles">
+        <button class="tile" data-goto="products" data-filter="corn">
+          <svg class="tico icoline" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M8 6c0 4 4 6 4 10"/><path d="M16 6c0 4-4 6-4 10"/></svg>
+          <div class="tt">Corn Lineup</div>
+          <div class="ts">ProHarvest hybrids, RM &amp; traits</div>
+          <div class="tcount" id="tc-corn">— products</div>
+        </button>
+        <button class="tile" data-goto="products" data-filter="soy">
+          <svg class="tico icoline" viewBox="0 0 24 24"><ellipse cx="9" cy="12" rx="4" ry="6"/><ellipse cx="15" cy="12" rx="4" ry="6"/></svg>
+          <div class="tt">Soybeans</div>
+          <div class="ts">Enlist E3, XtendFLEX, Conventional, High Oleic</div>
+          <div class="tcount" id="tc-soy">— products</div>
+        </button>
+        <button class="tile" data-goto="products" data-filter="wheat">
+          <svg class="tico icoline" viewBox="0 0 24 24"><path d="M12 21V6"/><path d="M6 9l6-3 6 3"/><path d="M6 13l6-3 6 3"/><path d="M6 17l6-3 6 3"/></svg>
+          <div class="tt">Wheat</div>
+          <div class="ts">Retail pricelist + U of I trials</div>
+          <div class="tcount" id="tc-wheat">— PDFs</div>
+        </button>
+        <button class="tile" data-goto="programs">
+          <svg class="tico icoline" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <div class="tt">Programs</div>
+          <div class="ts">TCO, Meristem, dealer kits</div>
+          <div class="tcount" id="tc-programs">— programs</div>
+        </button>
+        <button class="tile" data-goto="products" data-filter="biologicals">
+          <svg class="tico icoline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg>
+          <div class="tt">Biologicals</div>
+          <div class="ts">Keep them alive, results, immunity</div>
+          <div class="tcount" id="tc-bio">— sheets</div>
+        </button>
+        <button class="tile" data-goto="policies">
+          <svg class="tico icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/></svg>
+          <div class="tt">Policies &amp; Finance</div>
+          <div class="ts">Replant, returns, JDF &amp; First Mid</div>
+          <div class="tcount">Ready to quote</div>
+        </button>
+      </div>
+
+      <div class="sectionhead">
+        <h2>Recently Viewed</h2>
+        <div class="meta"><button id="clearRecent" style="background:transparent;border:0;color:var(--furrow);font-size:.8rem;cursor:pointer;text-decoration:underline">Clear</button></div>
+      </div>
+      <div class="recent-strip" id="recentStrip">
+        <div class="empty-recent">Nothing here yet — open a PDF to build a recent-viewed list on this device.</div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS VIEW -->
+    <section class="view" id="view-products">
+      <div class="prod-tabs" id="prodTabs"></div>
+      <div id="prodList"></div>
+    </section>
+
+    <!-- PRICING VIEW -->
+    <section class="view" id="view-pricing">
+      <div class="price-toolbar">
+        <div class="filt">
+          <svg class="sico icoline" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="priceFilter" type="search" placeholder="Filter by hybrid, variety, RM, price…" autocomplete="off">
+        </div>
+        <button class="print-btn" onclick="window.print()">
+          <svg width="14" height="14" class="icoline" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="8"/><path d="M6 17h12v4H6z"/></svg>
+          Print
+        </button>
+        <button class="print-btn" data-open-pdf="pdfs/Zone_1_Full.pdf" data-open-name="Zone 1 Full Pricelist">
+          <svg width="14" height="14" class="icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/></svg>
+          Open Full PDF
+        </button>
+      </div>
+      <div id="priceTables"></div>
+    </section>
+
+    <!-- PROGRAMS VIEW -->
+    <section class="view" id="view-programs">
+      <div class="cardgrid" id="programGrid"></div>
+    </section>
+
+    <!-- SALES CALL VIEW -->
+    <section class="view" id="view-call">
+      <div class="call-flow">
+        <div class="call-stops" id="callStops"></div>
+        <div class="stop-body" id="stopBody"></div>
+      </div>
+    </section>
+
+    <!-- POLICIES VIEW -->
+    <section class="view" id="view-policies">
+      <div class="gcard">
+        <h3>ProHarvest Seeds — 2026-27 Sales Policies</h3>
+        <p class="pill">Effective September 1, 2026</p>
+        <h4>Corn &amp; Soybean Packaging</h4>
+        <ul>
+          <li>All corn hybrids priced per <strong>80,000 kernel bag</strong> (1 unit). Available in 36 or 50 unit Black Boxes unless seed size prevents it.</li>
+          <li>Soybeans priced per <strong>140,000 seeds / unit</strong>. Available in 140K paper bag, 40-unit mini-bulk, and 40-unit Black Boxes (Black Box soybeans must be treated with proTect DI or Ultra).</li>
+        </ul>
+        <h4>Replant Policy</h4>
+        <ul>
+          <li>Seed planted prior to each county's insurable multi-peril planting date qualifies for replant at 50% of retail.</li>
+          <li>Free replant seed corn and proTect-treated soybeans furnished up to the first <strong>25% of the original order</strong>. Beyond that: 25% of full retail.</li>
+          <li>Soybeans must be treated with proTect DI or Ultra to qualify — untreated soybeans are invoiced at 25% of retail.</li>
+          <li>Covers loss from natural causes (flooding, frost, crusting, animal feeding). Does not cover herbicide misapplication.</li>
+          <li>One replant credit per season. Replant seed does not qualify for further discounts or programs.</li>
+        </ul>
+        <h4>Return Policy</h4>
+        <ul>
+          <li>No returns of Seed Corn after <strong>June 15, 2027</strong>; Soybeans after <strong>June 30, 2027</strong>.</li>
+          <li>Returns &gt; 10% of original order are subject to restocking charge.</li>
+          <li>No returns or cancellation of treated soybeans or Sold-Out products after <strong>Jan 15, 2027</strong>.</li>
+          <li>No returns of partial, opened, taped, hole-damaged, rodent-damaged, or dirty bags.</li>
+        </ul>
+        <h4>Financing (First Mid &amp; John Deere Financial)</h4>
+        <ul>
+          <li><strong>First Mid 0%</strong> — Corn &amp; Soybeans only, order by Jan 15, 2027. Volume &amp; early-order discounts still apply. $1,000 min. Due in full Dec 2027.</li>
+          <li><strong>JDF 1.9% Fixed</strong> — Corn &amp; Soybeans only, order by Jan 15, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
+          <li><strong>JDF Prime -1%</strong> — Corn &amp; Soybeans only, order by Mar 31, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
+          <li><strong>First Mid Prime +0.25%</strong> — All Crops. Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
+          <li><strong>JDF Prime +6.10%</strong> — Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
+        </ul>
+        <h4>Fine print</h4>
+        <ul>
+          <li>Financing apps must be submitted to First Mid or JDF within 7 days of order placement.</li>
+          <li>Credit card payments &gt; $2,000 incur a 3.5% usage charge.</li>
+          <li>All 1st-year customers pay prior to pickup/delivery unless credit pre-approved. Previous accounts must be paid in full before current-year shipments.</li>
+          <li>All accounts due in full by <strong>June 30, 2027</strong> or 30 days from shipment, whichever is later.</li>
+          <li>Black boxes not returned invoiced at $550 each; damaged/missing parts at replacement cost.</li>
+        </ul>
+        <p class="contact-line">2737 N 700 East Rd, Ashkum IL 60911 &nbsp;&middot;&nbsp; <a href="tel:+18668077015">866-807-7015</a> &nbsp;&middot;&nbsp; <a href="https://www.proharvestseeds.com" target="_blank" rel="noopener">proharvestseeds.com</a></p>
+      </div>
+    </section>
+
+    <!-- FULL PDF LIBRARY -->
+    <section class="view" id="view-library">
+      <div class="cardgrid" id="libraryGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- BOTTOM TAB BAR (iPad) -->
+<nav class="tabbar" role="navigation">
+  <div class="grid">
+    <button class="tabbtn active" data-view="home">
+      <svg class="ico icoline" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button class="tabbtn" data-view="products">
+      <svg class="ico icoline" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+      Products
+    </button>
+    <button class="tabbtn" data-view="pricing">
+      <svg class="ico icoline" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M17 7H9.5a2.5 2.5 0 000 5H14a2.5 2.5 0 010 5H6"/></svg>
+      Pricing
+    </button>
+    <button class="tabbtn" data-view="programs">
+      <svg class="ico icoline" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      Programs
+    </button>
+    <button class="tabbtn" data-view="call">
+      <svg class="ico icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
+      Call
+    </button>
+  </div>
+</nav>
+
+<!-- PDF VIEWER -->
+<div class="viewer-mask" id="viewer" role="dialog" aria-modal="true">
+  <div class="viewer-head">
+    <div class="vtitle" id="viewerTitle">Document</div>
+    <button id="viewerPrint" title="Print"><svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="8"/><path d="M6 17h12v4H6z"/></svg><span class="btxt">Print</span></button>
+    <button id="viewerEmail" title="Email link to customer"><svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span class="btxt">Email</span></button>
+    <button id="viewerNew" title="Open in new tab"><svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M10 14L20 4"/><path d="M20 14v6H4V4h6"/></svg><span class="btxt">New Tab</span></button>
+    <button class="close" id="viewerClose" title="Close"><svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="btxt">Close</span></button>
+  </div>
+  <div class="viewer-body" id="viewerBody">
+    <div class="viewer-loader hide" id="viewerLoader"><div class="sp"></div>Loading PDF…</div>
+    <iframe id="viewerFrame" title="PDF"></iframe>
+    <div class="viewer-fallback" id="viewerFallback">
+      <p style="font-size:1.1rem;margin-bottom:1rem">Preview isn't supported on this device.</p>
+      <p><a id="viewerFallLink" href="#" target="_blank" rel="noopener" style="display:inline-block;padding:.9rem 1.4rem;background:var(--signal);color:#fff;border-radius:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-decoration:none">Open the PDF &rarr;</a></p>
+      <p style="margin-top:1rem;font-size:.85rem;color:#bbb">On iPad, that opens the PDF in Safari where you can pinch, scroll, and share it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TALKING POINTS DRAWER -->
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer" id="drawer" role="complementary">
+  <div class="dh">
+    <h3>Talking Points &amp; Objections</h3>
+    <button class="dclose" id="drawerClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="db" id="drawerBody"></div>
+</aside>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ============================================================
+   DATA — every PDF, product, and program is defined here.
+   File paths use ./pdfs/<name>.pdf so the same GitHub Pages
+   layout keeps working (same URL, same QR code).
+============================================================ */
+const PDFS = [
+  // Corn
+  {file:"pdfs/Zone_1_Full.pdf", title:"Zone 1 Full Pricelist", cat:"pricing", tags:"corn soy wheat alfalfa full pricelist", desc:"Complete Zone 1 corn, soybean, alfalfa pricing + volume discounts."},
+  {file:"pdfs/7B440.pdf", title:"7B440 Hybrid Sheet", cat:"corn", tags:"corn hybrid proharvest 7B440", desc:"Product spec — ProHarvest 7B440 corn hybrid."},
+  {file:"pdfs/7B520.pdf", title:"7B520 Hybrid Sheet", cat:"corn", tags:"corn hybrid proharvest 7B520", desc:"Product spec — ProHarvest 7B520 corn hybrid."},
+  {file:"pdfs/High_Yield_Corn.pdf", title:"High-Yield Corn System", cat:"corn", tags:"corn program system yield", desc:"How to build a high-yield corn program — inputs, timing, ROI."},
+  {file:"pdfs/TCO_Corn_Program.pdf", title:"TCO Corn Program", cat:"corn", tags:"corn program tco cost", desc:"Total Cost of Ownership breakdown for the corn program."},
+  {file:"pdfs/White_Corn_Sell_Sheet.pdf", title:"White Corn Sell Sheet", cat:"corn", tags:"white corn specialty food", desc:"White corn program overview and specs."},
+  {file:"pdfs/White_Corn_SOYLEIC_Pricelist.pdf", title:"White Corn & SOYLEIC Pricelist", cat:"pricing", tags:"white corn soyleic specialty pricing", desc:"Pricing for white corn and SOYLEIC high-oleic soy."},
+
+  // Soybeans
+  {file:"pdfs/High_Yield_Soybean.pdf", title:"High-Yield Soybean System", cat:"soy", tags:"soy program system yield", desc:"Build a high-yield soybean program from planting through harvest."},
+  {file:"pdfs/TCO_Soybean_Program.pdf", title:"TCO Soybean Program", cat:"soy", tags:"soy program tco cost", desc:"Total Cost of Ownership for the soybean program."},
+  {file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf", title:"High Oleic Soy (SOYLEIC)", cat:"soy", tags:"soy soyleic high oleic specialty", desc:"SOYLEIC high-oleic soybean opportunity — food-grade premium market."},
+  {file:"pdfs/Meristem_Soybean_Replant.pdf", title:"Meristem Soybean Replant", cat:"soy", tags:"soy replant meristem", desc:"Replant options and biology for soybean stands."},
+  {file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf", title:"HT MaxStax — Soybean", cat:"soy", tags:"soy maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for soybeans."},
+  {file:"pdfs/Sell_Sheet_all_three.pdf", title:"Sell Sheet — All Three Trait Platforms", cat:"soy", tags:"soy enlist xtendflex conventional platforms", desc:"Enlist E3, XtendFLEX, and Conventional soybean overview."},
+
+  // Wheat
+  {file:"pdfs/2026_Retail_wheat_print.pdf", title:"2026 Retail Wheat Pricelist", cat:"pricing", tags:"wheat pricing retail 2026", desc:"Full 2026 retail wheat pricing."},
+  {file:"pdfs/UOFI_WHEAT_TRIALS.pdf", title:"U of I Wheat Trials — Full Report", cat:"wheat", tags:"wheat u of i illinois trials data yield", desc:"University of Illinois wheat variety trial data."},
+  {file:"pdfs/UofIData.pdf", title:"U of I Data Summary", cat:"wheat", tags:"wheat u of i illinois summary", desc:"Quick-look summary of U of I wheat trial results."},
+
+  // Cover Crop / Forage / Rye
+  {file:"pdfs/2026_Retail_Fall_CC_Forage.pdf", title:"2026 Fall Cover Crop & Forage Pricelist", cat:"cover", tags:"cover crop forage fall pricing 2026", desc:"Complete fall cover crop and forage seed retail pricing."},
+  {file:"pdfs/Terminating_Cover_Crops.pdf", title:"Terminating Cover Crops", cat:"cover", tags:"cover crop termination agronomy", desc:"When and how to terminate cover crops for the following cash crop."},
+  {file:"pdfs/Rye_Semi_Load_Pricing.pdf", title:"Rye Semi-Load Pricing", cat:"rye", tags:"rye bulk semi load pricing", desc:"Bulk semi-load pricing for rye orders."},
+
+  // Biologicals
+  {file:"pdfs/KeepBiologicalsAlive.pdf", title:"Keep Biologicals Alive", cat:"biologicals", tags:"biologicals living microbes storage handling", desc:"Storage, handling, and tank-mix rules that keep biologicals viable."},
+  {file:"pdfs/BioControls_Results.pdf", title:"Biological Controls — Results", cat:"biologicals", tags:"biologicals biocontrols yield results trials", desc:"On-farm results from biological control programs."},
+  {file:"pdfs/BioFriendly_Nitrogen.pdf", title:"Bio-Friendly Nitrogen", cat:"biologicals", tags:"nitrogen biological n stabilizer", desc:"Nitrogen sources compatible with biological programs."},
+  {file:"pdfs/Immunity_Graphic.pdf", title:"Plant Immunity Graphic", cat:"biologicals", tags:"biologicals immunity plant defense visual", desc:"Visual explainer — how biologicals prime plant immunity."},
+
+  // Meristem programs / adjuvants
+  {file:"pdfs/Meristem_CY27_Product_Sheet.pdf", title:"Meristem CY27 Product Sheet", cat:"program", tags:"meristem 2027 lineup product", desc:"Full Meristem 2027 crop-year product lineup."},
+  {file:"pdfs/Meristem_ExcavatorAMS.pdf", title:"Meristem Excavator AMS", cat:"adjuvants", tags:"meristem excavator ams adjuvant", desc:"Excavator AMS adjuvant — water conditioning + drift management."},
+  {file:"pdfs/Meristem_HT_MaxStax_Corn.pdf", title:"HT MaxStax — Corn", cat:"corn", tags:"corn maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for corn."},
+  {file:"pdfs/Meristem_HopperThrottle_Matrix.pdf", title:"HopperThrottle Matrix", cat:"program", tags:"meristem hopperthrottle in-furrow rate matrix", desc:"Rate matrix for HopperThrottle in-furrow biological."},
+  {file:"pdfs/Meristem_N-Stabilizers.pdf", title:"Meristem N-Stabilizers", cat:"program", tags:"meristem nitrogen stabilizer n", desc:"Nitrogen stabilizer options and positioning."},
+  {file:"pdfs/Meristem_Upshift_CPro.pdf", title:"Meristem Upshift C-Pro", cat:"program", tags:"meristem upshift c-pro carbon foliar", desc:"Upshift C-Pro — foliar carbon program for corn/soy."},
+  {file:"pdfs/UpshiftCPlus_Results.pdf", title:"Upshift C-Plus — Results", cat:"program", tags:"meristem upshift c-plus results yield", desc:"On-farm yield results for the Upshift C-Plus program."},
+  {file:"pdfs/MaxStax_Breakout.pdf", title:"MaxStax Breakout", cat:"program", tags:"maxstax breakout in-furrow biological", desc:"Breakout view of the MaxStax in-furrow stack."},
+  {file:"pdfs/MaxStaxVSLiquid.pdf", title:"MaxStax vs Liquid Fertilizer", cat:"program", tags:"maxstax comparison liquid fertilizer starter", desc:"MaxStax biological stack vs conventional liquid starter."},
+
+  // TCO / systems
+  {file:"pdfs/TCO_Placemat.pdf", title:"TCO Placemat", cat:"program", tags:"tco placemat total cost visual", desc:"Total Cost of Ownership visual placemat for the sales call."},
+  {file:"pdfs/TCO_w_Excavator_AMS.pdf", title:"TCO w/ Excavator AMS", cat:"program", tags:"tco excavator ams cost", desc:"TCO analysis including Excavator AMS in the program."},
+  {file:"pdfs/Systems_Rates.pdf", title:"Systems Rates", cat:"program", tags:"systems rates in-furrow foliar biological", desc:"Program rates across the full systems approach."},
+
+  // Dealer
+  {file:"pdfs/Dealer_Success_Kits.pdf", title:"2027 Dealer Success Kits", cat:"program", tags:"dealer kits success sales tools", desc:"Dealer success kit — sales tools, positioning, promo materials."},
+  {file:"pdfs/New_Dealer_Portal.pdf", title:"New Dealer Portal", cat:"program", tags:"dealer portal login access", desc:"How to log into and use the new dealer portal."},
+  {file:"pdfs/UAS_ProHarvest_Dealer_Pricing.pdf", title:"UAS / ProHarvest Dealer Pricing", cat:"pricing", tags:"dealer pricing uas proharvest", desc:"UAS and ProHarvest dealer-tier pricing sheet."},
+
+  // Tech
+  {file:"pdfs/TechSheet_Harvestshield.pdf", title:"Harvestshield Evo — Tech Sheet", cat:"program", tags:"harvestshield evo tech sheet grain storage", desc:"Meristem Harvestshield Evo — grain-storage protectant."},
+  {file:"pdfs/TechSheet_Homestretch.pdf", title:"Homestretch — Tech Sheet", cat:"program", tags:"homestretch tech sheet late season foliar", desc:"Homestretch late-season foliar program."}
+];
+
+const CATEGORIES = [
+  {id:"all",       label:"All"},
+  {id:"corn",      label:"Corn"},
+  {id:"soy",       label:"Soybean"},
+  {id:"wheat",     label:"Wheat"},
+  {id:"cover",     label:"Cover Crop"},
+  {id:"rye",       label:"Rye"},
+  {id:"biologicals",label:"Biologicals"},
+  {id:"adjuvants", label:"Adjuvants"},
+  {id:"program",   label:"Programs"},
+  {id:"pricing",   label:"Pricing"}
+];
+
+/* ============================================================
+   PRICING TABLES — parsed from Zone 1 pricelist source
+============================================================ */
+const PRICE_TABLES = [
+  {
+    id:"corn-ag-rib",
+    title:"Corn — Above & Below Ground RIB",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    note:"ProHarvest, 80K kernel bag = 1 unit. Available in 36 or 50 unit Black Boxes.",
+    rows:[
+      ["67P33 DS","97 RM","$390.00"],
+      ["67P84 StaxPro RIB","97 RM","$420.00"],
+      ["70P47 DS","100 RM","$390.00"],
+      ["71P16 Stax RIB","101 RM","$390.00"],
+      ["71P50 StaxPro RIB","101 RM","$410.00"],
+      ["72P32 D","102 RM","$385.00"],
+      ["75P72 StaxPro RIB","105 RM","$410.00"],
+      ["77P25 VT4Pro RIB","107 RM","$390.00"],
+      ["77P60 Stax RIB","107 RM","$405.00"],
+      ["79P54 StaxPro RIB","109 RM","$410.00"],
+      ["79P87 Stax RIB","109 RM","$400.00"],
+      ["80P81 StaxPro RIB","110 RM","$410.00"],
+      ["81P19 VT4Pro RIB","111 RM","$390.00"],
+      ["81P65 DV","111 RM","$375.00"],
+      ["82P40 Stax RIB","112 RM","$390.00"],
+      ["82P68 StaxPro RIB","112 RM","$390.00"],
+      ["82P74 StaxPro RIB","112 RM","$410.00"],
+      ["83P48 StaxPro RIB","113 RM","$410.00"],
+      ["8360 Stax RIB","113 RM","$400.00"],
+      ["85P58 Stax RIB","115 RM","$410.00"]
+    ]
+  },
+  {
+    id:"corn-conv",
+    title:"Corn — Conventional",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    rows:[
+      ["71P11","101 RM","$221.00"],
+      ["74P10","104 RM","$221.00"],
+      ["76P42","106 RM","$223.00"],
+      ["78P95","108 RM","$221.00"],
+      ["8015","110 RM","$213.00"],
+      ["80P75","110 RM","$220.00"],
+      ["81P20","111 RM","$218.00"],
+      ["81P65","111 RM","$218.00"],
+      ["82P96","112 RM","$225.00"],
+      ["8360","113 RM","$218.00"],
+      ["83P66","113 RM","$223.00"],
+      ["84P78","114 RM","$223.00"],
+      ["84P90","114 RM","$225.00"],
+      ["85P13","115 RM","$213.00"],
+      ["85P58","115 RM","$225.00"]
+    ]
+  },
+  {
+    id:"corn-ag-only",
+    title:"Corn — Above Ground Only RIB",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    rows:[
+      ["66P46 PCE","96 RM","$353.00"],
+      ["71P11 PCE","101 RM","$358.00"],
+      ["73P40 PCE","103 RM","$358.00"],
+      ["73P67 TrePRIB","103 RM","$373.00"],
+      ["74P10 PCE","104 RM","$358.00"],
+      ["75P60 TrePRIB","105 RM","$373.00"],
+      ["75P85 DGVT2PRIB","105 RM","$373.00"],
+      ["76P42 PCE","106 RM","$363.00"],
+      ["78P30 VT2PRIB","108 RM","$373.00"],
+      ["78P95 PCE","109 RM","$363.00"],
+      ["79P15 V","109 RM","$333.00"],
+      ["80P75 PCE","110 RM","$363.00"],
+      ["80P89 TreRIB","110 RM","$383.00"],
+      ["81P19 TreRIB","111 RM","$383.00"],
+      ["81P20 PCE","111 RM","$358.00"],
+      ["81P45 TreRIB","111 RM","$383.00"],
+      ["81P65 V","111 RM","$323.00"],
+      ["82P42 PCE","112 RM","$367.00"],
+      ["82P96 PCE","112 RM","$363.00"],
+      ["83P33 DGVT2PRIB","113 RM","$373.00"],
+      ["83P66 VT2PRIB","113 RM","$375.00"],
+      ["84P41 PCE","114 RM","$358.00"],
+      ["84P78 TreRIB","114 RM","$373.00"],
+      ["84P90 TreRIB","114 RM","$378.00"],
+      ["85P58 VT2ProRIB","115 RM","$375.00"],
+      ["86P55 VT2PRIB","116 RM","$373.00"]
+    ]
+  },
+  {
+    id:"corn-gly",
+    title:"Corn — Glyphosate Tolerant",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    rows:[
+      ["73F02 G","103 RM","$255.00"],
+      ["77F02 G","107 RM","$255.00"],
+      ["8015 RR2","110 RM","$265.00"],
+      ["80F02 G","110 RM","$255.00"]
+    ]
+  },
+  {
+    id:"soy-enlist",
+    title:"Soybeans — Enlist E3™ & XtendFLEX®",
+    unit:"$/140K bag",
+    columns:["Variety","Rel. Mat.","Price"],
+    note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only).",
+    rows:[
+      ["AE1650","1.6","$54.00"],["AE1870","1.8","$54.00"],["AE2050","2.0","$54.00"],
+      ["AE2361","2.3","$54.00"],["AE2470","2.4","$54.00"],["AE2560","2.5","$54.00"],
+      ["25E35","2.7","$58.50"],["27E77","2.7","$58.50"],["AE2750","2.7","$54.00"],
+      ["AE2770","2.7","$54.00"],["AE2860","2.8","$54.00"],["AE2940S","2.9","$54.00"],
+      ["29E71","2.9","$58.50"],["AE3060","3.0","$54.00"],["AE3070","3.0","$54.00"],
+      ["AE3131S","3.1","$54.00"],["AE3150","3.1","$54.00"],["32E79","3.2","$58.50"],
+      ["AE3340","3.3","$54.00"],["AE3370","3.3","$54.00"],["AE3550S","3.5","$54.00"],
+      ["AE3660","3.6","$54.00"],["AE3670S","3.6","$54.00"],["37E72","3.7","$58.50"],
+      ["AE3870S","3.8","$54.00"],["AE3950S","3.9","$54.00"],["AE4150S","4.1","$54.00"],
+      ["AE4270S","4.2","$54.00"]
+    ]
+  },
+  {
+    id:"soy-xtend",
+    title:"Soybeans — XtendFLEX®",
+    unit:"$/140K bag",
+    columns:["Variety","Rel. Mat.","Price"],
+    rows:[
+      ["27F66","2.7","$59.50"],["28F70","2.8","$59.50"],
+      ["30F73","3.0","$59.50"],["34F74","3.4","$59.50"],["36F58","3.6","$59.50"]
+    ]
+  },
+  {
+    id:"soy-conv",
+    title:"Soybeans — Conventional",
+    unit:"$/140K bag",
+    columns:["Variety","Rel. Mat.","Price"],
+    rows:[
+      ["26C52","2.6","$49.50"],["27C10","2.7","$45.50"],
+      ["29C57","2.9","$49.50"],["32C71","3.2","$49.50"],["35C56S","3.5","$49.50"]
+    ]
+  },
+  {
+    id:"soy-tmt",
+    title:"Soybean Seed Treatments",
+    unit:"per unit",
+    columns:["Treatment","","Price"],
+    rows:[
+      ["proTect DI","","$15.50/unit"],
+      ["proTect ULTRA*","","$29.50/unit"]
+    ]
+  },
+  {
+    id:"alfalfa",
+    title:"Alfalfa Pricelist",
+    unit:"per lb",
+    columns:["Variety","Type","Price"],
+    note:"Alfalfa ordered after Sept 15, 2026 for spring 2027 planting qualifies for the same cash discounts as Corn and Soybeans through Jan 15, 2027.",
+    rows:[
+      ["Eldora III Alfalfa","CT","$6.00/lb"],
+      ["Entree RL Alfalfa","CT","$6.00/lb"],
+      ["L-442RR Alfalfa","CT","$12.25/lb"],
+      ["HopperNot Max Alfalfa","CT","$6.00/lb"],
+      ["X-Force 5420 Wet","UCT","$7.70/lb"],
+      ["2200 Alfalfa","UCT","$4.75/lb"]
+    ]
+  },
+  {
+    id:"disc-corn",
+    title:"Corn Volume Discount Schedule",
+    unit:"per bag",
+    columns:["Bags Ordered","Discount","Group"],
+    rows:[
+      ["1-35","$5.00","A"],
+      ["36-71","$18.00","B"],
+      ["72-149","$20.00","C"],
+      ["150-299","$24.00","D"],
+      ["300-599","$26.00","E"],
+      ["600-799","$28.00","F"],
+      ["800-999","$30.00","G"],
+      ["1000+","$32.00","H"]
+    ]
+  },
+  {
+    id:"disc-soy",
+    title:"Soybean Volume Discount Schedule",
+    unit:"per bag",
+    columns:["Bags Ordered","Discount","Group"],
+    note:"Treated soybean orders received after Jan 15, 2027 are subject to an additional $1/unit for package & handling. No returns or cancellations of treated soybeans.",
+    rows:[
+      ["1-99","$0.50","A"],
+      ["100-299","$1.50","B"],
+      ["300-599","$2.50","C"],
+      ["600-999","$3.00","D"],
+      ["1,000-1,499","$3.50","E"],
+      ["1,500-2,499","$4.00","F"],
+      ["2,500-4,999","$4.50","G"],
+      ["5,000+","$5.00","H"]
+    ]
+  }
+];
+
+/* ============================================================
+   SALES CALL — 5-stop guided flow
+============================================================ */
+const CALL_STOPS = [
+  {
+    title:"Discovery",
+    lead:"Get the grower talking. Land, rotation, biggest headache, what worked and what didn't last year. Take notes.",
+    talk:{
+      title:"Ask, then shut up",
+      points:[
+        "How many acres corn / soy / wheat this season, and what's the rotation?",
+        "What was your best field last year — and what made it best?",
+        "Where did yield disappoint, and what do you think caused it?",
+        "How are you handling replant risk this spring?",
+        "Where are you today on biologicals — trying them, using them, or skeptical?",
+        "What's your finance plan — cash, First Mid 0%, or JDF?"
+      ]
+    },
+    refs:[
+      {label:"Zone 1 Pricelist", file:"pdfs/Zone_1_Full.pdf"},
+      {label:"Dealer Success Kit", file:"pdfs/Dealer_Success_Kits.pdf"}
+    ]
+  },
+  {
+    title:"Product Match",
+    lead:"Match the right hybrids and varieties to their acres and rotation. Show real product sheets — never wing it.",
+    talk:{
+      title:"Match by RM, trait, and pest pressure",
+      points:[
+        "For corn: pick RM to match their maturity zone; trait platform to match rootworm / above-ground pressure.",
+        "Above-ground only (PCE / VT2P / TreRIB) is cheaper — recommend when below-ground pressure is genuinely low.",
+        "For soy: default to Enlist E3 unless the neighbor mix or herbicide plan says XtendFLEX. Offer Conventional for the food-grade grower.",
+        "If they grow specialty markets, SOYLEIC or white corn opens premium contracts.",
+        "Show the actual product sheet — don't quote traits from memory."
+      ]
+    },
+    refs:[
+      {label:"7B440 Sheet", file:"pdfs/7B440.pdf"},
+      {label:"7B520 Sheet", file:"pdfs/7B520.pdf"},
+      {label:"All 3 Trait Platforms (Soy)", file:"pdfs/Sell_Sheet_all_three.pdf"},
+      {label:"White Corn Sell Sheet", file:"pdfs/White_Corn_Sell_Sheet.pdf"},
+      {label:"High Oleic Soy (SOYLEIC)", file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf"}
+    ]
+  },
+  {
+    title:"Pricing",
+    lead:"Walk pricing with confidence. Show the pricelist. Do the volume-discount math out loud.",
+    talk:{
+      title:"Anchor on units, then discounts",
+      points:[
+        "Corn = 80K kernel bag = 1 unit. Soybean = 140K seeds = 1 unit.",
+        "Every hybrid falls into a Volume Discount Group (A-H). Show them their tier at their bag count — this is often the close.",
+        "Treated soybean orders after Jan 15, 2027 = extra $1/unit. Order early, save the dollar.",
+        "Alfalfa ordered after Sept 15 for spring qualifies for the same cash discounts as corn/soy through Jan 15."
+      ]
+    },
+    refs:[
+      {label:"Zone 1 Full Pricelist", file:"pdfs/Zone_1_Full.pdf"},
+      {label:"2026 Wheat Pricelist", file:"pdfs/2026_Retail_wheat_print.pdf"},
+      {label:"Fall CC & Forage Pricelist", file:"pdfs/2026_Retail_Fall_CC_Forage.pdf"},
+      {label:"UAS / ProHarvest Dealer Pricing", file:"pdfs/UAS_ProHarvest_Dealer_Pricing.pdf"},
+      {label:"Rye Semi-Load Pricing", file:"pdfs/Rye_Semi_Load_Pricing.pdf"}
+    ]
+  },
+  {
+    title:"Programs",
+    lead:"Now upgrade the ask. Show the systems approach — TCO, Meristem biologicals, in-furrow, foliar, harvest.",
+    talk:{
+      title:"Programs turn a seed order into a system",
+      points:[
+        "TCO is the conversation-changer — show the placemat so they see cost per acre, not per bag.",
+        "MaxStax in-furrow biologicals: real yield lift, dry & easy to run through the planter.",
+        "N-Stabilizers protect the nitrogen they're already paying for.",
+        "Upshift C-Pro late-vegetative foliar shows results in trials — bring the results sheet.",
+        "Harvestshield Evo saves grain in storage — cheap insurance on a full bin."
+      ]
+    },
+    refs:[
+      {label:"TCO Placemat", file:"pdfs/TCO_Placemat.pdf"},
+      {label:"TCO Corn Program", file:"pdfs/TCO_Corn_Program.pdf"},
+      {label:"TCO Soybean Program", file:"pdfs/TCO_Soybean_Program.pdf"},
+      {label:"Meristem CY27 Product Sheet", file:"pdfs/Meristem_CY27_Product_Sheet.pdf"},
+      {label:"HT MaxStax Corn", file:"pdfs/Meristem_HT_MaxStax_Corn.pdf"},
+      {label:"HT MaxStax Soybean", file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf"},
+      {label:"Upshift C-Plus Results", file:"pdfs/UpshiftCPlus_Results.pdf"},
+      {label:"Harvestshield Evo", file:"pdfs/TechSheet_Harvestshield.pdf"}
+    ]
+  },
+  {
+    title:"Close",
+    lead:"Ask for the order. Confirm units, treatment, delivery window, and financing. Send the follow-up before you leave.",
+    talk:{
+      title:"Close on units, treatment, finance",
+      points:[
+        "Confirm bag count per hybrid/variety — write it down together.",
+        "Confirm treatment: proTect DI or ULTRA on the soybeans that need to move as Black Box or after Jan 15.",
+        "Confirm financing: First Mid 0% (Corn/Soy, by Jan 15) is the sweet spot. JDF 1.9% Fixed for larger orders.",
+        "Confirm delivery window and Black Box return plan ($550 each if not returned).",
+        "Email them the pricelist and program sheets before you leave — while it's fresh."
+      ]
+    },
+    refs:[
+      {label:"Zone 1 Pricelist", file:"pdfs/Zone_1_Full.pdf"},
+      {label:"Policies (open in tool)", nav:"policies"},
+      {label:"New Dealer Portal", file:"pdfs/New_Dealer_Portal.pdf"}
+    ]
+  }
+];
+
+/* ============================================================
+   TALKING POINTS DRAWER content
+============================================================ */
+const TALK_HTML = `
+<h4>Value Story — In One Breath</h4>
+<ul>
+  <li>ProHarvest genetics priced to move, backed by Meristem biology and a real TCO story — one call, one program, one invoice.</li>
+</ul>
+<h4>Opening Questions</h4>
+<ul>
+  <li>How many acres corn / soy / wheat this season?</li>
+  <li>What was your best field last year — and what made it best?</li>
+  <li>Where did yield disappoint, and what do you think caused it?</li>
+  <li>Where are you on biologicals today?</li>
+</ul>
+<h4>Objection Handling</h4>
+<div class="obj"><div class="q">"Your seed is more expensive than X."</div>
+<div class="a">"Let's look at total cost per acre, not per bag. When you fold in the volume discount at your bag count and the in-furrow biological package, the delivered acre cost usually comes in the same or lower — with a better yield floor. Show me your acres and I'll do the math with you." (Open the <em>TCO Placemat</em>.)</div></div>
+<div class="obj"><div class="q">"I tried biologicals — didn't see anything."</div>
+<div class="a">"Most of the time that's a storage or tank-mix problem — the microbes were dead before they hit the furrow. Meristem's dry HT MaxStax was built to solve exactly that. Let me show you the handling rules and the trial results." (Open <em>Keep Biologicals Alive</em> and <em>Upshift C-Plus Results</em>.)</div></div>
+<div class="obj"><div class="q">"I already have a program with someone else."</div>
+<div class="a">"Great — I'm not asking you to switch all of it. Give me one field to prove the TCO. If I'm not right, you owe me nothing next year." (Open <em>TCO Placemat</em>.)</div></div>
+<div class="obj"><div class="q">"Cash is tight."</div>
+<div class="a">"First Mid 0% financing on corn and soy through January 15 — you still get every volume and early-order discount, and nothing's due until December." (Open <em>Policies &amp; Finance</em>.)</div></div>
+<div class="obj"><div class="q">"Can I get treated soybeans in Black Box later?"</div>
+<div class="a">"Absolutely — but treated soybean orders after January 15 pick up an extra $1/unit for package &amp; handling, and no returns/cancels on treated. So the ask is: firm it up before Jan 15."</div></div>
+<h4>Close Checklist</h4>
+<ul>
+  <li>Bag count per hybrid / variety confirmed</li>
+  <li>Treatment specified (proTect DI or ULTRA)</li>
+  <li>Financing selected (First Mid 0%, JDF 1.9%, or cash)</li>
+  <li>Delivery window agreed</li>
+  <li>Black Box return plan understood ($550 each if not returned)</li>
+  <li>Follow-up email sent before I leave the driveway</li>
+</ul>
+<h4>Key Dates</h4>
+<ul>
+  <li><strong>Jan 15, 2027</strong> — Last day for First Mid 0% &amp; JDF 1.9% Fixed corn/soy financing; treated-soybean surcharge kicks in after.</li>
+  <li><strong>Mar 31, 2027</strong> — Last day for JDF Prime -1% financing.</li>
+  <li><strong>Jun 15, 2027</strong> — Last day for seed corn returns.</li>
+  <li><strong>Jun 30, 2027</strong> — Last day for soybean returns; all accounts due in full.</li>
+</ul>
+`;
+</script>
+<script>
+/* ============================================================
+   APP LOGIC
+============================================================ */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+
+const state = {
+  view:"home",
+  filter:"all",
+  callStop:0,
+  recent: safeParse(localStorage.getItem("rss_recent"))||[],
+  dark: localStorage.getItem("rss_dark")==="1"
+};
+
+function safeParse(s){try{return JSON.parse(s)}catch(_){return null}}
+
+/* ---------- View switcher ---------- */
+const VIEW_TITLES = {
+  home:{t:"Home",s:"Rohrer Seed Solutions"},
+  products:{t:"Products",s:"Every hybrid, variety & tech sheet"},
+  pricing:{t:"Pricing",s:"Live pricelist & discount schedules"},
+  programs:{t:"Programs",s:"Systems, TCO, Meristem, dealer kits"},
+  call:{t:"Sales Call",s:"Guided 5-stop flow"},
+  policies:{t:"Policies & Finance",s:"ProHarvest — 2026-27 season"},
+  library:{t:"PDF Library",s:"All PDFs in one place"}
+};
+function setView(v){
+  if(!VIEW_TITLES[v]) v="home";
+  state.view=v;
+  $$(".view").forEach(el=>el.classList.toggle("active", el.id==="view-"+v));
+  $$(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.view===v));
+  $$(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.view===v));
+  $("#pageTitle").firstChild.nodeValue = VIEW_TITLES[v].t+" ";
+  $("#pageSub").textContent = VIEW_TITLES[v].s;
+  $("#mtitle").textContent = VIEW_TITLES[v].t;
+  window.scrollTo({top:0,behavior:"instant"});
+  if(v==="call") renderCall();
+}
+$$(".navbtn, .tabbtn").forEach(b=>{
+  b.addEventListener("click", e=>{
+    setView(b.dataset.view);
+  });
+});
+$$("[data-goto]").forEach(el=>{
+  el.addEventListener("click", ()=>{
+    const v = el.dataset.goto;
+    if(el.dataset.filter){ state.filter = el.dataset.filter; renderProducts(); }
+    setView(v);
+  });
+});
+
+/* ---------- Recent viewed ---------- */
+function pushRecent(item){
+  state.recent = [item, ...state.recent.filter(r=>r.file!==item.file)].slice(0,10);
+  localStorage.setItem("rss_recent", JSON.stringify(state.recent));
+  renderRecent();
+}
+function renderRecent(){
+  const strip = $("#recentStrip");
+  if(!state.recent.length){
+    strip.innerHTML = `<div class="empty-recent">Nothing here yet — open a PDF to build a recent-viewed list on this device.</div>`;
+    return;
+  }
+  strip.innerHTML = state.recent.map(r=>`
+    <button class="recent-card" data-open-pdf="${r.file}" data-open-name="${escapeAttr(r.title)}">
+      <div class="rt">${escapeHtml(r.title)}</div>
+      <div class="rc">${escapeHtml(catLabel(r.cat)||"PDF")}</div>
+    </button>`).join("");
+  strip.querySelectorAll("[data-open-pdf]").forEach(bindOpen);
+}
+$("#clearRecent").addEventListener("click", ()=>{
+  state.recent=[];localStorage.removeItem("rss_recent");renderRecent();
+});
+
+/* ---------- PDF viewer ---------- */
+const viewer = $("#viewer"), viewerFrame = $("#viewerFrame"),
+      viewerBody = $("#viewerBody"), viewerFallback = $("#viewerFallback"),
+      viewerFallLink = $("#viewerFallLink"), viewerTitle = $("#viewerTitle");
+const PDF_URLS = {
+"2026_Retail_Fall_CC_Forage.pdf": "https://www.genspark.ai/api/files/s/rrWWyb9j?token=Z0FBQUFBQnFsNUl2ZXhLUEVtLUdwQlNjSzZPSDZSdDZKbXpTUUZYTmZ5TEJ6QVZEUDRxM0NjenRWVlRYNzQxeHR1UmJaR2FLanV6dTBWdE1BbDR5SXktSHRyMS1IM0NMQ1haTUdaOWhCQnB4S193enRwRWU2SFdwSEZGcTFLV19QVUtRVi1XMVVrME5nWEg0bmNJYmpjNkpWUlJPX19WVlJiNHRCRnZYbnpCVmpubGtyUWd4ZEwtSTBLUk9RdXl5d2lwYWh1Vm96ZVFLb0JITTBrN3A0cWdTalJCRWFYN1UyNjRxRmJhdm95dlBrdy0zb1U0TnR2UUVQNHp4Sl8yMVZ1UlpYSU1ubU9nS3kyWlhjbGt5eTROaHVtUVFfeUo5UkE9PQ",
+"2026_Retail_wheat_print.pdf": "https://www.genspark.ai/api/files/s/WQmjAtzI?token=Z0FBQUFBQnFsNUl4b1NEYkZIb2JWZFpTdDRsMzg4Nk9xOE1qekJ1QUJ6RG9BNV91dUhtNlMxUnNGMkR4aUdMTHlaaWU0aGdDTFFpcmxzOGplbUdRMjExbmp0WXpDcTZyWkFpUlNxMWtwMmRnR2NVcWhuYWYzRTJ4OW9yUnBBRng4SXlPNVBoa01jQ2VDTU03UnJWZ1ZqYlZsV2o4b1lLaGpoSjFIWVV6bFVsb3JUMF9FenNwQ1o5aXJFMC1uUzI3UnUwTE4tOElIRE9FR0F4aldtYkFxbHJ3NXV2N0dIRTlUb3dwd243dUtFLTgtQlFtdlJtUHVOOUtzQkxBZWVUSXhMdzBlZmtxcUtmYTZIVW5qNDhCZjNIUGgyeHNBRUg0ekE9PQ",
+"7B440.pdf": "https://www.genspark.ai/api/files/s/MCCDEiWj?token=Z0FBQUFBQnFsNUl5d1c1Nk1UMXd6Z2R2NFo1MmNWTzJvLVMyUFdQMkowaVJpa1o3RmZQSGdvd0JxMUFtRC1BY3JjRGZqMUJHYlNFUkJtVDR3VWZEM3hPMFFNSkxiZEswUWhQNVFCT2NOei04WWJzNk1QMzB2TlZhV056Uzl6Z2pkcmV4MURFeV90SktWX05WNFZmc29qcWJVRlgyY3FUdUpkeGxVWm9wY2JKbGdXV2pJc3NrQ3BiNWY0YngzREN6OGROb2p1UzU0Y0hCZURURFkzLS1MWmdNUlJMZU5ZNU90a2VVU2tDNzVTeUdoZWF4WElLeGJ5YWdFMUpray1acjBVdldKMFZoSDVVZ3piYm01aUlzbXkwUzZkMUZPVW5oaHc9PQ",
+"7B520.pdf": "https://www.genspark.ai/api/files/s/qt7cyVJI?token=Z0FBQUFBQnFsNUkwTm9idkVsVXlyc2E0S0t5eWJXQVRFeHk4RklQOUVkMWdfWmFHZmItUTJteEF2WnJmVE1obG1Kb2xYUW1ONEhkY1B6dTJEUURTNDlfN3ZJTzZGZGxGLWQ2d0VGdHU1YzNPNXhoUm1ieXJGeWY5NjFGckpzdEFYdEEyUm55TW40QjVsSHBwZTY0cmxfU3FSZ19hUUpLdVRBVlB6SHlLMDFYd2JJRGtHRVBuNzRBRl9jTjMxczJwdFF1T1hFZ2xDWE9sTEtGQlU5MmpnemRjVzE3d1A5a0w0VU1pZmo4ZzYxaGhldEN4N0RhdUdfNXJJSk5lMDZqRjRscVE4ZWk1Wll1RTRic0hvTDhKTi1jRTFoaGl2cXVsVWc9PQ",
+"BioControls_Results.pdf": "https://www.genspark.ai/api/files/s/jtwvKS4m?token=Z0FBQUFBQnFsNUkyd3pLVHo0N0gtbENSWW5pTl9aNzRsWGFTMlczQlpDc3JSNHhUZC15SnllUWtZWGFZWW5qajE5Rll3MF9WUjRmNHJQV21Xd3FpWk8zazVDcW9GQUJiWndMUlZxbkJrQjVDeWxtV3BuQjQ2bGNicTVGMm1nTjVyMFFVX29VTHdZZXd4anAxekdiQjFESlJoOFFYSGNxUFp0T0tOZDdWc3ZZUTd3emg5ZkJ4OXp5SVVfODFoeE1Rbko1TmFtczdVRXIxX3E1dVk4U0I4S3ZCMFdnTllYX3dvOVZTWFVxTUZCdXdxaHlwcnAyNzV3bUhzLVlqYjdPeHZZRFFkZHpvWHF3TzR3eWxfZGR5WjMtQ2EySFlLOUhNSGc9PQ",
+"BioFriendly_Nitrogen.pdf": "https://www.genspark.ai/api/files/s/1jzl0jrU?token=Z0FBQUFBQnFsNUk0dVJUdk5EbU5KRnI2VmFaM0MyME9hZFFUcUhPdVNpVjlQcy03Z3BqMWd1SmdISTRxWU4yOGJHYmU2NGkyVFNWWU5GYjFPQkV3djV4WFJqZ1E3M3pIUjNkTjJadGRKeGNCeXV5RFJUajFGZTJFSEZKNkxlZWZjU1duUTRGQy1SbGN5a0ZHTHJwRUV0dVloa2d3dG1xdGhqcDlDLW5Xa3Q2TUV3UlFXTkEteF9QQlkwUDZJNU52Q0Y0TWh4WnFHLTh5TGdUSUVIaGdmMUd6UUFMeFhXVk91bEkxUHBocW9rUERzWWF6endfNEFXUmdiWWNvNDE1dDJPZ3J3Q1ZDLTgxUENFR1czdTA5UmVGNVQzcnBIWElYY2c9PQ",
+"Dealer_Success_Kits.pdf": "https://www.genspark.ai/api/files/s/2e3a9HSh?token=Z0FBQUFBQnFsNUktMjdTWEtESGJ0VmRfTHd0bFhZNmVabFgyMjJyaEdjV0NWZmJZLWVnUlBkbFlyRG90WXktWm9NajN1SEExaTBQb0VhVEh5OUNtMFA5WEtDZ25VQXdNWkRBbjBZd2NsbkZnR09fTFhjUUNGczlWWEREZUtkc2pwaE1YZWJueUdsUkcyNmJvWTdRX3k1T1lZakpCVXdMZ2VZLUdWdm1pM2d2d0ZBYWEwSTJkRXpMSjNSV0JFV3U4SnBzZ245TDFjZXMxNVBZR1NzeUpUS0NKcVJUeDNCbUZhMGVHTDdyNXJ6empNZzJ5QkFTMVFweEpkZTdqdHRzUEhRYlFLTExSUmNmYjRqU2J1a3VoRjZHRWwwU1E4d1ZZS2c9PQ",
+"High_Oleic_Soy_Sell_Sheet.pdf": "https://www.genspark.ai/api/files/s/RwAlSFEG?token=Z0FBQUFBQnFsNUlfRWwtaTdzdWVWQzc2b3RLdUkxUklvQm5DWkU0UG8yM1g1ZllEeXpUaWFXYkhDRUw3Z1NNRTAzUmgwb21Cb0hDUENUQV9ZdC1uTUFvekFqNk5zdFFWUlpWYUIxb0FmTjA5VGZ0T3AyWktjN0QwVDd1MFdPNWxtWkZRLTRYR3RNS2hVRjBma2ZWQ05tYVFtYUViZFE2eWVVZ285Y1h1TkI3RlY0b1NHcEVXTlRJbDJsRVVwNGNJbzgxallqRExScWxRZ2p0RHE2RDU4T3RzNmg0bUVMelJMazBvbTd5QW9yaUktcGs2aEtpdmxzUGdXdUtxVXJCYTczaGI0S0xFWnRIMk54amM2dC1Wb3JUNGNsVVFtajlOQ1E9PQ",
+"High_Yield_Corn.pdf": "https://www.genspark.ai/api/files/s/3voazq9w?token=Z0FBQUFBQnFsNUpDVmN3eFhzZllLVDYtYmxYSkRVanR3ZjA4TWFZOEY5QzhQWEI4Vy1keHl3S1F1WFFfaVRfOHJkZ0o4SlZUUllETGRxQVBrVzkzTjFRU1FuMElZVjFXNlQ0b2kzOEItZ0Z6dUpzQm1wcDJoeG5wZG9aQ2FJWFJ3YlZLSWtKS09pY1k0T3FNYTd2b2EyR1B4clhiUU5KNjJCc09rcFNmRk9jRVp1dXBKMTNYQWRXdnVVMDFNMEJfdm1LTFBWejVOTU9FUzFiWWxtLW5HR0xnRUVaanR2RGFlN2NTMkRINm9tYzlHLWo3MlRsdEYzT0EwSTV2OEdtdFJsd0dwVTV4NktCNEF3SUtDODlIbHhhYTFxd3RFUFJubGc9PQ",
+"High_Yield_Soybean.pdf": "https://www.genspark.ai/api/files/s/8dMAY0fL?token=Z0FBQUFBQnFsNUpFTmYwMDdhTkRVLWV4THBIUjl5OUJ1Y0ppVUdFckQ3U1RIWm5VcGk4MkliZmd0dU1KUGVzVUExak9UbFRYRU03Rm12LXc4VUdVblNYckNtNHhvRVhzRGFlZXV5MjFweVJxdFoyc3dtZzFMcmtUMlNMSTU4VEVRcTBVcEVKeGNQbGZqS2hGV3lZXzlDc3RnamdpYTlxN08ycGhBVG1OcmRlS25zemRLaDc3aEtZX3l6MEsxOFh5NzhndjhDc2c5aWRvdTZJSmNSdG1WN0dSLWZHUWVOM2Q0aUFMVmRfWXFMZXFYb2liS3RLTEwwYnhFWk9lMTVTZmRYUjM5T0V5YnkzME9Md3pFbUxmT2xTb1FXYmJ1cllyZ3c9PQ",
+"Immunity_Graphic.pdf": "https://www.genspark.ai/api/files/s/iQ6QZ4vn?token=Z0FBQUFBQnFsNUpHby1HWTZXck9QMmJoY0NITlMtc0JrTExHb1YyX3VIOWQtU0ZPN0NxZmsyN0tlUHRWbGEzR0VxUGFTekQzTFFiM3dvOUJuX3ZFSUw1VHQwcGQ5bmY3aW9Fc2p4a3p4ei14Wl8wQ0stZzRXSS16d2NFZ0ZnamZWanBQVmdSanZwUTRNTkJUSnRzTHJUNXBPT2dTeGpsbHpodTVGVWJUdG1CNFBWWlNWZ2xicTMzRElaZlpGcnVxNXRGUEpGSUVXSVFCVG9sOW1IRTNJVzlkbGR5b3hUN0VhV0tYdzB6MzlRYzRlOWRJN3RVdW1ITUIxOGlUeEVPTnJ4Xzl0c1ZlVE9FTmphdU5qMXZuTmQ1V2UxeE5ZdjUxT2c9PQ",
+"KeepBiologicalsAlive.pdf": "https://www.genspark.ai/api/files/s/P2iYCyuK?token=Z0FBQUFBQnFsNUpKSExvNHpDdFNSOERHVmhoVEJtSTg2OUc1MDJlRlV0d2hIMmQ5VVdrbW4yMkxpZTRLYlprMjlkYTdyWEpCU1haaEFRVFJ5VDI3U2Z6Vkh0eHNlU2xTSHNHMEhyRDBoWll2Sjhodlg5Sks5T0U3UkgxNzFGMnVxeHBJOUxwUUdwOXFFYmRSWVNMdm1pZ09vVGs1Y0RrUE84dWR0SzdhZlozLVpWeU5OWmJkRms5MXpTNF9BcTAwSFdMcG5pc2F1dlAzeEk0X19tR1gyZWRHOTlyalpMT3pIT0UySWlCeWtSRjJfSDFYR09aZ1dKRUhLbGh1NWFSSGw1WF9MSTZGeWxralczSXhXdlk1MHRHWmJHaGVuWXlSS2c9PQ",
+"MaxStaxVSLiquid.pdf": "https://www.genspark.ai/api/files/s/FA4fEcXE?token=Z0FBQUFBQnFsNUpLUVpPNFBrZEhfMnlITmdjZEFmNFg2d0ZtVTBqbldYUTNwR1A0UzZZY3MzZkJyZXBtTDZSZVNmek42a2NDWTVHeEk0dzNVQ2VHcHFadlF1cWRrSk1mM0RRWFY1LVdabnVkX2tsNUx3ZFVDaldteVNpYnUxVHlDVURnNnVKeVdkRncwelhlMm1aTmVVTEE1VkVIVnpRSnB6RjhhVmcwZ1RicEd1emlBeWI0alExa3lZdkJGV0tqOWVDb1ZLWUp4bDg0QmVsZU9QSlRINFR3S2hCSnBFTXdxME9VV0tvRkpEcmtUVU5PZk1ya0h4dnIzaE44TlZtbE9fWFk4YVBKSmctaXRPd2ZOdW5jX3ZMb0xvVFNuX3RJakE9PQ",
+"MaxStax_Breakout.pdf": "https://www.genspark.ai/api/files/s/ttUtbQQL?token=Z0FBQUFBQnFsNUpNSElTWWZHdnJ2Q09HTW42SDJuRTYzLUY0WTl6SE9LWjZwa254MVVuTDl5TVVMVTczZlhIX1FTcmdJOHl2YXVBanBNWFQwSjhNeGlxWWxqXzUzMjhnbHY4S2ZuMXpwTWp3Y1RZZHNjZVhtWndLTWNFQXdMX1lwM3NyczFuMkRVTmYtN3FwejFEX2hTZDgxZUl5NTk3NXl3ckNyWW5nNU0tRTBtYmtqaUk3M1lseXJROTV3UVpPdVNpQ1g1WnlWRWRjeE5FMlZNbWtsUEJzeFZTaVcwTmRJNXVOZjNqTG1EU2JDYU5wMUNxVGNMQXJGTVhZOVFiNFBQQ0d6NXJFclVSZ3dWV0JGN1dIa0lvenlMaGRqalVQbXc9PQ",
+"Meristem_CY27_Product_Sheet.pdf": "https://www.genspark.ai/api/files/s/0vXCPdmU?token=Z0FBQUFBQnFsNUpQdy1pajk1SWF3SEU0OTdVVjFqTlcwcXA5dExxNERpeTVNZmxOVlRPRnA5OGxuVjh5cGZ2eFg3bDlCb0t1aW1mWmdKMjdoWHhxVGU3SFdGVzh2VUFacHVPZ3BCOEs5X0V0c2V4czFjMUpZQU5wM2s2S1BadTJRcnBKTkZ3TWZvR0tTMlJ5Tk5ja0IwZG9MUWNEMzZsbjVCZnFsLXdZeWJ6UmxvOTVpc0xzcGtTZzZKcy1mMkZ0eUJ2NFA1b0RYclFJU1VSdnNHbFFxX1BvZjhvM3p2dDVhZEJRSF9HV05fN0Nta3pwUWhyUE1CSmlQSmV2emNhM3FqYnJaN2c3U2tua0dGOEtfa3lxU3MwWU9SNXRkUlJGZFE9PQ",
+"Meristem_ExcavatorAMS.pdf": "https://www.genspark.ai/api/files/s/vMHyHXQ3?token=Z0FBQUFBQnFsNUpScnIxRk9iMGJmbng2ajFTRXB4elZlNWZRLXRrcVQtcWtGR3k5YkhCbzdieS0tbW1fT0ZnbGRvWVlJZlBrMFJHbUVWWllxQUtKbFBuS3JtdTZ3ODNRQU4tLXFEMXFYRFdqZE1QQXl1TmtyUFpSSGI5SkgtVm0ydGpMUlRLakVvQnhndTlhbkZBS1EwWWxIZkt2cW16SFZOTzl4Wjd2eG5WVC1qcV9wZjFnRUpUdGVjOWhQRmw1eW5fQVRzbzQ1blIwc2pRTEVWaWlqT1lmUWp2SHQzSVBUOTZUWE1FaWpaREl4MzNnWXY1bzZ0RmlEMWZIQVdsOTdGU3ltLU8xaV9VZGMySEN6WGlwVnI1dml2eDFkUDYtMFE9PQ",
+"Meristem_HT_MaxStax_Corn.pdf": "https://www.genspark.ai/api/files/s/GOvEPSLe?token=Z0FBQUFBQnFsNUpTVFdtZTBzTHhEbnNNSTBBcjJfU1lKcExwak1BNzcwVXNteWg5MHN1S2N1VWIwVnFTQm9EUXJkM2VFTVNpSGphWnNXYUI5OGhGeVdkc3BWSFpGR3NUUUxjaHQ1Y2RJYTNtTnVsamQ4bXZOWVJoa2x1S1dPRkVUdkMxUm1ZN1hTZllCeDdsSk9UOExYeGd0V2o3c2wtbUFyYVJNS3pKNkpqanl6LVh4Z1pjXy1Ya1lLMExEYUNHbnZsMkFPRjJhMGRiRWM1MzU4NzdrMEp5ME1SUHZQWnpkRHlEbWw0bmd4eTZFODd2VHlwN0JHRy1ZSXBuU1JZX2NOZVVkcjF0SFhXNVBUTDRCNXJkRFpkRkN6N2t1c2pHeGc9PQ",
+"Meristem_HT_MaxStax_Soybean.pdf": "https://www.genspark.ai/api/files/s/XHCsrTDA?token=Z0FBQUFBQnFsNUpVUDBzYUs4UGhYWUFqdzdURTdOYlZTaW9mTWhtX3dCUFNFLU1xWDk2dlhfSG9WWEUwdm9hb0ozVTdVSTA1WGlnd0RPb2M5eHhOSU1pTTlpMUtrOG9WLUl3VE1raTcyZGlnVUxUTE1QQTROc1FJcEQ5UExVVkxhclVMQXpWLU1Fd3l5bTRLYjlyVl9vX2htQnFuVThMdklPRENXM0t3dlZEcjVOMkxsT1JxVDJNVzVZRk9Zd0kzMEF5allPUldPdGtuWTNoYUk2eFlqOWFGakJfV21DSUpzSFhwdHFNZi1KVEctRU5FdFpOU2Q2WGVBbENGNWp6czZYSEU4eGxXdm9VVkFGeVJWX2FNZEJ3M0dJTWdBcFlIYnc9PQ",
+"Meristem_HopperThrottle_Matrix.pdf": "https://www.genspark.ai/api/files/s/qmQga18x?token=Z0FBQUFBQnFsNUpXYWQwOXg2OUpLTmx5WDgzXy1NSHlXVEhZbmYwbVhOb3VyREdNODVvc0JOQjFKOWJ5TjJTZGhPRkphNHhCcHdTSzR2cm5oVnJXWE8wb3JJTzYwLS1wc3djMkxsc3BmUWFpQUNsX1ZJRWFpYmNheTRycG1OaVdCZlBuckJKcUFPcHZITXhJaUNjdzNSQmVLMWhpd0N1RGM5REQtOEtmY0ZKQjFwSXVacVdlMmlZd0lFVkhzVElBUWhmaFR2QzM1MXZpV0VlUWhYWDNaSlhaZzJsZkFUVldvc2xjSHNEYlhRN1hhTWg1SVpNUjJVR21rRkZ0Z05wWmpkdzZDZWtvMkZQNVBPSnRVOXFreVE1Ql9GNzU5RkZiSmc9PQ",
+"Meristem_N-Stabilizers.pdf": "https://www.genspark.ai/api/files/s/rFxyaCw6?token=Z0FBQUFBQnFsNUpZMFpoSzJfamVNZkwtYjM3bF84cXhiczhuTDdQVVl5bkdyZVZDUEJmTGtqVEkxSllFb28wbGVWSWtEV2U1MUhXMFdwV0p6eHdSYi1SWDg0Y2h4NUlrS2tHU1FoWUo1Y3FrOWZjeGdaQ3FuSDU3VG1SZ0dTYkk0ejNVRE5FM0syYk1pcXkzS24wblhVTjNQM0J5ZEZQN2MtY2txVkxoR0Z0WnVaVDJ0V0pFVUtGdlI3Smdxc2E2Ny1XM1V6R1hzUlg2NnJQOVoxYUxJU2JTWC1URnpvVl96dE84QzZfWVRneVFiV3dyU2hEQUlFTG5kMVR6cFRDMkd1Q09saVlqby11NGkxUVNxQ25hRUhKRlk1T2RqR3dGX2c9PQ",
+"Meristem_Soybean_Replant.pdf": "https://www.genspark.ai/api/files/s/LFX8zzFB?token=Z0FBQUFBQnFsNUpabGMtN0wwRHcyV3hqSGtmR2lsRGZTNlNuek90WWxJdTh3TVoyZ3ZBWkZ0QVU4a0swUHRWdG5UZ3AwSjl2SnNkRDQzZ1RXRm1UdWRjUlVsUnB4Zlh6OWFLTGZud3hLMFgxNGtUbGlJTFBZdVBfTl9oSUZob0M0MWRfRVgzWUhsMG5CSDVHVFhWbHZ1YlJCTnR6b19TNzZFWGdxc3IxMTg1V25SZzVwRlk3VDlsNE9iZTBIZWtTN3ZaSnl6ZXg5czE2MTZZYXlBUG9RaHJCYm9MNFpVc1lIbV9qRHg4cjNMeFVsWWNZRlZraC13UzJtaUU3eUZvUVVEZmFDTWJCVDZEdXNJdUtQXzVnSzVyVHRoVWtNUW9RTmc9PQ",
+"Meristem_Upshift_CPro.pdf": "https://www.genspark.ai/api/files/s/ke36u0VJ?token=Z0FBQUFBQnFsNUpiOEtCaTdIaktQTk1fa1pGQlBhaGpjMHh1Qm96cVNocUpJS0dodF9JN1VZNlNuMFF5Uzl2bjM0ZUw3ZmNNbkRnWjZ1OTNUOFVNemZ1dFRjanF3V3J3VWxrdDFGMUVlazA3TmZYcm5PQ2QtYmVZTUwzUmJ0X1dWMV9BVDRydk5Id00wb0tFQ3VvU2VXNnR6QnJXbXdoVklTdG5tWHpQY1lTNDExbFhRczNqVjgxWVNyZXRmZmw1MVlfZ1ZzT0I0UURzQW9FYURQSmdjWHF0T1U5c1E4YVpsU0YwVk5WeEUwN3Uydzc0SlRaN3VKeTBJcVNLb1BRU3RWb0d1Z2c1RVZER19wNGlobWwwa0NqdWJVVGpSVmZsaEE9PQ",
+"New_Dealer_Portal.pdf": "https://www.genspark.ai/api/files/s/nNOPWa9q?token=Z0FBQUFBQnFsNUplbnFLOGsyVlBqOWQ2QUtOQ2ZSQ01kWnJiOEVrVUR3N2syTWFETTh0REFETS1CeGJDSkFMalFCeGtKaThGQ0FwczV5ekNxVEY0X3N4ZHd2WUZtZV9UUk5wRXQ0NWoyZ01VbTYydE5lbWFKcThMZ0NENHdGanhXbjZVWUtiVnduTjduXzZ4TFBNTVZkSjNhdG9qODNDZVI0cktMSkRQYlI5c0d6NkNRckQwU1FoR2JoQTNJV2cwdHRjdUJjamlRTE1LSlotNGFucVF0SDg3VDRFekZmeU11V19DOEdYM3hMcTYya2VEYlNHRGd2WDluRlVsQ0JzNVExQkdMUXc3V2dfVGxUTHlCbTZBRVhxbS00X296Umhzbmc9PQ",
+"Rye_Semi_Load_Pricing.pdf": "https://www.genspark.ai/api/files/s/kC8wNDg0?token=Z0FBQUFBQnFsNUpnaXQ3d0d2OUQxYjNucE9NZEVfRjNwR0dRWXpzU3FxXzlnRmNfNk1iMTdVRFVZcE5zeGwzX25CVlB4eVFTQTNXQXRhMUo4ZGdicm9XR1NkUVVVd0ZzZ1RHcVVidFJsd2VpZS1MSkJESlNCWEl2dHdCZkxybW1lYjFPLVFVYTFfZXp5NmxJWFVKUlY0M2lUSnMteFJGTFcxOThFNHpfdnROdkRWNUFsQzg2T2dlVEwzZVdZWE5JS2lFTllBTTlhQVJreDRZd2hTZTFPS1h1dlhkQUh3bzQ1SVRVZ0o1TUotSnZLVVlyeUdiMEtPVkR3Q0taOUVyc05rMjJhR3RCWlFraVBfX3BGM3VlcldNU0pCOWRuY1RDeVE9PQ",
+"Sell_Sheet_all_three.pdf": "https://www.genspark.ai/api/files/s/Q7JTy5yZ?token=Z0FBQUFBQnFsNUppNVNlRGRueEVVZER4RXoxWTQ0dmRQT2RTMDQ4Qy03Q0otNTRFcDZmSHlqMW0ta3VOY2VtVDllM3ZFMTFqYWktcmNKWENKUmdyYzNBYl9jRHIyMDIxelplX2h2VjFkakd0aFNFWFo3aVBHUUxrcl9IT3k0YVdMOWR0TlZzVzc3VjhrRUZFUnNZU09LaVVUWVBJS1hKOTZ0a1pFcU03aVhiR2ozNXZjOURHV3ZST3hLUzlzV0l6a2c0SE84RmVrTF9HZ3VLcW1UbE56X0tnQ3BqazkwdWx4Z2FFTUI0bWhqSzdLZXE3YkFiM0l3eW9ZWWJzTDZySGNRMFVBd0ppSTUyckxCVEJ1RXVqTFFhY05ZR0ZkUTlXQWc9PQ",
+"Systems_Rates.pdf": "https://www.genspark.ai/api/files/s/w3U0OwS6?token=Z0FBQUFBQnFsNUpqOE5PWWt1bUxtT0xWNFROVTZYZmpmd0drbWR5dU9MR2s3WEtlRmtGeXdhU1V6UHppZFREcnVrdVBqWURndC16RWlJSkYyYzBJODBwNUw5akZsbFprb3RCcVdCWGtkd0dSWkNpMHQ5eVpRbDRPY2VRVFgzeFVkRE9tWXF1WElYWjdaQVQ3ZHh2QlQzUkMxT1ppSng0azc0ZHN2QlRTa3RTeTBiZUZfcTF5bHZ6LTk3N21hYV96aUJVSTlkMHY0ZW9xakczTG12YVB4MF92S2lJcllJWGNIS2lNRmkwTnI2UFRuSW5JWTExU2VXSkQ0OVN1T2FPbHFHNUhBLXhRZ3hHT3BZSVAtaUZ2eEgtSWdTcUE5UTdSdnc9PQ",
+"TCO_Corn_Program.pdf": "https://www.genspark.ai/api/files/s/q8dkT77r?token=Z0FBQUFBQnFsNUpsUzgybFdsTTlOUldsWl9WU0RRMmc3VGh2MnMxbTBENnhnZ2FiZ1U4SGNtQnd3X1Mxb0E4N244RDZQRElfWi1NVTZvQ2k1dE1EZXpfU1lGUVdKM0U2cVJMZmZSVi12VnVPQXd5c1A1aWJISXM3d05hM29yWndzTWZ1X0JRbHBEZEpiSnkwQl9td0FvdE5mRnBZZDNnZ09zRThNdUJINk1nNjNIa0cwdzJjZjlHa0k1VEZMRnRybVNXZ0daN0pVc1NuSmhLX0sxN0ZqcllQdGI4NUFZaFFMb2RzZjlNYTJrM3lCbGhBRTJreGFsdlNzeXRmWnlWbmVjTk5xSm5mSDdkYnctLV8yUDdxaW9Na3M3c3dVaHFab1E9PQ",
+"TCO_Placemat.pdf": "https://www.genspark.ai/api/files/s/R0Zsp4QL?token=Z0FBQUFBQnFsNUpueVozbVlYMFdTN3RwZ21BcFQwZ1p1UWZFNkVqSWNESVduUXpuX2RZX3pCU2VFNGRwMnBHaU5iRUYtckR1N3VmTk8wUzJnOXhzV0NSV0U5d1J6VUl2aWh4SS1Pdmk2T1ZzTmVhdHptQUI3RFBfSXB5RnRDU2xHYUdjZ1pDZ0IxamxLdFRUNW5lV1l2OW9EQ1N5MkRjdzhKSWtaZ1dvTDRUZzd0Sll1OHRudV9idkdZWGl4ZlA4LTZaRjZOcG5aQlFkS0ZKYm9lbFV0anJMeG5CYkpBdzB4ZlRTMmxIX1NhN2VyZmd1eUpWRnNNR2NGcjRtNjV6d3lLRUJWR0pKNGZXVGVzazBkSVg0cGVyd05lSVNacjlGUFE9PQ",
+"TCO_Soybean_Program.pdf": "https://www.genspark.ai/api/files/s/Dd8FvIcH?token=Z0FBQUFBQnFsNUpwN3lGMm82WURKYUpEVnJsRUZwMzBHOHVoQ0pPWUlLUmZfQmczWWpkRk5TYllaZEF5clY0Nm94a2lNNXBJWWtoNy1OQmlxNjQ5Z3M4YjE5WjJfeDZzcmlnMS1XYk50ZWFWQ2k2SU53VXpOcDFqSlJvdEtRWjFmVjdmRnI3d2FhYUlsa3FXbEV1OW14aldGc3d5SXU3LVo4S1ZMVkJmSEJocTNldXlJRGQ3ODF0ZlYyRjlfMU5wUG9OV1dnenhpNHRsdDlDZUdRV1hEQkhiSjF4Q3dYRm16TkhpWTlhTkg4Zk9lVHlMZExFdFJDdlFSVENOcVlabGZOLVhHNmEyeFVuYnNISEw0Rzl3Y19rbHhtNVNSbjdCa0E9PQ",
+"TCO_w_Excavator_AMS.pdf": "https://www.genspark.ai/api/files/s/Fq87Axyx?token=Z0FBQUFBQnFsNUpyNWEtTWh2TFJoMVUwTVQ4ZjFlYVNwUi1reWhCMTFrTXRpR2pmTWlXUktoQVY0cXhtWVMtTEFOYnlWX19lcjc4QUFMZDhoZTRGNlhaLUZ2VjJxUmZwZjBPZkxEaXlFQVNVRkpZSG9LNFJoUThxNFRHWWEwa1J6dWlYSXZud2duNkxlNlF3bzRiVlQ5aV9waW8zYzBLZmRhak9fbzF5Vm1nYjA1cHBidXJtWE9NdFYtdTMtclhjMzNTS3JTejVTQVVMYmozQ21nVVNqbTFfUEhqYy1PUzk0V0stdE9taWI0dmxUVzMtOHdTYmNxc003VS12NGtTMkJ4cHdGcFlGQlV4dnBSYVAyWlhnNGZCNlp3VmVPd0F1aFE9PQ",
+"TechSheet_Harvestshield.pdf": "https://www.genspark.ai/api/files/s/aQ8h6wW9?token=Z0FBQUFBQnFsNUp0V0NJdjZOYk12cnY4VFdPaFRpTll2WUhVLTZTNks4UXh3VWxkOEFhcXNoM2F6VndtWWRteEJVZnRCRFZmTVI4Qmt3eVplQXJIRENoOFAxNmRPS1A4b3JQUTFtZVVqcTRVTk1CVFdWUmthVm9iRHRUd0lXd0ZUZzlfV01odEJJeHh3dnQ0SnBrbFB5d29nUmp5bVQ0elhOOU9UZHVRcXpOMDY5X2Z3NUQ3WHNZSnl5eWVUblkyWjNXMkl0eE1JYWk4MkF6UVVFS2RfMTRmN0lsZjhRbWlWaGtFNDJELTBTZlFaWkJKTXZsa2RDOWhnSEdXeHFHRFUwaXFBaFZtb3gyQlUzM3BqVDNmUDJ6aElTLTVLeDZsbmc9PQ",
+"TechSheet_Homestretch.pdf": "https://www.genspark.ai/api/files/s/2ot8lKKq?token=Z0FBQUFBQnFsNUp2YXN6NmtMek44emM5WE4yM183OWNVTVlZT29MbEVyazRWMFhVSE1vX01xNE1Qbjg1TXVZNDZHM21vTTEwdG1McTJ5aDhRWVlJb0J0Zm9iQ2FoclEwOC02ZGNzWkdpVjd5WHJId0VDVEJ4aWtHYzdtd2xLa0hiNFZRbHlTaDZ6WjJsMWZIUEVrS2dDakIzQU9XN2JYOXRZZndOOGF2Q3ExbmNjY19jUVgzZFAzd0lfVldnWHJkVlFTZGFRTXZDcW5IMHNub0NNT1BlSl9hUGlrbU5neEFKTmx6RlVwM25mTk5aa013Mk96Q2w5VDc1a0FYN1d0OHJQUjVRLUdXZ0tDOGNvSjFzNHFjaF9GQjFCQTJIeV9zbWc9PQ",
+"Terminating_Cover_Crops.pdf": "https://www.genspark.ai/api/files/s/JzbXcRtU?token=Z0FBQUFBQnFsNUp4aWo5MWxwclRDa0JyZHN6WHZWSWlWaXUwSmRXRU9UZTZfWnh6eVNLbTVwQ2xpYWpzTGZqb1VkeGU2bERzeEtzR19YczhoR3ZicUE3cFZGbkxKeTkzTU5DOV9qODVnNUhOMUZ1SV9PZXRldFQxRzYwN2RuZmdMYUN3b3hibF84THUzTUNENktrMzVKdGF5cWZUOTRHQktVSWJPQ3kzQkNlTnV2X2RNRUt0QnhlaTgtdU5NSjFBVHdTQndaSVBrOHBnRm1pMW1yQVgtMlZ6cnh4dzN5aEJqTVd3Yy1UdUdVVzEzUF90ZkxVVHJWZjRlUzVHTV82M2wxUFhTVjF2TFR4dDhoby1EUkRaVVNBNlZSMHVHTjRFb1E9PQ",
+"UAS_ProHarvest_Dealer_Pricing.pdf": "https://www.genspark.ai/api/files/s/DLya04yz?token=Z0FBQUFBQnFsNUp6NkNkdW1mZnJ3cjdWVktGYi1JZFhOWjhIZUhyc2FwR1dkSmtvWXEtUXV5MU9nNzRldE1Ba3l5b3NOaFFhOGstSENWamY1OG1BSlJLNHUwTzl5WDlzdmxiTmxrcWk4Y05WRFpZa0YwNklINXoxbGN3d2tHby1ZWjBBS3dZR0VzUDRYYjZ3LTVubWxUZFN3aTVLeU5kSXFneHhzdl9zYkYtSW5QakJzWEVXV1c5WEo1M1RxbkJtejY5S1F3eUZsUC05RjZhTjBuMENBd284d29uanJtS1VWcmcwOTlxclcxTHJXUFN0X0oyRzFNVWJvRTNNc1hnZFh4d1c5Nm9Zb1Z6S2tMUDJMQXBfa0ZMRkZjTjlmaTZaTkE9PQ",
+"UOFI_WHEAT_TRIALS.pdf": "https://www.genspark.ai/api/files/s/U2lHU80G?token=Z0FBQUFBQnFsNUoxdXhoN2hmOU9KM2U3ckVlSFZuNkZWcWN2djNCZUZJdFhmWmdTcnJCU1A4MzJfSngwTFNYb21rY0tIeFg3ZENTNGhVclBUeU5TSlphd2FIRThVbXhHbVdpWWFuTnNrVFRoTTI1TWQxYTU1QkphRzVuLVpVQTViNURTTkxTbXAybjY1UzNTNXNQd0o4ejJ0V2FROTA4WHhGbWx5QXZ5cUdKY0tGXzFCR2c0QWhENFJ5WFhlSlJIU0d2MlM4ZUt6dXVTZ1Yxd2RlREpncFZZRDNCWTdiNU1qMk9sOWluVF9Pc1JRRlhoODdoZmw1ZWRMVkI3Rzd2VXJjT0JKRVhvOTd0UVFUVExyVHY0V3JEVzd6U0ZJZTVsZEE9PQ",
+"UofIData.pdf": "https://www.genspark.ai/api/files/s/By9EdfMo?token=Z0FBQUFBQnFsNUozdnI5SWJkQzFnU2pWb0ZEUE9ENDh4bElpZ0VDRGptSTV4eEhKZXJGT0xQZmdWZXRPdEJyWTdCT0U5b3REdDVnTlV0RE5KVFZ1NFRTZ1ZucnVVMUUtSzNMSnZmZnhPS0hpRUNZQ3NuVnZyYm5WMWxUSGZxTmRzc0JhUmJXM0tJTjg5TjdqNnY2M2JmOXQ2YlItMWd4WS1NTkhRcEVHaHBOUlpMTldUMGR3VkItakZJY0V5am5RZUVhcl9ISmM0MG43ZWxkLXFXWGhsTElkcldNZGJQandGZF9oaUcwbGx5TmxYZXYyZEZPejB6Vk5aQUExVGluUFhaNXFHN3VqamlfbExrc0daMmFJdWxxWGhzTmp2VGF0MGc9PQ",
+"UpshiftCPlus_Results.pdf": "https://www.genspark.ai/api/files/s/Lo3zcmlU?token=Z0FBQUFBQnFsNUo1MW9ib2NxNzZOakVSTW9wTjhtQWtCNTRsdjdtYUdQZkxMNFdjdjhDbHZZb3g0YUJaV0dXMW0zb1QxcTVPM042eE5oUGJQVnR6cTEzMndrNnFGRmpGeDV4bFNoQVk3aXlFakItUnV2ZXV2OWs4NUhzZkF1RHJ5T3Y5RXY3ZGFlYlFrR1hrblBLeVNPb0J5NWZobHNtVkxUTDNPVnJ5TkVpX1pSZlcxYmVmVjh6QmNrYllCM3RpSFZOdmdVY3JQLUh3dzhQMWNfTnFIdW1WSmZUcEM5N2o5bHRtTFFtdVpRb1NsaW9ZRzIzZ2dyaFlaRGZWaW1fclYtaF9ZUTdKbkg5ajdwbl9RaXVSYWFBaXBlblllQW9INWc9PQ",
+"White_Corn_SOYLEIC_Pricelist.pdf": "https://www.genspark.ai/api/files/s/PytYr9Cn?token=Z0FBQUFBQnFsNUo3TXRjNldxM3BibDdjQUhRa25kLUUxX3VOSjdmUmdvWWI1bDVQdm05NTBLY2wyNUZ4YThPZzBzNS1xX2dtTGdCYXkwbUhIeXdQMUxnV25FTV9KemFsRlZ1S0dQWVlDRVFRQUFGdWJrdVdQeEtDTUZxVFViSU5XQVRNbEd0QlpBNHprcnEydl9PZUxNWVlkSUpGZUxqUDR3WTZnMzN0RFhZcnRhTUh2bUxmWjNUVVdDTTk3NjYwUlFSd0JKSDZVVEhGUTk0cEhaNTA4dUZZMS1RMFlSMkEzYVo4dVpXYkZIdnM0eThIa202NzFTYXRjT2pSMTgxQ0YzX2xvV20xUGx0SWtFMW01STdMOEQ4NVFaUllHQkdlT1E9PQ",
+"White_Corn_Sell_Sheet.pdf": "https://www.genspark.ai/api/files/s/e0jN7GFd?token=Z0FBQUFBQnFsNUo5b1BMVGlXX252Z0JMazU5WGFtTnBQMUVoSnNlak5XS2tmR3htdDdqVjJMSGhtYXJ6QnlhRDZSXzE3VUhGczVwMXB6cHpmdGI1ZEk5WFpsNHdVMTVyOF9pV0trcmd4RU5tU29QbFZseXFxT0ZUeEFOcmt0V2ZENEN4N0E2WVlScV9kaEZpQXZsYm00UlRpQWhmV2JTWEpuMWF4NjQ1MmluMkl3Y0ZfYkNZaGtMWllUUjdSWGwwXzJoS2xXU2NLRVg4SFpjUFhPbjlpZGhVRTRVZ1dFTV82Qzl6RHR1enEtS0VLV2JQWjM2MTJtVE10WFVVUjVodnZ0VTJXdERUaEJMNFJBaHQwYl9ubnVXOWpLRjU1dmhjOEE9PQ",
+"Zone_1_Full.pdf": "https://www.genspark.ai/api/files/s/WA39ywPU?token=Z0FBQUFBQnFsNUpfRXM1Wk5peERWNDNxX0hiX1ByWURYS0IwNExNV2FyUnhmRnMzSXdkeGk5dE1HVWlwYVNFYXJwUkdONzVvdUtHcy1vbU11UENMdG8yWUJORHdGbFp3QUtvdVBXejEtREVuRG43R2ZhaktIWk5pZ3JUc0ZrRXNmLWs1WTdsRWd3RWctVDZKbk9JWTl5QkxJSXBZV2llR2liUzR3SWRZVlhPSGgwMzRSTVB5eGs5aFVTaGpKNmcwNmlkV3F5UXFVOVR5MkwybVNZUzVBY2tUcGdleXhIcXJkZEJzWkQtanRlS3FzeXA2TENvRHFZUUtpdmtpMFN5YVk4clZXUWZnMUtQSDNxZUdnRE9MT3RuN0ZHVTB6RUVfNGc9PQ"
+};
+let currentPdf = null;
+
+async function openPdf(file, name){
+  const base = file.replace(/^pdfs\//,'');
+  const resolved = PDF_URLS[base] || file;
+  currentPdf = {file:resolved,title:name||base,localFile:file};
+  viewerTitle.textContent = currentPdf.title;
+  viewerBody.classList.remove("native-fail");
+  viewerFallLink.href = resolved;
+  viewerFrame.src = "about:blank";
+  const loader = document.getElementById("viewerLoader");
+  loader.classList.remove("hide");
+  // Revoke any previous object URL to free memory
+  if(window._lastBlobUrl){ try{URL.revokeObjectURL(window._lastBlobUrl)}catch(_){} window._lastBlobUrl=null; }
+  // Detect iPad/iOS — Safari won't render blob PDFs in an iframe reliably
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform==="MacIntel" && navigator.maxTouchPoints > 1);
+  if(isIOS){
+    // On iPad, open PDF in a new tab immediately (the only reliable path with content-disposition:attachment + Safari)
+    window.open(resolved, "_blank");
+    // Also show the in-app fallback panel so they have a manual "Open PDF" button too
+    viewerBody.classList.add("native-fail");
+    loader.classList.add("hide");
+    return;
+  }
+  // Desktop: fetch as blob so content-disposition:attachment is bypassed and PDF renders inline
+  try{
+    const resp = await fetch(resolved);
+    if(!resp.ok) throw new Error("HTTP "+resp.status);
+    const buf = await resp.arrayBuffer();
+    const blob = new Blob([buf], {type:"application/pdf"});
+    const objUrl = URL.createObjectURL(blob);
+    window._lastBlobUrl = objUrl;
+    viewerFrame.onload = ()=>loader.classList.add("hide");
+    viewerFrame.src = objUrl + "#toolbar=1&navpanes=0";
+    // Safety timeout
+    setTimeout(()=>loader.classList.add("hide"), 4000);
+  }catch(err){
+    console.warn("blob load failed", err);
+    loader.classList.add("hide");
+    viewerBody.classList.add("native-fail");
+  }
+  viewer.classList.add("open");
+  document.body.style.overflow="hidden";
+  // Track in recent
+  const meta = PDFS.find(p=>p.file===file) || {file,title:currentPdf.title,cat:"pdf"};
+  pushRecent({file:meta.file,title:meta.title,cat:meta.cat});
+  // Detect fail-to-render on iOS (basic heuristic)
+  setTimeout(()=>{
+    try{
+      const doc = viewerFrame.contentDocument;
+      if(doc && doc.body && doc.body.innerHTML.length<50 && !doc.querySelector("embed,object")){
+        // Some iOS versions render inline; if empty after 1.5s show fallback link
+      }
+    }catch(_){}
+  },1500);
+}
+function closePdf(){
+  viewer.classList.remove("open");
+  viewerFrame.src="about:blank";
+  document.body.style.overflow="";
+  currentPdf=null;
+  if(window._lastBlobUrl){ try{URL.revokeObjectURL(window._lastBlobUrl)}catch(_){} window._lastBlobUrl=null; }
+}
+$("#viewerClose").addEventListener("click", closePdf);
+$("#viewerNew").addEventListener("click", ()=>{
+  if(!currentPdf) return;
+  // Always open the direct URL (works even when blob fetch fails)
+  window.open(currentPdf.file, "_blank");
+});
+$("#viewerPrint").addEventListener("click", ()=>{
+  if(!currentPdf) return;
+  // Print via the loaded blob iframe if available (desktop), otherwise open in new tab
+  try{
+    if(viewerFrame.contentWindow && window._lastBlobUrl){
+      viewerFrame.contentWindow.focus();
+      viewerFrame.contentWindow.print();
+      return;
+    }
+  }catch(_){}
+  window.open(currentPdf.file, "_blank");
+});
+$("#viewerEmail").addEventListener("click", ()=>{
+  if(!currentPdf) return;
+  const abs = new URL(currentPdf.file, location.href).href;
+  const subj = encodeURIComponent("RSS: "+currentPdf.title);
+  const body = encodeURIComponent(`Here's the ${currentPdf.title} we discussed:\n\n${abs}\n\nLet me know if you'd like to talk through it.\n\n— Greg\nRohrer Seed Solutions\n866-807-7015`);
+  location.href = `mailto:?subject=${subj}&body=${body}`;
+});
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape"){ if(viewer.classList.contains("open")) closePdf(); if($("#drawer").classList.contains("open")) closeDrawer(); }
+});
+
+function bindOpen(el){
+  el.addEventListener("click", e=>{
+    e.preventDefault();
+    openPdf(el.dataset.openPdf, el.dataset.openName);
+  });
+}
+function bindAllOpen(root=document){
+  root.querySelectorAll("[data-open-pdf]").forEach(bindOpen);
+}
+
+/* ---------- Products ---------- */
+function catLabel(id){
+  const c = CATEGORIES.find(c=>c.id===id);
+  return c?c.label:id;
+}
+function renderProdTabs(){
+  const tabs = $("#prodTabs");
+  const counts = {};
+  CATEGORIES.forEach(c=>{counts[c.id] = c.id==="all"?PDFS.length:PDFS.filter(p=>p.cat===c.id).length});
+  tabs.innerHTML = CATEGORIES
+    .filter(c=>c.id==="all"||counts[c.id]>0)
+    .map(c=>`
+      <button class="prod-tab${state.filter===c.id?' on':''}" data-filter="${c.id}">
+        ${escapeHtml(c.label)} <span class="cnt">${counts[c.id]}</span>
+      </button>
+    `).join("");
+  tabs.querySelectorAll(".prod-tab").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      state.filter=t.dataset.filter;
+      renderProducts();
+    });
+  });
+}
+function renderProducts(){
+  renderProdTabs();
+  const wrap = $("#prodList");
+  const list = state.filter==="all" ? PDFS : PDFS.filter(p=>p.cat===state.filter);
+  if(!list.length){
+    wrap.innerHTML = `<div class="empty-recent">No items in this category.</div>`;
+    return;
+  }
+  const catName = state.filter==="all" ? "All Products & Sheets" : catLabel(state.filter);
+  wrap.innerHTML = `
+    <div class="plist">
+      <div class="plist-h">
+        <h3>${escapeHtml(catName)}</h3>
+        <div class="meta">${list.length} ${list.length===1?"item":"items"} &middot; tap to open</div>
+      </div>
+      ${list.map(p=>`
+        <button class="plist-row" data-open-pdf="${p.file}" data-open-name="${escapeAttr(p.title)}">
+          <div class="pfico">PDF</div>
+          <div class="pinfo">
+            <div class="pname">${escapeHtml(p.title)}</div>
+            <div class="pdesc">${escapeHtml(p.desc||"")}</div>
+          </div>
+          <div class="pact">Open &rarr;</div>
+        </button>
+      `).join("")}
+    </div>`;
+  bindAllOpen(wrap);
+}
+
+/* ---------- Programs ---------- */
+function renderPrograms(){
+  const grid = $("#programGrid");
+  const list = PDFS.filter(p=>["program","adjuvants"].includes(p.cat));
+  grid.innerHTML = `
+    <div class="plist">
+      <div class="plist-h">
+        <h3>Programs &amp; Adjuvants</h3>
+        <div class="meta">${list.length} programs &middot; tap to open</div>
+      </div>
+      ${list.map(p=>`
+        <button class="plist-row" data-open-pdf="${p.file}" data-open-name="${escapeAttr(p.title)}">
+          <div class="pfico">PDF</div>
+          <div class="pinfo">
+            <div class="pname">${escapeHtml(p.title)}</div>
+            <div class="pdesc">${escapeHtml(p.desc||"")}</div>
+          </div>
+          <div class="pact">Open &rarr;</div>
+        </button>
+      `).join("")}
+    </div>`;
+  bindAllOpen(grid);
+  $("#badge-programs").textContent = list.length;
+}
+
+/* ---------- Full library ---------- */
+function renderLibrary(){
+  const grid = $("#libraryGrid");
+  const list = PDFS.slice().sort((a,b)=>a.title.localeCompare(b.title));
+  grid.innerHTML = `
+    <div class="plist">
+      <div class="plist-h">
+        <h3>Full PDF Library</h3>
+        <div class="meta">${list.length} PDFs &middot; A&ndash;Z &middot; tap to open</div>
+      </div>
+      ${list.map(p=>`
+        <button class="plist-row" data-open-pdf="${p.file}" data-open-name="${escapeAttr(p.title)}">
+          <div class="pfico">PDF</div>
+          <div class="pinfo">
+            <div class="pname">${escapeHtml(p.title)}</div>
+            <div class="pdesc">${escapeHtml(catLabel(p.cat))} &middot; ${escapeHtml(p.desc||"")}</div>
+          </div>
+          <div class="pact">Open &rarr;</div>
+        </button>
+      `).join("")}
+    </div>`;
+  bindAllOpen(grid);
+}
+
+/* ---------- Pricing tables ---------- */
+function renderPricing(){
+  const wrap = $("#priceTables");
+  wrap.innerHTML = PRICE_TABLES.map(t=>`
+    <div class="price-block" data-tid="${t.id}">
+      <div class="ph">
+        <h3>${escapeHtml(t.title)}</h3>
+        <span class="note">${escapeHtml(t.note||("")+" "+(t.unit||""))}</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="price-table" data-tid="${t.id}">
+          <thead><tr>${t.columns.map((c,i)=>`<th data-col="${i}">${escapeHtml(c)}</th>`).join("")}</tr></thead>
+          <tbody>
+            ${t.rows.map(r=>`<tr>${r.map((c,i)=>{
+              const cls = /price|\$/i.test(t.columns[i])||/^\$/.test(c) ? "price" : (i===1&&/RM|Mat/i.test(t.columns[i])?"rm":"");
+              return `<td class="${cls}">${escapeHtml(c)}</td>`;
+            }).join("")}</tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `).join("");
+  // Sortable
+  $$(".price-table").forEach(tbl=>{
+    tbl.querySelectorAll("th").forEach(th=>{
+      th.addEventListener("click", ()=>sortTable(tbl, +th.dataset.col, th));
+    });
+  });
+}
+function sortTable(tbl, col, th){
+  const tbody = tbl.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const dir = th.classList.contains("sort-asc") ? -1 : 1;
+  tbl.querySelectorAll("th").forEach(t=>t.classList.remove("sort-asc","sort-desc"));
+  th.classList.add(dir===1?"sort-asc":"sort-desc");
+  rows.sort((a,b)=>{
+    const av = a.children[col].textContent.trim();
+    const bv = b.children[col].textContent.trim();
+    const an = parseFloat(av.replace(/[^\d.-]/g,""));
+    const bn = parseFloat(bv.replace(/[^\d.-]/g,""));
+    if(!isNaN(an)&&!isNaN(bn)) return (an-bn)*dir;
+    return av.localeCompare(bv)*dir;
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+}
+$("#priceFilter").addEventListener("input", e=>{
+  const q = e.target.value.trim().toLowerCase();
+  $$(".price-table tbody tr").forEach(tr=>{
+    const hay = tr.textContent.toLowerCase();
+    tr.classList.toggle("row-hide", !!q && !hay.includes(q));
+  });
+  $$(".price-block").forEach(pb=>{
+    const visible = pb.querySelectorAll("tbody tr:not(.row-hide)").length;
+    pb.style.display = (!q || visible) ? "" : "none";
+  });
+});
+
+/* ---------- Sales call ---------- */
+function renderCall(){
+  const stops = $("#callStops");
+  stops.innerHTML = CALL_STOPS.map((s,i)=>`
+    <button class="stop${i===state.callStop?' active':''}${i<state.callStop?' done':''}" data-stop="${i}">
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      ${escapeHtml(s.title)}
+    </button>
+  `).join("");
+  stops.querySelectorAll(".stop").forEach(b=>{
+    b.addEventListener("click", ()=>{ state.callStop=+b.dataset.stop; renderCall(); });
+  });
+  const s = CALL_STOPS[state.callStop];
+  const body = $("#stopBody");
+  body.innerHTML = `
+    <div class="eyebrow">Stop ${state.callStop+1} of ${CALL_STOPS.length}</div>
+    <h2>${escapeHtml(s.title)}</h2>
+    <p class="lead">${escapeHtml(s.lead)}</p>
+    <div class="talk">
+      <h4>${escapeHtml(s.talk.title)}</h4>
+      <ul>${s.talk.points.map(p=>`<li>${escapeHtml(p)}</li>`).join("")}</ul>
+    </div>
+    <h4 style="color:var(--field);letter-spacing:.1em;margin-bottom:.6rem">Reference on hand</h4>
+    <div class="stop-refs">
+      ${s.refs.map(r=>{
+        if(r.file){
+          return `<button class="refcard" data-open-pdf="${r.file}" data-open-name="${escapeAttr(r.label)}">
+            <svg class="rico icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/></svg>
+            <span class="rlabel">${escapeHtml(r.label)}</span>
+          </button>`;
+        } else if(r.nav){
+          return `<button class="refcard" data-nav="${r.nav}">
+            <svg class="rico icoline" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            <span class="rlabel">${escapeHtml(r.label)}</span>
+          </button>`;
+        }
+      }).join("")}
+    </div>
+    <div class="stop-nav">
+      <button ${state.callStop===0?"disabled":""} id="stopPrev">&larr; Back</button>
+      <button class="primary" id="stopNext">${state.callStop===CALL_STOPS.length-1?"Finish":"Next &rarr;"}</button>
+    </div>
+  `;
+  bindAllOpen(body);
+  body.querySelectorAll("[data-nav]").forEach(b=>{
+    b.addEventListener("click", ()=>setView(b.dataset.nav));
+  });
+  $("#stopPrev").addEventListener("click", ()=>{ state.callStop=Math.max(0,state.callStop-1); renderCall(); });
+  $("#stopNext").addEventListener("click", ()=>{
+    if(state.callStop<CALL_STOPS.length-1){ state.callStop++; renderCall(); }
+    else{ state.callStop=0; setView("home"); }
+  });
+}
+$("#startCallBtn").addEventListener("click", ()=>{ state.callStop=0; setView("call"); });
+
+/* ---------- Drawer ---------- */
+function openDrawer(){ $("#drawer").classList.add("open"); $("#drawerMask").classList.add("open"); }
+function closeDrawer(){ $("#drawer").classList.remove("open"); $("#drawerMask").classList.remove("open"); }
+$("#openDrawer").addEventListener("click", openDrawer);
+$("#drawerClose").addEventListener("click", closeDrawer);
+$("#drawerMask").addEventListener("click", closeDrawer);
+$("#drawerBody").innerHTML = TALK_HTML;
+
+/* ---------- Global search ---------- */
+const gsearch = $("#gsearch");
+const srBox = $("#searchResults");
+function search(q){
+  q = q.trim().toLowerCase();
+  if(!q){ srBox.classList.remove("open"); srBox.innerHTML=""; return; }
+  const results = [];
+  // Products / PDFs
+  PDFS.forEach(p=>{
+    const hay = (p.title+" "+p.tags+" "+p.desc+" "+p.file).toLowerCase();
+    if(hay.includes(q)) results.push({kind:"PDF",title:p.title,meta:catLabel(p.cat),action:()=>openPdf(p.file,p.title)});
+  });
+  // Pricing rows
+  PRICE_TABLES.forEach(t=>{
+    t.rows.forEach(r=>{
+      const hay = r.join(" ").toLowerCase();
+      if(hay.includes(q)) results.push({kind:"Price",title:r[0]+" — "+r[r.length-1],meta:t.title,action:()=>{setView("pricing");setTimeout(()=>{document.querySelector(`[data-tid="${t.id}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});},50);}});
+    });
+  });
+  // Call stops
+  CALL_STOPS.forEach((s,i)=>{
+    const hay = (s.title+" "+s.lead+" "+s.talk.title+" "+s.talk.points.join(" ")).toLowerCase();
+    if(hay.includes(q)) results.push({kind:"Call",title:s.title,meta:"Stop "+(i+1),action:()=>{state.callStop=i;setView("call");}});
+  });
+  const items = results.slice(0,20);
+  if(!items.length){
+    srBox.innerHTML = `<div class="sr-empty">No matches for &ldquo;${escapeHtml(q)}&rdquo;.</div>`;
+  } else {
+    srBox.innerHTML = items.map((r,i)=>`
+      <button class="sr-item" data-i="${i}">
+        <span class="sr-tag">${r.kind}</span>
+        <span class="sr-title">${escapeHtml(r.title)}</span>
+        <span class="sr-meta">${escapeHtml(r.meta)}</span>
+      </button>`).join("");
+    srBox.querySelectorAll(".sr-item").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        items[+b.dataset.i].action();
+        srBox.classList.remove("open");
+        gsearch.value="";
+      });
+    });
+  }
+  srBox.classList.add("open");
+}
+gsearch.addEventListener("input", e=>search(e.target.value));
+gsearch.addEventListener("focus", e=>{ if(e.target.value.trim()) search(e.target.value); });
+document.addEventListener("click", e=>{
+  if(!e.target.closest(".search-wrap")) srBox.classList.remove("open");
+});
+
+/* ---------- Sidebar footer buttons ---------- */
+$("#side-print").addEventListener("click", ()=>window.print());
+$("#side-theme").addEventListener("click", ()=>{
+  state.dark = !state.dark;
+  document.body.classList.toggle("theme-dark", state.dark);
+  localStorage.setItem("rss_dark", state.dark?"1":"0");
+  $("#side-theme").textContent = state.dark?"Light":"Dark";
+});
+
+/* ---------- Utilities ---------- */
+function escapeHtml(s){return (s??"").toString().replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function escapeAttr(s){return escapeHtml(s)}
+
+/* ---------- Boot ---------- */
+function updateBadges(){
+  const count = c => PDFS.filter(p=>p.cat===c).length;
+  $("#badge-products").textContent = PDFS.length;
+  $("#tc-corn").textContent = count("corn")+" products";
+  $("#tc-soy").textContent  = count("soy")+" products";
+  $("#tc-wheat").textContent= count("wheat")+" sheets";
+  $("#tc-bio").textContent  = count("biologicals")+" sheets";
+  const progC = PDFS.filter(p=>["program","adjuvants"].includes(p.cat)).length;
+  $("#tc-programs").textContent = progC+" programs";
+}
+renderProducts();
+renderPricing();
+renderPrograms();
+renderLibrary();
+renderCall();
+renderRecent();
+updateBadges();
+bindAllOpen();
+if(state.dark){document.body.classList.add("theme-dark");$("#side-theme").textContent="Light";}
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
