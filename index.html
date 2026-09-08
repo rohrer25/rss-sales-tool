@@ -2650,18 +2650,35 @@ window.buildPrintQuote = function(){
     });
   }
   // Grab totals bar
-  var totalsHost = document.getElementById("planTotals");
-  var totalsText = totalsHost ? totalsHost.textContent : "";
-  var totals = { units:"—", gross:"—", disc:"—", net:"—" };
-  // Try to parse totals — fall back to raw
-  var mNet = totalsText.match(/net[^$]*\$([\d,]+\.?\d*)/i);
-  var mGross = totalsText.match(/gross[^$]*\$([\d,]+\.?\d*)/i);
-  var mDisc = totalsText.match(/discount[^$]*\$([\d,]+\.?\d*)/i);
-  var mU = totalsText.match(/(\d+)\s*units/i);
-  if(mNet) totals.net = "$"+mNet[1];
-  if(mGross) totals.gross = "$"+mGross[1];
-  if(mDisc) totals.disc = "$"+mDisc[1];
-  if(mU) totals.units = mU[1];
+  var totals = { units:0, gross:0, disc:0, net:0 };
+  function num(s){ if(!s) return 0; var n = parseFloat(String(s).replace(/[^0-9\.\-]/g,"")); return isNaN(n)?0:n; }
+  // Identify columns by header label so we tolerate reordering
+  function colIdx(labelRe){
+    for(var i=0;i<colHeaders.length;i++){ if(labelRe.test(colHeaders[i])) return i; }
+    return -1;
+  }
+  var iBags = colIdx(/bags?|qty|units?/i);
+  var iRetail = colIdx(/retail/i);
+  var iNetUnit = colIdx(/net\s*\/?\s*(unit|bag)|net\s*price/i);
+  var iLineTotal = colIdx(/line\s*total|total$|amount|extended/i);
+  // Fallback assumptions: last col is line total, second-to-last-ish is bags/qty
+  if(iLineTotal===-1 && rows.length && rows[0].length) iLineTotal = rows[0].length-1;
+  rows.forEach(function(r){
+    var bags = iBags>=0 ? num(r[iBags]) : 0;
+    var retail = iRetail>=0 ? num(r[iRetail]) : 0;
+    var lt = iLineTotal>=0 ? num(r[iLineTotal]) : 0;
+    totals.units += bags;
+    totals.gross += retail * bags;
+    totals.net += lt;
+  });
+  totals.disc = totals.gross - totals.net;
+  function fmt$(n){ return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  var totalsOut = {
+    units: totals.units ? totals.units.toLocaleString("en-US") : "—",
+    gross: totals.gross ? fmt$(totals.gross) : "—",
+    disc:  totals.disc  ? fmt$(totals.disc)  : "—",
+    net:   totals.net   ? fmt$(totals.net)   : "—"
+  };
 
   var today = new Date();
   var dateStr = today.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
@@ -2740,10 +2757,10 @@ window.buildPrintQuote = function(){
     + '</table>'
     + '<div class="pq-totals">'
     +   '<table>'
-    +     '<tr><td class="lbl">Total Units</td><td class="val">'+ totals.units +'</td></tr>'
-    +     '<tr><td class="lbl">Gross Retail</td><td class="val">'+ totals.gross +'</td></tr>'
-    +     '<tr><td class="lbl">Total Discounts</td><td class="val">− '+ (totals.disc||"$0") +'</td></tr>'
-    +     '<tr class="grand"><td class="lbl">Net Investment</td><td class="val">'+ totals.net +'</td></tr>'
+    +     '<tr><td class="lbl">Total Units</td><td class="val">'+ totalsOut.units +'</td></tr>'
+    +     '<tr><td class="lbl">Gross Retail</td><td class="val">'+ totalsOut.gross +'</td></tr>'
+    +     '<tr><td class="lbl">Total Discounts</td><td class="val">'+ (totalsOut.disc==="—"?"—":"− "+totalsOut.disc) +'</td></tr>'
+    +     '<tr class="grand"><td class="lbl">Net Investment</td><td class="val">'+ totalsOut.net +'</td></tr>'
     +   '</table>'
     + '</div>'
     + (cust.notes ? '<div class="pq-notes"><h4>Notes</h4>'+ escapeH(cust.notes).replace(/\n/g,"<br>") +'</div>' : '')
@@ -2762,6 +2779,14 @@ window.buildPrintQuote = function(){
   function escapeH(s){ return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 };
 window.printQuote = function(){
+  // First-time tip: remind to uncheck browser headers/footers
+  try {
+    if(!localStorage.getItem("rssPrintTipSeen")){
+      var msg = "Tip for a cleaner PDF:\n\n1. In the print dialog, click 'More settings'\n2. UNCHECK 'Headers and footers'\n\nThat removes the date, URL, and page number from the printed page. Chrome will remember this setting for next time.\n\n(You'll only see this once.)";
+      alert(msg);
+      localStorage.setItem("rssPrintTipSeen","1");
+    }
+  } catch(_){}
   window.buildPrintQuote();
   document.body.classList.add("printing-quote");
   setTimeout(function(){
