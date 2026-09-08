@@ -669,6 +669,9 @@ a:hover{text-decoration:underline}
   body[data-view="plan"] .plan-totals .foot{color:#333 !important}
 }
 
+
+.price-table tbody tr:hover{background:rgba(0,40,112,.06)!important}
+.price-table tbody tr:active{background:rgba(0,40,112,.12)!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
@@ -2053,6 +2056,39 @@ function renderPricing(){
   $$(".price-table").forEach(tbl=>{
     tbl.querySelectorAll("th").forEach(th=>{
       th.addEventListener("click", ()=>sortTable(tbl, +th.dataset.col, th));
+    });
+  });
+  // Row click -> open the product's PDF if we can find one
+  $$(".price-table tbody tr").forEach(tr=>{
+    tr.style.cursor = "pointer";
+    tr.title = "Tap to open product PDF";
+    tr.addEventListener("click", e=>{
+      // Ignore clicks that came from a real button/link inside the row
+      if(e.target.closest("a,button")) return;
+      const nameCell = tr.children[0];
+      if(!nameCell) return;
+      const key = nameCell.textContent.trim().toLowerCase();
+      if(!key) return;
+      // Match strategy: (1) exact hybrid code match in a PDF filename, (2) title contains key, (3) key contains title token
+      let hit = PDFS.find(p => {
+        const f = (p.file||"").toLowerCase();
+        const t = (p.title||"").toLowerCase();
+        return f.includes(key) || t.includes(key) || (key.length>=4 && t.split(/[\s_\-\.]+/).includes(key));
+      });
+      if(!hit){
+        // Try stripping common suffixes like "SmartStax" trait tags
+        const bare = key.split(/[\s\/]/)[0];
+        hit = PDFS.find(p => (p.file||"").toLowerCase().includes(bare) || (p.title||"").toLowerCase().includes(bare));
+      }
+      if(hit){
+        openPdf(hit.file, hit.title);
+      } else {
+        // Fall back: flash the row so user knows the click registered but no PDF exists
+        tr.style.transition = "background .3s";
+        const orig = tr.style.background;
+        tr.style.background = "rgba(0,144,64,.15)";
+        setTimeout(()=>{ tr.style.background = orig; }, 350);
+      }
     });
   });
 }
