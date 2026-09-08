@@ -675,7 +675,8 @@ a:hover{text-decoration:underline}
 
 /* ============ PROFESSIONAL QUOTE PRINT / SAVE-AS-PDF ============ */
 @media print {
-  @page { size: Letter; margin: 0.6in 0.55in; }
+  @page { size: Letter; margin: 0.5in 0.5in; }
+  @page :first { margin-top: 0.5in; }
   html, body { background:#fff !important; color:#0C1424 !important; font-family: Inter, Arial, sans-serif; }
   /* Hide everything by default when print class is active */
   body.printing-quote > *:not(#printQuote) { display: none !important; }
@@ -685,6 +686,9 @@ a:hover{text-decoration:underline}
   #printQuote { padding:0; margin:0; }
   #printQuote .pq-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #002870; padding-bottom:14px; margin-bottom:20px; }
   #printQuote .pq-brand { }
+  
+  #printQuote .pq-brand .pq-logo { max-height: 68px; max-width: 260px; width:auto; height:auto; display:block; }
+
   #printQuote .pq-brand h1 { font-family:'Barlow Condensed',Arial,sans-serif; font-size:28pt; margin:0; color:#002870; letter-spacing:.02em; text-transform:uppercase; }
   #printQuote .pq-brand .tag { font-size:9pt; color:#5A6A82; letter-spacing:.15em; text-transform:uppercase; margin-top:4px; }
   #printQuote .pq-rep { text-align:right; font-size:9.5pt; line-height:1.5; }
@@ -720,7 +724,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
-<body>
+<body data-cfemail-safe="true">
 
 <!-- MOBILE HEADER (iPad only) -->
 <header class="mheader" role="banner">
@@ -738,7 +742,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       <div class="contact">
         Greg Simmons<br>
         <a href="tel:+12178997722">217-899-7722</a><br>
-        <a href="/cdn-cgi/l/email-protection#47203522200735282f3522353422222334282b32332e2829346924282a"><span class="__cf_email__" data-cfemail="610613040621130e0913041312040405120e0d1415080e0f124f020e0c">[email&#160;protected]</span></a>
+        <a href="#" data-user="greg" data-domain="rohrerseedsolutions.com">greg&#64;rohrerseedsolutions.com</a>
       </div>
     </div>
     <nav class="navlist">
@@ -1083,7 +1087,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
           <li>All accounts due in full by <strong>June 30, 2027</strong> or 30 days from shipment, whichever is later.</li>
           <li>Black boxes not returned invoiced at $550 each; damaged/missing parts at replacement cost.</li>
         </ul>
-        <p class="contact-line">2737 N 700 East Rd, Ashkum IL 60911 &nbsp;&middot;&nbsp; <a href="tel:+12178997722">217-899-7722</a> &nbsp;&middot;&nbsp; <a href="https://www.proharvestseeds.com" target="_blank" rel="noopener">proharvestseeds.com</a> &nbsp;&middot;&nbsp; <a href="#" id="gregEmailLink" data-user="greg" data-domain="rohrerseedsolutions.com">greg&#64;rohrerseedsolutions.com</a></p>
+        <p class="contact-line">35650 IL-111, Modesto IL 62667 &nbsp;&middot;&nbsp; <a href="tel:+12178997722">217-899-7722</a> &nbsp;&middot;&nbsp; <a href="https://www.proharvestseeds.com" target="_blank" rel="noopener">proharvestseeds.com</a> &nbsp;&middot;&nbsp; <a href="#" id="gregEmailLink" data-user="greg" data-domain="rohrerseedsolutions.com">greg&#64;rohrerseedsolutions.com</a></p>
       </div>
     </section>
 
@@ -1159,7 +1163,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
   <div class="db" id="drawerBody"></div>
 </aside>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ============================================================
    DATA — every PDF, product, and program is defined here.
    File paths use ./pdfs/<name>.pdf so the same GitHub Pages
@@ -2623,18 +2627,25 @@ window.buildPrintQuote = function(){
   };
   // Collect line rows from the visible plan table
   var rows = [];
-  var tbody = document.getElementById("planLinesBody") || document.querySelector("#planLinesTbl tbody");
+  var srcTable = document.getElementById("planLinesTbl") || document.querySelector("#planLinesBody").closest("table");
+  var headerLabels = [];
+  if(srcTable){
+    srcTable.querySelectorAll("thead th").forEach(function(th){ headerLabels.push((th.textContent||"").trim()); });
+  }
+  var tbody = document.getElementById("planLinesBody") || (srcTable && srcTable.querySelector("tbody"));
   if(tbody){
     tbody.querySelectorAll("tr").forEach(function(tr){
       var cells = tr.querySelectorAll("td");
       if(cells.length < 2) return;
       var arr = [];
       cells.forEach(function(td){
-        // Strip button/remove text
         var t = td.cloneNode(true);
-        t.querySelectorAll("button,a").forEach(function(x){ x.remove(); });
-        arr.push(t.textContent.trim());
+        t.querySelectorAll("button,a,.remove,.rm,svg").forEach(function(x){ x.remove(); });
+        var val = t.textContent.replace(/\s+/g," ").trim();
+        arr.push(val);
       });
+      // Drop the last cell if it looks like an action ("Remove","×","")
+      if(arr.length && /^(remove|×|x|delete|—|-)$/i.test(arr[arr.length-1])){ arr.pop(); }
       rows.push(arr);
     });
   }
@@ -2674,25 +2685,36 @@ window.buildPrintQuote = function(){
       }).join("")
     : "<tr><td colspan='6' style='text-align:center;color:#5A6A82;padding:24px'>No line items added</td></tr>";
 
-  var colHeaders = ["Product","Qty","Retail","Discounts","Net /Unit","Line Total"];
-  // If actual rows have different column count, adapt
-  if(rows.length && rows[0].length){
-    var n = rows[0].length;
-    if(n===4) colHeaders = ["Product","Qty","Net /Unit","Line Total"];
-    else if(n===5) colHeaders = ["Product","Qty","Retail","Net /Unit","Line Total"];
-    else if(n===3) colHeaders = ["Product","Qty","Line Total"];
-    else if(n>6) colHeaders = colHeaders.concat(new Array(n-6).fill(""));
+  // Prefer the actual source-table headers so columns line up perfectly
+  var colHeaders = headerLabels.slice();
+  // Drop trailing action-header if it looks like an action column
+  if(colHeaders.length && /^(remove|action|actions|—|-|\s*)$/i.test(colHeaders[colHeaders.length-1])){ colHeaders.pop(); }
+  // Trim headers to match actual row width
+  if(rows.length){
+    var w = rows[0].length;
+    if(colHeaders.length > w) colHeaders = colHeaders.slice(0, w);
+    while(colHeaders.length < w){ colHeaders.push(""); }
+  }
+  // Fallback if no headers extracted
+  if(!colHeaders.length){
+    colHeaders = ["Product","Qty","Retail","Discounts","Net /Unit","Line Total"];
+    if(rows.length && rows[0].length){
+      var n = rows[0].length;
+      if(n===4) colHeaders = ["Product","Qty","Net /Unit","Line Total"];
+      else if(n===5) colHeaders = ["Product","Qty","Retail","Net /Unit","Line Total"];
+      else if(n===3) colHeaders = ["Product","Qty","Line Total"];
+    }
   }
 
   host.innerHTML = ''
     + '<div class="pq-head">'
     +   '<div class="pq-brand">'
-    +     '<h1>Rohrer Seed Solutions</h1>'
-    +     '<div class="tag">Fall 2026 · Spring 2027 · Seed Program Quote</div>'
+    +     (window._logoDataUrl ? '<img class="pq-logo" src="'+window._logoDataUrl+'" alt="Rohrer Seed Solutions">' : '<div style="font-family:Barlow Condensed,sans-serif;font-size:22pt;color:#002870;font-weight:800;letter-spacing:.02em">RSS</div>')
     +   '</div>'
     +   '<div class="pq-rep">'
     +     '<strong>Greg Simmons</strong><br>'
-    +     'Rohrer Seed Solutions<br>'
+    +     '35650 IL-111<br>'
+    +     'Modesto, IL 62667<br>'
     +     '217-899-7722<br>'
     +     'greg@rohrerseedsolutions.com'
     +   '</div>'
@@ -2736,7 +2758,7 @@ window.buildPrintQuote = function(){
     +   '<div class="line">Customer Signature / Date</div>'
     +   '<div class="line">Greg Simmons — Rohrer Seed Solutions</div>'
     + '</div>'
-    + '<div class="pq-foot">Rohrer Seed Solutions · 2737 N 700 East Rd, Ashkum IL 60911 · 217-899-7722 · greg@rohrerseedsolutions.com</div>';
+    + '<div class="pq-foot">Rohrer Seed Solutions · 35650 IL-111, Modesto IL 62667 · 217-899-7722 · greg@rohrerseedsolutions.com</div>';
   function escapeH(s){ return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 };
 window.printQuote = function(){
@@ -2759,6 +2781,17 @@ document.addEventListener("DOMContentLoaded", function(){
     fresh.addEventListener("click", function(e){ e.preventDefault(); window.printQuote(); });
   });
 });
+</script>
+
+<script>
+(function(){
+  document.addEventListener("DOMContentLoaded",function(){
+    var img = document.querySelector(".sidebar .brand .logo-img, .mheader .logo-img");
+    if(img && img.src && img.src.indexOf("data:image") === 0){
+      window._logoDataUrl = img.src;
+    }
+  });
+})();
 </script>
 </body>
 </html>
