@@ -670,6 +670,7 @@ a:hover{text-decoration:underline}
 }
 
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
 
@@ -1789,11 +1790,42 @@ async function openPdf(file, name){
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform==="MacIntel" && navigator.maxTouchPoints > 1);
   if(isIOS){
-    // On iPad, open PDF in a new tab immediately (the only reliable path with content-disposition:attachment + Safari).
-    // Don't keep the overlay open — that leaves the user stranded when they come back.
-    window.open(resolved, "_blank");
-    loader.classList.add("hide");
-    closePdf();
+    viewer.classList.add("open");
+    document.body.style.overflow="hidden";
+    let container = document.getElementById("pdfjsPages");
+    if(!container){
+      container = document.createElement("div");
+      container.id = "pdfjsPages";
+      container.style.cssText = "position:absolute;inset:0;overflow:auto;background:#2a2a2a;padding:12px;-webkit-overflow-scrolling:touch";
+      viewerBody.appendChild(container);
+    }
+    container.innerHTML = "";
+    container.style.display = "block";
+    viewerFrame.style.display = "none";
+    try {
+      if(!window.pdfjsLib) throw new Error("pdf.js not loaded");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      const pdf = await pdfjsLib.getDocument(resolved).promise;
+      for(let i=1; i<=pdf.numPages; i++){
+        const page = await pdf.getPage(i);
+        const baseVp = page.getViewport({scale:1});
+        const scale = Math.min(2.5, Math.max(1, (window.innerWidth - 48) / baseVp.width));
+        const viewport = page.getViewport({scale});
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        canvas.style.cssText = "display:block;max-width:100%;height:auto;margin:0 auto 12px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.4);border-radius:4px";
+        container.appendChild(canvas);
+        await page.render({canvasContext: canvas.getContext("2d"), viewport}).promise;
+      }
+      loader.classList.add("hide");
+    } catch(err){
+      console.warn("pdfjs render failed", err);
+      loader.classList.add("hide");
+      viewerBody.classList.add("native-fail");
+    }
+    const meta = PDFS.find(p=>p.file===file) || {file,title:currentPdf.title,cat:"pdf"};
+    pushRecent({file:meta.file,title:meta.title,cat:meta.cat});
     return;
   }
   // Desktop: fetch as blob so content-disposition:attachment is bypassed and PDF renders inline
@@ -1831,6 +1863,9 @@ async function openPdf(file, name){
 function closePdf(){
   viewer.classList.remove("open");
   viewerFrame.src="about:blank";
+  viewerFrame.style.display = "";
+  const pdfjsPages = document.getElementById("pdfjsPages");
+  if(pdfjsPages){ pdfjsPages.innerHTML = ""; pdfjsPages.style.display = "none"; }
   document.body.style.overflow="";
   currentPdf=null;
   if(window._lastBlobUrl){ try{URL.revokeObjectURL(window._lastBlobUrl)}catch(_){} window._lastBlobUrl=null; }
