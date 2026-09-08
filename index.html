@@ -674,51 +674,73 @@ a:hover{text-decoration:underline}
 .price-table tbody tr:active{background:rgba(0,40,112,.12)!important}
 
 /* ============ PROFESSIONAL QUOTE PRINT / SAVE-AS-PDF ============ */
+/* When printing-quote class is on <body>, we hide EVERYTHING except #printQuote.
+   Rules use both display:none AND visibility:hidden for maximum browser compat. */
+body.printing-quote { background:#fff !important; }
+body.printing-quote > *:not(#printQuote){ display:none !important; }
+body.printing-quote #printQuote {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  background: #fff !important;
+  color: #0C1424 !important;
+  padding: 0.5in 0.5in !important;
+  font-family: Inter, -apple-system, Arial, sans-serif !important;
+}
+
 @media print {
   @page { size: Letter; margin: 0.5in 0.5in; }
-  @page :first { margin-top: 0.5in; }
-  html, body { background:#fff !important; color:#0C1424 !important; font-family: Inter, Arial, sans-serif; }
-  /* Hide everything by default when print class is active */
-  body.printing-quote > *:not(#printQuote) { display: none !important; }
-  #printQuote { display: block !important; }
+  html, body { background:#fff !important; color:#0C1424 !important; }
+  /* Belt-and-suspenders: even if class is missing, hide everything except printQuote when printing */
+  body:not(.printing-quote) #printQuote { display:none !important; }
+  body.printing-quote > *:not(#printQuote){ display:none !important; visibility:hidden !important; }
+  body.printing-quote #printQuote { display:block !important; visibility:visible !important; }
   a { color:#002870 !important; text-decoration:none !important; }
-  /* Print quote layout */
-  #printQuote { padding:0; margin:0; }
-  #printQuote .pq-head { display:flex; justify-content:space-between; align-items:center; padding-bottom:18px; margin-bottom:8px; gap:30px; }
-  #printQuote .pq-brand { }
-  
-  #printQuote .pq-brand .pq-logo { max-height: 140px; max-width: 380px; width:auto; height:auto; display:block; }
-
-  #printQuote .pq-brand h1 { font-family:'Barlow Condensed',Arial,sans-serif; font-size:28pt; margin:0; color:#002870; letter-spacing:.02em; text-transform:uppercase; }
-  #printQuote .pq-brand .tag { font-size:9pt; color:#5A6A82; letter-spacing:.15em; text-transform:uppercase; margin-top:4px; }
-  #printQuote .pq-rep { text-align:right; font-size:9.5pt; line-height:1.5; }
-  #printQuote .pq-rep strong { color:#002870; font-size:11pt; letter-spacing:.03em; text-transform:uppercase; }
-  #printQuote .pq-meta { display:flex; justify-content:space-between; gap:30px; margin-bottom:22px; font-size:10pt; }
-  #printQuote .pq-meta .pq-cust h3 { margin:0 0 6px; font-size:8.5pt; color:#5A6A82; letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
-  #printQuote .pq-meta .pq-cust .name { font-size:14pt; font-weight:800; color:#0C1424; margin-bottom:2px; }
-  #printQuote .pq-meta .pq-info { font-size:9pt; color:#5A6A82; line-height:1.6; text-align:right; }
-  #printQuote .pq-info b { color:#002870; }
-  #printQuote table.pq-tbl { width:100%; border-collapse:collapse; margin-bottom:20px; font-size:9.5pt; }
-  #printQuote table.pq-tbl thead th { background:#002870; color:#fff !important; padding:8px 10px; text-align:left; font-weight:700; letter-spacing:.05em; text-transform:uppercase; font-size:8.5pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  #printQuote table.pq-tbl thead th.num { text-align:right; }
-  #printQuote table.pq-tbl tbody td { padding:8px 10px; border-bottom:1px solid #E2E8F0; vertical-align:top; }
-  #printQuote table.pq-tbl tbody td.num { text-align:right; font-family:'JetBrains Mono',Menlo,monospace; }
-  #printQuote table.pq-tbl tbody tr:nth-child(even) td { background:#F7F9FC; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  #printQuote .pq-totals { margin-left:auto; width:60%; margin-top:6px; }
-  #printQuote .pq-totals table { width:100%; border-collapse:collapse; font-size:10pt; }
-  #printQuote .pq-totals td { padding:5px 10px; }
-  #printQuote .pq-totals td.lbl { text-align:right; color:#5A6A82; letter-spacing:.05em; }
-  #printQuote .pq-totals td.val { text-align:right; font-family:'JetBrains Mono',Menlo,monospace; font-weight:600; width:120px; }
-  #printQuote .pq-totals tr.grand td { border-top:2px solid #002870; padding-top:10px; font-size:13pt; color:#002870; font-weight:800; }
-  #printQuote .pq-notes { margin-top:18px; padding:12px 14px; background:#F7F9FC; border-left:4px solid #009040; -webkit-print-color-adjust:exact; print-color-adjust:exact; font-size:9.5pt; line-height:1.5; }
-  #printQuote .pq-notes h4 { margin:0 0 6px; font-size:8.5pt; letter-spacing:.14em; text-transform:uppercase; color:#009040; }
-  #printQuote .pq-terms { margin-top:22px; padding-top:14px; border-top:1px solid #E2E8F0; font-size:8pt; color:#5A6A82; line-height:1.55; }
-  #printQuote .pq-terms h4 { margin:0 0 6px; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; color:#0C1424; }
-  #printQuote .pq-sig { margin-top:26px; display:flex; justify-content:space-between; gap:40px; font-size:9pt; }
-  #printQuote .pq-sig .line { flex:1; border-top:1px solid #0C1424; padding-top:4px; color:#5A6A82; text-align:center; }
-  #printQuote .pq-foot { margin-top:24px; text-align:center; font-size:8pt; color:#5A6A82; }
 }
-/* Also hide the offscreen quote container when not printing */
+
+/* Quote layout (applies in both screen preview class and print) */
+#printQuote { padding:0; margin:0; }
+#printQuote .pq-head { display:flex; justify-content:space-between; align-items:center; padding-bottom:18px; margin-bottom:8px; gap:30px; }
+#printQuote .pq-brand { flex:0 0 auto; }
+#printQuote .pq-brand .pq-logo { max-height: 140px; max-width: 380px; width:auto; height:auto; display:block; }
+#printQuote .pq-brand h1 { font-family:'Barlow Condensed',Arial,sans-serif; font-size:28pt; margin:0; color:#002870; letter-spacing:.02em; text-transform:uppercase; }
+#printQuote .pq-brand .tag { font-size:9pt; color:#5A6A82; letter-spacing:.15em; text-transform:uppercase; margin-top:4px; }
+#printQuote .pq-rep { text-align:right; font-size:9.5pt; line-height:1.55; }
+#printQuote .pq-rep strong { color:#002870; font-size:12pt; letter-spacing:.04em; text-transform:uppercase; display:block; margin-bottom:4px; }
+#printQuote .pq-title-bar { background:#002870; color:#fff !important; padding:8px 14px; letter-spacing:.14em; text-transform:uppercase; font-size:9pt; font-weight:700; border-radius:6px 6px 0 0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote .pq-meta { display:flex; justify-content:space-between; gap:30px; padding:14px 18px; background:#F7F9FC; border:1px solid #E2E8F0; border-top:none; border-radius:0 0 6px 6px; margin-bottom:22px; font-size:10pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote .pq-meta .pq-cust h3 { margin:0 0 6px; font-size:8.5pt; color:#5A6A82; letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
+#printQuote .pq-meta .pq-cust .name { font-size:15pt; font-weight:800; color:#0C1424; margin-bottom:2px; }
+#printQuote .pq-meta .pq-info { font-size:9.5pt; color:#5A6A82; line-height:1.7; text-align:right; }
+#printQuote .pq-info b { color:#002870; font-weight:700; }
+#printQuote table.pq-tbl { width:100%; border-collapse:collapse; margin-bottom:8px; font-size:9.5pt; border:1px solid #E2E8F0; border-radius:6px; overflow:hidden; }
+#printQuote table.pq-tbl thead th { background:#002870; color:#fff !important; padding:9px 10px; text-align:left; font-weight:700; letter-spacing:.05em; text-transform:uppercase; font-size:8.5pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote table.pq-tbl thead th.num { text-align:right; }
+#printQuote table.pq-tbl tbody td { padding:9px 10px; border-bottom:1px solid #E2E8F0; vertical-align:top; }
+#printQuote table.pq-tbl tbody td.num { text-align:right; font-family:'JetBrains Mono',Menlo,monospace; }
+#printQuote table.pq-tbl tbody tr:nth-child(even) td { background:#F7F9FC; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote .pq-cropbags { display:flex; gap:14px; margin: 18px 0; }
+#printQuote .pq-cropbags .chip { flex:1; background:#F7F9FC; border:1px solid #E2E8F0; border-left:4px solid #009040; padding:12px 14px; border-radius:6px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote .pq-cropbags .chip .lbl { font-size:8pt; letter-spacing:.14em; text-transform:uppercase; color:#5A6A82; font-weight:700; }
+#printQuote .pq-cropbags .chip .val { font-family:'JetBrains Mono',Menlo,monospace; font-size:16pt; font-weight:800; color:#002870; margin-top:3px; }
+#printQuote .pq-cropbags .chip.soy { border-left-color:#B45309; }
+#printQuote .pq-totals { margin-left:auto; width:55%; background:#F7F9FC; border:1px solid #E2E8F0; border-radius:6px; padding:8px 14px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#printQuote .pq-totals table { width:100%; border-collapse:collapse; font-size:10.5pt; }
+#printQuote .pq-totals td { padding:6px 4px; }
+#printQuote .pq-totals td.lbl { text-align:right; color:#5A6A82; letter-spacing:.05em; }
+#printQuote .pq-totals td.val { text-align:right; font-family:'JetBrains Mono',Menlo,monospace; font-weight:600; width:120px; }
+#printQuote .pq-totals tr.grand td { border-top:2px solid #002870; padding-top:10px; font-size:13pt; color:#002870; font-weight:800; }
+#printQuote .pq-notes { margin-top:18px; padding:12px 14px; background:#F7F9FC; border-left:4px solid #009040; -webkit-print-color-adjust:exact; print-color-adjust:exact; font-size:9.5pt; line-height:1.55; }
+#printQuote .pq-notes h4 { margin:0 0 6px; font-size:8.5pt; letter-spacing:.14em; text-transform:uppercase; color:#009040; }
+#printQuote .pq-terms { margin-top:22px; padding-top:14px; border-top:1px solid #E2E8F0; font-size:8pt; color:#5A6A82; line-height:1.55; }
+#printQuote .pq-terms h4 { margin:0 0 6px; font-size:8pt; letter-spacing:.14em; text-transform:uppercase; color:#0C1424; }
+#printQuote .pq-sig { margin-top:26px; display:flex; justify-content:space-between; gap:40px; font-size:9pt; }
+#printQuote .pq-sig .line { flex:1; border-top:1px solid #0C1424; padding-top:4px; color:#5A6A82; text-align:center; }
+#printQuote .pq-foot { margin-top:24px; text-align:center; font-size:8pt; color:#5A6A82; }
+
+/* Hide the offscreen quote container when not printing */
 #printQuote { position:absolute; left:-99999px; top:-99999px; }
 body.printing-quote #printQuote { position:static; left:auto; top:auto; }
 
@@ -2827,32 +2849,16 @@ window.printQuote = function(){
       localStorage.setItem("rssPrintTipSeen","1");
     }
   } catch(_){}
-  // ORDER MATTERS: add class FIRST so @media print rules apply, THEN build content, THEN print.
-  document.body.classList.add("printing-quote");
+  // Build content FIRST, then flip class, then print — all synchronous.
   window.buildPrintQuote();
-  // Force a layout flush before print so the browser sees only #printQuote
-  document.body.offsetHeight;
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      window.print();
-    });
-  });
-};
-// Belt-and-suspenders: hook beforeprint so class is always added when user hits Ctrl+P too
-window.addEventListener("beforeprint", function(){
-  // Only auto-swap to quote-print mode if user is on the Farm Plan view
-  var onPlan = document.querySelector('[data-view="plan"].active, .nav-item.active[data-view="plan"]') ||
-               (typeof state !== "undefined" && state.view === "plan");
-  if(onPlan && !document.body.classList.contains("printing-quote")){
-    document.body.classList.add("printing-quote");
-    try{ window.buildPrintQuote(); }catch(_){}
-    window._autoRemovePrintClass = true;
-  }
-});
-window.addEventListener("afterprint", function(){
+  document.body.classList.add("printing-quote");
+  // Force layout so browser sees the class change before print
+  void document.body.offsetHeight;
+  // Print synchronously — this blocks until user clicks Print or Cancel
+  try { window.print(); } catch(e) { console.warn("print failed:", e); }
+  // Restore normal view once dialog closes
   document.body.classList.remove("printing-quote");
-  window._autoRemovePrintClass = false;
-});
+};
 document.addEventListener("DOMContentLoaded", function(){
   // Wire up Print/Save buttons in Farm Plan
   var btns = ["planPrint","planSave"];
