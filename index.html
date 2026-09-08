@@ -1785,84 +1785,74 @@ async function openPdf(file, name){
   viewerBody.classList.remove("native-fail");
   viewerFallLink.href = resolved;
   viewerFrame.src = "about:blank";
+  viewerFrame.style.display = "none";
   const loader = document.getElementById("viewerLoader");
   loader.classList.remove("hide");
-  // Revoke any previous object URL to free memory
   if(window._lastBlobUrl){ try{URL.revokeObjectURL(window._lastBlobUrl)}catch(_){} window._lastBlobUrl=null; }
-  // Detect iPad/iOS — Safari won't render blob PDFs in an iframe reliably
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform==="MacIntel" && navigator.maxTouchPoints > 1);
-  if(isIOS){
-    viewer.classList.add("open");
-    document.body.style.overflow="hidden";
-    let container = document.getElementById("pdfjsPages");
-    if(!container){
-      container = document.createElement("div");
-      container.id = "pdfjsPages";
-      container.style.cssText = "position:absolute;inset:0;overflow:auto;background:#2a2a2a;padding:12px;-webkit-overflow-scrolling:touch";
-      viewerBody.appendChild(container);
-    }
-    container.innerHTML = "";
-    container.style.display = "block";
-    viewerFrame.style.display = "none";
-    try {
-      if(!window.pdfjsLib) throw new Error("pdf.js not loaded");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-      const pdf = await pdfjsLib.getDocument(resolved).promise;
-      for(let i=1; i<=pdf.numPages; i++){
-        const page = await pdf.getPage(i);
-        const baseVp = page.getViewport({scale:1});
-        const scale = Math.min(2.5, Math.max(1, (window.innerWidth - 48) / baseVp.width));
-        const viewport = page.getViewport({scale});
-        const canvas = document.createElement("canvas");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        canvas.style.cssText = "display:block;max-width:100%;height:auto;margin:0 auto 12px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.4);border-radius:4px";
-        container.appendChild(canvas);
-        await page.render({canvasContext: canvas.getContext("2d"), viewport}).promise;
-      }
-      loader.classList.add("hide");
-    } catch(err){
-      console.warn("pdfjs render failed", err);
-      loader.classList.add("hide");
-      viewerBody.classList.add("native-fail");
-    }
-    const meta = PDFS.find(p=>p.file===file) || {file,title:currentPdf.title,cat:"pdf"};
-    pushRecent({file:meta.file,title:meta.title,cat:meta.cat});
-    return;
-  }
-  // Desktop: fetch as blob so content-disposition:attachment is bypassed and PDF renders inline
-  try{
-    const resp = await fetch(resolved);
-    if(!resp.ok) throw new Error("HTTP "+resp.status);
-    const buf = await resp.arrayBuffer();
-    const blob = new Blob([buf], {type:"application/pdf"});
-    const objUrl = URL.createObjectURL(blob);
-    window._lastBlobUrl = objUrl;
-    viewerFrame.onload = ()=>loader.classList.add("hide");
-    viewerFrame.src = objUrl + "#toolbar=1&navpanes=0";
-    // Safety timeout
-    setTimeout(()=>loader.classList.add("hide"), 4000);
-  }catch(err){
-    console.warn("blob load failed", err);
-    loader.classList.add("hide");
-    viewerBody.classList.add("native-fail");
-  }
+
+  // Open the overlay immediately so the user sees SOMETHING
   viewer.classList.add("open");
   document.body.style.overflow="hidden";
+
+  // Universal PDF.js render — works on desktop AND iPad, no CORS/content-disposition issues
+  let container = document.getElementById("pdfjsPages");
+  if(!container){
+    container = document.createElement("div");
+    container.id = "pdfjsPages";
+    container.style.cssText = "position:absolute;inset:0;overflow:auto;background:#2a2a2a;padding:12px;-webkit-overflow-scrolling:touch";
+    viewerBody.appendChild(container);
+  }
+  container.innerHTML = "";
+  container.style.display = "block";
+
+  try {
+    if(!window.pdfjsLib) throw new Error("pdf.js not loaded");
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    // withCredentials false; use CORS mode; disable range requests to sidestep servers that don't advertise them
+    const loadingTask = pdfjsLib.getDocument({
+      url: resolved,
+      disableRange: true,
+      disableStream: true,
+      withCredentials: false
+    });
+    const pdf = await loadingTask.promise;
+    for(let i=1; i<=pdf.numPages; i++){
+      const page = await pdf.getPage(i);
+      const baseVp = page.getViewport({scale:1});
+      const targetWidth = Math.min(1100, window.innerWidth - 48);
+      const scale = Math.min(2.5, Math.max(1, targetWidth / baseVp.width));
+      const viewport = page.getViewport({scale});
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      canvas.style.cssText = "display:block;max-width:100%;height:auto;margin:0 auto 12px;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.4);border-radius:4px";
+      container.appendChild(canvas);
+      await page.render({canvasContext: canvas.getContext("2d"), viewport}).promise;
+    }
+    loader.classList.add("hide");
+  } catch(err){
+    console.warn("pdfjs render failed:", err && err.message, err);
+    loader.classList.add("hide");
+    // Show inline fallback panel INSIDE the viewer (do not close, do not open new tab)
+    container.innerHTML = `
+      <div style="color:#fff;font-family:Inter,sans-serif;text-align:center;padding:40px 20px;max-width:520px;margin:60px auto">
+        <div style="font-size:1.3rem;font-weight:800;margin-bottom:12px">Preview unavailable</div>
+        <div style="opacity:.85;line-height:1.5;margin-bottom:22px">
+          The PDF couldn't render inline. This usually means the file host isn't sending CORS headers.
+          Tap below to open it directly.
+        </div>
+        <a href="${resolved}" target="_blank" rel="noopener"
+           style="display:inline-block;padding:.9rem 1.4rem;background:#009040;color:#fff;font-weight:800;border-radius:10px;text-decoration:none;letter-spacing:.05em;text-transform:uppercase">
+          Open PDF in New Tab
+        </a>
+        <div style="opacity:.6;font-size:.8rem;margin-top:16px">Error: ${(err&&err.message)||"unknown"}</div>
+      </div>`;
+  }
   // Track in recent
   const meta = PDFS.find(p=>p.file===file) || {file,title:currentPdf.title,cat:"pdf"};
   pushRecent({file:meta.file,title:meta.title,cat:meta.cat});
-  // Detect fail-to-render on iOS (basic heuristic)
-  setTimeout(()=>{
-    try{
-      const doc = viewerFrame.contentDocument;
-      if(doc && doc.body && doc.body.innerHTML.length<50 && !doc.querySelector("embed,object")){
-        // Some iOS versions render inline; if empty after 1.5s show fallback link
-      }
-    }catch(_){}
-  },1500);
 }
+
 function closePdf(){
   viewer.classList.remove("open");
   viewerFrame.src="about:blank";
