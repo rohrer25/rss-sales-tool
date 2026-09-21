@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,10 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="RSS Sales">
-<title>Rohrer Seed Solutions — Fall 2026 / Spring 2027 Sales Tool</title>
+<title>Rohrer Seed Solutions â€” Fall 2026 / Spring 2027 Sales Tool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RSS Sales">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="theme-color" content="#009040">
 <style>
 :root{
   --ink:#0C1424;
@@ -543,7 +549,7 @@ a:hover{text-decoration:underline}
 .contact-line{color:var(--furrow);font-size:.85rem;margin-top:.4rem}
 .contact-line a{color:var(--field);font-weight:600}
 
-/* Icons — inline SVG kept simple */
+/* Icons â€” inline SVG kept simple */
 .icoline{stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
 /* Print */
@@ -766,7 +772,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
   #printQuote .pq-totals tr.grand td { color:#002870; }
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="./vendor/pdf.min.js"></script>
 </head>
 <body data-cfemail-safe="true">
 
@@ -842,7 +848,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       <h1 class="pagetitle" id="pageTitle">Home <span class="sub" id="pageSub">Rohrer Seed Solutions</span></h1>
       <div class="search-wrap">
         <svg class="sico icoline" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="gsearch" type="search" placeholder="Search products, PDFs, prices, programs…" autocomplete="off">
+        <input id="gsearch" type="search" placeholder="Search products, PDFs, prices, programsâ€¦" autocomplete="off">
         <div class="search-results" id="searchResults" role="listbox"></div>
       </div>
       <button class="talk-btn" id="openDrawer" title="Talking points &amp; objections">
@@ -860,7 +866,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       <div class="hero">
         <div class="eyebrow">Fall 2026 &middot; Spring 2027 Season</div>
         <h1>One tool for the sales call.</h1>
-        <p class="lead">Every product, price, program, and PDF you carry — organized for the tailgate, the kitchen table, and the office. Optimized for iPad in the field.</p>
+        <p class="lead">Every product, price, program, and PDF you carry â€” organized for the tailgate, the kitchen table, and the office. Optimized for iPad in the field.</p>
         <div class="actions">
           <button class="primary" data-goto="call">
             <svg width="18" height="18" class="icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
@@ -886,31 +892,31 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
           <svg class="tico icoline" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M8 6c0 4 4 6 4 10"/><path d="M16 6c0 4-4 6-4 10"/></svg>
           <div class="tt">Corn Lineup</div>
           <div class="ts">ProHarvest hybrids, RM &amp; traits</div>
-          <div class="tcount" id="tc-corn">— products</div>
+          <div class="tcount" id="tc-corn">â€” products</div>
         </button>
         <button class="tile" data-goto="products" data-filter="soy">
           <svg class="tico icoline" viewBox="0 0 24 24"><ellipse cx="9" cy="12" rx="4" ry="6"/><ellipse cx="15" cy="12" rx="4" ry="6"/></svg>
           <div class="tt">Soybeans</div>
           <div class="ts">Enlist E3, XtendFLEX, Conventional, High Oleic</div>
-          <div class="tcount" id="tc-soy">— products</div>
+          <div class="tcount" id="tc-soy">â€” products</div>
         </button>
         <button class="tile" data-goto="products" data-filter="wheat">
           <svg class="tico icoline" viewBox="0 0 24 24"><path d="M12 21V6"/><path d="M6 9l6-3 6 3"/><path d="M6 13l6-3 6 3"/><path d="M6 17l6-3 6 3"/></svg>
           <div class="tt">Wheat</div>
           <div class="ts">Retail pricelist + U of I trials</div>
-          <div class="tcount" id="tc-wheat">— PDFs</div>
+          <div class="tcount" id="tc-wheat">â€” PDFs</div>
         </button>
         <button class="tile" data-goto="programs">
           <svg class="tico icoline" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
           <div class="tt">Programs</div>
           <div class="ts">TCO, Meristem, dealer kits</div>
-          <div class="tcount" id="tc-programs">— programs</div>
+          <div class="tcount" id="tc-programs">â€” programs</div>
         </button>
         <button class="tile" data-goto="products" data-filter="biologicals">
           <svg class="tico icoline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8M12 8v8"/></svg>
           <div class="tt">Biologicals</div>
           <div class="ts">Keep them alive, results, immunity</div>
-          <div class="tcount" id="tc-bio">— sheets</div>
+          <div class="tcount" id="tc-bio">â€” sheets</div>
         </button>
         <button class="tile" data-goto="policies">
           <svg class="tico icoline" viewBox="0 0 24 24"><path d="M6 3h9l5 5v13H6z"/><path d="M14 3v6h6"/></svg>
@@ -925,7 +931,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
         <div class="meta"><button id="clearRecent" style="background:transparent;border:0;color:var(--furrow);font-size:.8rem;cursor:pointer;text-decoration:underline">Clear</button></div>
       </div>
       <div class="recent-strip" id="recentStrip">
-        <div class="empty-recent">Nothing here yet — open a PDF to build a recent-viewed list on this device.</div>
+        <div class="empty-recent">Nothing here yet â€” open a PDF to build a recent-viewed list on this device.</div>
       </div>
     </section>
 
@@ -940,7 +946,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       <div class="price-toolbar">
         <div class="filt">
           <svg class="sico icoline" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="priceFilter" type="search" placeholder="Filter by hybrid, variety, RM, price…" autocomplete="off">
+          <input id="priceFilter" type="search" placeholder="Filter by hybrid, variety, RM, priceâ€¦" autocomplete="off">
         </div>
         <button class="print-btn" onclick="window.print()">
           <svg width="14" height="14" class="icoline" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="8"/><path d="M6 17h12v4H6z"/></svg>
@@ -1020,7 +1026,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
               <option value="JDF Prime +6.10%">JDF Prime +6.10%</option>
             </select>
           </div>
-          <div class="plan-field"><label>Notes</label><textarea id="pl-notes" placeholder="Rotation, soil types, prior programs, follow-up items…"></textarea></div>
+          <div class="plan-field"><label>Notes</label><textarea id="pl-notes" placeholder="Rotation, soil types, prior programs, follow-up itemsâ€¦"></textarea></div>
         </div>
       </div>
 
@@ -1028,7 +1034,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
         <div class="picker-field">
           <label>Add Product</label>
           <select id="pl-product">
-            <option value="">— pick a product —</option>
+            <option value="">â€” pick a product â€”</option>
           </select>
         </div>
         <div class="picker-field qty-field">
@@ -1076,8 +1082,8 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       <div class="plan-totals" id="planTotals">
         <h3>Quote Summary</h3>
         <div class="row"><span class="lbl">Retail subtotal</span><span class="val" id="tot-retail">$0.00</span></div>
-        <div class="row discount"><span class="lbl">− Volume discount</span><span class="val" id="tot-vol">$0.00</span></div>
-        <div class="row discount"><span class="lbl">− Cash / early / other</span><span class="val" id="tot-cash">$0.00</span></div>
+        <div class="row discount"><span class="lbl">âˆ’ Volume discount</span><span class="val" id="tot-vol">$0.00</span></div>
+        <div class="row discount"><span class="lbl">âˆ’ Cash / early / other</span><span class="val" id="tot-cash">$0.00</span></div>
         <div class="row big"><span class="lbl">Grower Total</span><span class="val" id="tot-grand">$0.00</span></div>
         <div class="foot" id="tot-foot">Per-bag prices, discounts and totals are calculated live from the Zone 1 pricelist and your discount schedule. Confirm with the current price sheet before quoting.</div>
       </div>
@@ -1093,7 +1099,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
     <!-- POLICIES VIEW -->
     <section class="view" id="view-policies">
       <div class="gcard">
-        <h3>ProHarvest Seeds — 2026-27 Sales Policies</h3>
+        <h3>ProHarvest Seeds â€” 2026-27 Sales Policies</h3>
         <p class="pill">Effective September 1, 2026</p>
         <h4>Corn &amp; Soybean Packaging</h4>
         <ul>
@@ -1104,7 +1110,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
         <ul>
           <li>Seed planted prior to each county's insurable multi-peril planting date qualifies for replant at 50% of retail.</li>
           <li>Free replant seed corn and proTect-treated soybeans furnished up to the first <strong>25% of the original order</strong>. Beyond that: 25% of full retail.</li>
-          <li>Soybeans must be treated with proTect DI or Ultra to qualify — untreated soybeans are invoiced at 25% of retail.</li>
+          <li>Soybeans must be treated with proTect DI or Ultra to qualify â€” untreated soybeans are invoiced at 25% of retail.</li>
           <li>Covers loss from natural causes (flooding, frost, crusting, animal feeding). Does not cover herbicide misapplication.</li>
           <li>One replant credit per season. Replant seed does not qualify for further discounts or programs.</li>
         </ul>
@@ -1117,11 +1123,11 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
         </ul>
         <h4>Financing (First Mid &amp; John Deere Financial)</h4>
         <ul>
-          <li><strong>First Mid 0%</strong> — Corn &amp; Soybeans only, order by Jan 15, 2027. Volume &amp; early-order discounts still apply. $1,000 min. Due in full Dec 2027.</li>
-          <li><strong>JDF 1.9% Fixed</strong> — Corn &amp; Soybeans only, order by Jan 15, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
-          <li><strong>JDF Prime -1%</strong> — Corn &amp; Soybeans only, order by Mar 31, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
-          <li><strong>First Mid Prime +0.25%</strong> — All Crops. Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
-          <li><strong>JDF Prime +6.10%</strong> — Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
+          <li><strong>First Mid 0%</strong> â€” Corn &amp; Soybeans only, order by Jan 15, 2027. Volume &amp; early-order discounts still apply. $1,000 min. Due in full Dec 2027.</li>
+          <li><strong>JDF 1.9% Fixed</strong> â€” Corn &amp; Soybeans only, order by Jan 15, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
+          <li><strong>JDF Prime -1%</strong> â€” Corn &amp; Soybeans only, order by Mar 31, 2027. Volume/early-order apply; early-pay cash does not. $2,500 min. Due Dec 2027.</li>
+          <li><strong>First Mid Prime +0.25%</strong> â€” All Crops. Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
+          <li><strong>JDF Prime +6.10%</strong> â€” Volume/early-order apply; early-pay cash does not. $1,000 min. Due Dec 2027.</li>
         </ul>
         <h4>Fine print</h4>
         <ul>
@@ -1182,7 +1188,7 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
     <button class="close" id="viewerClose" title="Close PDF"><svg width="16" height="16" class="icoline" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="btxt">Close</span></button>
   </div>
   <div class="viewer-body" id="viewerBody">
-    <div class="viewer-loader hide" id="viewerLoader"><div class="sp"></div>Loading PDF…</div>
+    <div class="viewer-loader hide" id="viewerLoader"><div class="sp"></div>Loading PDFâ€¦</div>
     <iframe id="viewerFrame" title="PDF"></iframe>
     <div class="viewer-fallback" id="viewerFallback">
       <p style="font-size:1.1rem;margin-bottom:1rem">Preview isn't supported on this device.</p>
@@ -1209,16 +1215,16 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
 
 <script>
 /* ============================================================
-   DATA — every PDF, product, and program is defined here.
+   DATA â€” every PDF, product, and program is defined here.
    File paths use ./pdfs/<name>.pdf so the same GitHub Pages
    layout keeps working (same URL, same QR code).
 ============================================================ */
 const PDFS = [
   // Corn
   {file:"pdfs/Zone_1_Full.pdf", title:"Zone 1 Full Pricelist", cat:"pricing", tags:"corn soy wheat alfalfa full pricelist", desc:"Complete Zone 1 corn, soybean, alfalfa pricing + volume discounts."},
-  {file:"pdfs/7B440.pdf", title:"7B440 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B440 early bearded head", desc:"ProHarvest 7B440 — early-maturity bearded wheat, late heading reduces spring freeze risk."},
-  {file:"pdfs/7B520.pdf", title:"7B520 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B520 medium-early bearded head scab", desc:"ProHarvest 7B520 — medium-early bearded wheat, excellent head scab resistance."},
-  {file:"pdfs/High_Yield_Corn.pdf", title:"High-Yield Corn System", cat:"corn", tags:"corn program system yield", desc:"How to build a high-yield corn program — inputs, timing, ROI."},
+  {file:"pdfs/7B440.pdf", title:"7B440 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B440 early bearded head", desc:"ProHarvest 7B440 â€” early-maturity bearded wheat, late heading reduces spring freeze risk."},
+  {file:"pdfs/7B520.pdf", title:"7B520 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B520 medium-early bearded head scab", desc:"ProHarvest 7B520 â€” medium-early bearded wheat, excellent head scab resistance."},
+  {file:"pdfs/High_Yield_Corn.pdf", title:"High-Yield Corn System", cat:"corn", tags:"corn program system yield", desc:"How to build a high-yield corn program â€” inputs, timing, ROI."},
   {file:"pdfs/TCO_Corn_Program.pdf", title:"TCO Corn Program", cat:"corn", tags:"corn program tco cost", desc:"Total Cost of Ownership breakdown for the corn program."},
   {file:"pdfs/White_Corn_Sell_Sheet.pdf", title:"White Corn Sell Sheet", cat:"corn", tags:"white corn specialty food", desc:"White corn program overview and specs."},
   {file:"pdfs/White_Corn_SOYLEIC_Pricelist.pdf", title:"White Corn & SOYLEIC Pricelist", cat:"pricing", tags:"white corn soyleic specialty pricing", desc:"Pricing for white corn and SOYLEIC high-oleic soy."},
@@ -1226,14 +1232,14 @@ const PDFS = [
   // Soybeans
   {file:"pdfs/High_Yield_Soybean.pdf", title:"High-Yield Soybean System", cat:"soy", tags:"soy program system yield", desc:"Build a high-yield soybean program from planting through harvest."},
   {file:"pdfs/TCO_Soybean_Program.pdf", title:"TCO Soybean Program", cat:"soy", tags:"soy program tco cost", desc:"Total Cost of Ownership for the soybean program."},
-  {file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf", title:"High Oleic Soy (SOYLEIC)", cat:"soy", tags:"soy soyleic high oleic specialty", desc:"SOYLEIC high-oleic soybean opportunity — food-grade premium market."},
+  {file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf", title:"High Oleic Soy (SOYLEIC)", cat:"soy", tags:"soy soyleic high oleic specialty", desc:"SOYLEIC high-oleic soybean opportunity â€” food-grade premium market."},
   {file:"pdfs/Meristem_Soybean_Replant.pdf", title:"Meristem Soybean Replant", cat:"biologicals", tags:"soy replant meristem", desc:"Replant options and biology for soybean stands."},
-  {file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf", title:"HT MaxStax — Soybean", cat:"biologicals", tags:"soy maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for soybeans."},
-  {file:"pdfs/Sell_Sheet_all_three.pdf", title:"Wheat Sell Sheet — All Three Varieties", cat:"wheat", tags:"wheat sell sheet proharvest 7B440 7B520 7B620", desc:"ProHarvest wheat lineup — sell sheet covering all three varieties."},
+  {file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf", title:"HT MaxStax â€” Soybean", cat:"biologicals", tags:"soy maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for soybeans."},
+  {file:"pdfs/Sell_Sheet_all_three.pdf", title:"Wheat Sell Sheet â€” All Three Varieties", cat:"wheat", tags:"wheat sell sheet proharvest 7B440 7B520 7B620", desc:"ProHarvest wheat lineup â€” sell sheet covering all three varieties."},
 
   // Wheat
   {file:"pdfs/2026_Retail_wheat_print.pdf", title:"2026 Retail Wheat Pricelist", cat:"pricing", tags:"wheat pricing retail 2026", desc:"Full 2026 retail wheat pricing."},
-  {file:"pdfs/UOFI_WHEAT_TRIALS.pdf", title:"U of I Wheat Trials — Full Report", cat:"wheat", tags:"wheat u of i illinois trials data yield", desc:"University of Illinois wheat variety trial data."},
+  {file:"pdfs/UOFI_WHEAT_TRIALS.pdf", title:"U of I Wheat Trials â€” Full Report", cat:"wheat", tags:"wheat u of i illinois trials data yield", desc:"University of Illinois wheat variety trial data."},
   {file:"pdfs/UofIData.pdf", title:"U of I Data Summary", cat:"wheat", tags:"wheat u of i illinois summary", desc:"Quick-look summary of U of I wheat trial results."},
 
   // Cover Crop / Forage / Rye
@@ -1242,18 +1248,18 @@ const PDFS = [
 
   // Biologicals
   {file:"pdfs/KeepBiologicalsAlive.pdf", title:"Keep Biologicals Alive", cat:"biologicals", tags:"biologicals living microbes storage handling", desc:"Storage, handling, and tank-mix rules that keep biologicals viable."},
-  {file:"pdfs/BioControls_Results.pdf", title:"Biological Controls — Results", cat:"biologicals", tags:"biologicals biocontrols yield results trials", desc:"On-farm results from biological control programs."},
+  {file:"pdfs/BioControls_Results.pdf", title:"Biological Controls â€” Results", cat:"biologicals", tags:"biologicals biocontrols yield results trials", desc:"On-farm results from biological control programs."},
   {file:"pdfs/BioFriendly_Nitrogen.pdf", title:"Bio-Friendly Nitrogen", cat:"biologicals", tags:"nitrogen biological n stabilizer", desc:"Nitrogen sources compatible with biological programs."},
-  {file:"pdfs/Immunity_Graphic.pdf", title:"Plant Immunity Graphic", cat:"biologicals", tags:"biologicals immunity plant defense visual", desc:"Visual explainer — how biologicals prime plant immunity."},
+  {file:"pdfs/Immunity_Graphic.pdf", title:"Plant Immunity Graphic", cat:"biologicals", tags:"biologicals immunity plant defense visual", desc:"Visual explainer â€” how biologicals prime plant immunity."},
 
   // Meristem programs / adjuvants
   {file:"pdfs/Meristem_CY27_Product_Sheet.pdf", title:"Meristem CY27 Product Sheet", cat:"biologicals", tags:"meristem 2027 lineup product", desc:"Full Meristem 2027 crop-year product lineup."},
-  {file:"pdfs/Meristem_ExcavatorAMS.pdf", title:"Meristem Excavator AMS", cat:"biologicals", tags:"meristem excavator ams adjuvant", desc:"Excavator AMS adjuvant — water conditioning + drift management."},
-  {file:"pdfs/Meristem_HT_MaxStax_Corn.pdf", title:"HT MaxStax — Corn", cat:"biologicals", tags:"corn maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for corn."},
+  {file:"pdfs/Meristem_ExcavatorAMS.pdf", title:"Meristem Excavator AMS", cat:"biologicals", tags:"meristem excavator ams adjuvant", desc:"Excavator AMS adjuvant â€” water conditioning + drift management."},
+  {file:"pdfs/Meristem_HT_MaxStax_Corn.pdf", title:"HT MaxStax â€” Corn", cat:"biologicals", tags:"corn maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for corn."},
   {file:"pdfs/Meristem_HopperThrottle_Matrix.pdf", title:"HopperThrottle Matrix", cat:"biologicals", tags:"meristem hopperthrottle in-furrow rate matrix", desc:"Rate matrix for HopperThrottle in-furrow biological."},
   {file:"pdfs/Meristem_N-Stabilizers.pdf", title:"Meristem N-Stabilizers", cat:"biologicals", tags:"meristem nitrogen stabilizer n", desc:"Nitrogen stabilizer options and positioning."},
-  {file:"pdfs/Meristem_Upshift_CPro.pdf", title:"Meristem Upshift C-Pro", cat:"biologicals", tags:"meristem upshift c-pro carbon foliar", desc:"Upshift C-Pro — foliar carbon program for corn/soy."},
-  {file:"pdfs/UpshiftCPlus_Results.pdf", title:"Upshift C-Plus — Results", cat:"biologicals", tags:"meristem upshift c-plus results yield", desc:"On-farm yield results for the Upshift C-Plus program."},
+  {file:"pdfs/Meristem_Upshift_CPro.pdf", title:"Meristem Upshift C-Pro", cat:"biologicals", tags:"meristem upshift c-pro carbon foliar", desc:"Upshift C-Pro â€” foliar carbon program for corn/soy."},
+  {file:"pdfs/UpshiftCPlus_Results.pdf", title:"Upshift C-Plus â€” Results", cat:"biologicals", tags:"meristem upshift c-plus results yield", desc:"On-farm yield results for the Upshift C-Plus program."},
   {file:"pdfs/MaxStax_Breakout.pdf", title:"MaxStax Breakout", cat:"biologicals", tags:"maxstax breakout in-furrow biological", desc:"Breakout view of the MaxStax in-furrow stack."},
   {file:"pdfs/MaxStaxVSLiquid.pdf", title:"MaxStax vs Liquid Fertilizer", cat:"biologicals", tags:"maxstax comparison liquid fertilizer starter", desc:"MaxStax biological stack vs conventional liquid starter."},
 
@@ -1263,32 +1269,32 @@ const PDFS = [
   {file:"pdfs/Systems_Rates.pdf", title:"Systems Rates", cat:"biologicals", tags:"systems rates in-furrow foliar biological meristem", desc:"Program rates across the full systems approach."},
 
   // Dealer
-  {file:"pdfs/Dealer_Success_Kits.pdf", title:"2027 Dealer Success Kits", cat:"program", tags:"dealer kits success sales tools", desc:"Dealer success kit — sales tools, positioning, promo materials."},
+  {file:"pdfs/Dealer_Success_Kits.pdf", title:"2027 Dealer Success Kits", cat:"program", tags:"dealer kits success sales tools", desc:"Dealer success kit â€” sales tools, positioning, promo materials."},
   {file:"pdfs/New_Dealer_Portal.pdf", title:"New Dealer Portal", cat:"program", tags:"dealer portal login access", desc:"How to log into and use the new dealer portal."},
 
   // Tech
-  {file:"pdfs/TechSheet_Harvestshield.pdf", title:"Harvestshield Evo — Tech Sheet", cat:"biologicals", tags:"harvestshield evo tech sheet grain storage meristem", desc:"Meristem Harvestshield Evo — grain-storage protectant."},
-  {file:"pdfs/TechSheet_Homestretch.pdf", title:"Homestretch — Tech Sheet", cat:"biologicals", tags:"homestretch tech sheet late season foliar meristem", desc:"Homestretch late-season foliar program."},
-  {file:"pdfs/80P75.pdf", title:"80P75 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 80P75 110 day pce conv", desc:"ProHarvest 80P75 · 110-day · PCE / Conv · outstanding stalks, low green snap."},
-  {file:"pdfs/82P96.pdf", title:"82P96 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 82P96 112 day pce", desc:"ProHarvest 82P96 · 112-day · PCE · new genetics pushing yield, strong disease pkg."},
-  {file:"pdfs/83P66.pdf", title:"83P66 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 83P66 113 day vt2prib", desc:"ProHarvest 83P66 · 113-day · VT2P RIB · high-yield relative of the 8360."},
-  {file:"pdfs/84P78.pdf", title:"84P78 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 84P78 114 day trerib conv", desc:"ProHarvest 84P78 · 114-day · TreRIB / Conv · workhorse hybrid with ear flex."},
-  {file:"pdfs/85P58.pdf", title:"85P58 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 85P58 115 day ssrib vt2prib", desc:"ProHarvest 85P58 · 115-day · SSRIB / VT2P RIB · full-season powerhouse."},
-  {file:"pdfs/86P55.pdf", title:"86P55 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 86P55 116 day trerib", desc:"ProHarvest 86P55 · 116-day · TreRIB · massive yields for the aggressive grower."},
-  {file:"pdfs/AE2860.pdf", title:"AE2860 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE2860 2.8 RM", desc:"AE2860 · 2.8 RM · Enlist E3 · height + standability, beats key checks."},
-  {file:"pdfs/AE3070.pdf", title:"AE3070 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3070 3.0 RM", desc:"AE3070 · 3.0 RM · Enlist E3 · Central & Eastern footprint, proven parentage."},
-  {file:"pdfs/AE3150.pdf", title:"AE3150 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3150 3.11 RM", desc:"AE3150 · 3.1 RM · Enlist E3 · step-change performance, clean line."},
-  {file:"pdfs/AE3270.pdf", title:"AE3270 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3270 3.2 RM", desc:"AE3270 · 3.2 RM · Enlist E3 · high + low productivity acres both."},
-  {file:"pdfs/AE3370.pdf", title:"AE3370 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3370 3.3 RM", desc:"AE3370 · 3.3 RM · Enlist E3 · Central + Eastern Corn Belt, STS-tolerant."},
-  {file:"pdfs/AE3550S.pdf", title:"AE3550S · Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3550S 3.5 RM sts", desc:"AE3550S · 3.5 RM · Enlist E3 · STS · #1 in almost every breakout."},
-  {file:"pdfs/AE3660.pdf", title:"AE3660 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3660 3.6 RM peking", desc:"AE3660 · 3.6 RM · Enlist E3 · Peking SCN, Cadillac defensive package."},
-  {file:"pdfs/AE3850.pdf", title:"AE3850 · Enlist E3", cat:"soy", tags:"soy enlist e3 AE3850 3.8 RM", desc:"AE3850 · 3.8 RM · Enlist E3 · added height, strong SDS package."},
-  {file:"pdfs/AE3870S.pdf", title:"AE3870S · Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3870S 3.8 RM sts", desc:"AE3870S · 3.8 RM · Enlist E3 · STS · elite late-3 addition."},
-  {file:"pdfs/AE3950S.pdf", title:"AE3950S · Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3950S 3.9 RM sts", desc:"AE3950S · 3.9 RM · Enlist E3 · STS · big upgrade to SDS + standability."},
-  {file:"pdfs/28F70.pdf", title:"28F70 · XtendFLEX", cat:"soy", tags:"soy xtendflex 28F70 2.8 RM peking sts", desc:"28F70 · 2.8 RM · XtendFLEX · Peking SCN, STS-tolerant."},
-  {file:"pdfs/30F73.pdf", title:"30F73 · XtendFLEX", cat:"soy", tags:"soy xtendflex 30F73 3.0 RM", desc:"30F73 · 3.0 RM · XtendFLEX · wet-feet product, outstanding standability."},
-  {file:"pdfs/34F74.pdf", title:"34F74 · XtendFLEX", cat:"soy", tags:"soy xtendflex 34F74 3.4 RM prr", desc:"34F74 · 3.4 RM · XtendFLEX · chart-topper for Group 3, stacked PRR."},
-  {file:"pdfs/32C71.pdf", title:"32C71 · Conventional", cat:"soy", tags:"soy conventional 32C71 3.2 RM buff hilum", desc:"32C71 · 3.2 RM · Conventional · buff hilum, 1c gene, strong disease pkg."}
+  {file:"pdfs/TechSheet_Harvestshield.pdf", title:"Harvestshield Evo â€” Tech Sheet", cat:"biologicals", tags:"harvestshield evo tech sheet grain storage meristem", desc:"Meristem Harvestshield Evo â€” grain-storage protectant."},
+  {file:"pdfs/TechSheet_Homestretch.pdf", title:"Homestretch â€” Tech Sheet", cat:"biologicals", tags:"homestretch tech sheet late season foliar meristem", desc:"Homestretch late-season foliar program."},
+  {file:"pdfs/80P75.pdf", title:"80P75 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 80P75 110 day pce conv", desc:"ProHarvest 80P75 Â· 110-day Â· PCE / Conv Â· outstanding stalks, low green snap."},
+  {file:"pdfs/82P96.pdf", title:"82P96 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 82P96 112 day pce", desc:"ProHarvest 82P96 Â· 112-day Â· PCE Â· new genetics pushing yield, strong disease pkg."},
+  {file:"pdfs/83P66.pdf", title:"83P66 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 83P66 113 day vt2prib", desc:"ProHarvest 83P66 Â· 113-day Â· VT2P RIB Â· high-yield relative of the 8360."},
+  {file:"pdfs/84P78.pdf", title:"84P78 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 84P78 114 day trerib conv", desc:"ProHarvest 84P78 Â· 114-day Â· TreRIB / Conv Â· workhorse hybrid with ear flex."},
+  {file:"pdfs/85P58.pdf", title:"85P58 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 85P58 115 day ssrib vt2prib", desc:"ProHarvest 85P58 Â· 115-day Â· SSRIB / VT2P RIB Â· full-season powerhouse."},
+  {file:"pdfs/86P55.pdf", title:"86P55 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 86P55 116 day trerib", desc:"ProHarvest 86P55 Â· 116-day Â· TreRIB Â· massive yields for the aggressive grower."},
+  {file:"pdfs/AE2860.pdf", title:"AE2860 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE2860 2.8 RM", desc:"AE2860 Â· 2.8 RM Â· Enlist E3 Â· height + standability, beats key checks."},
+  {file:"pdfs/AE3070.pdf", title:"AE3070 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3070 3.0 RM", desc:"AE3070 Â· 3.0 RM Â· Enlist E3 Â· Central & Eastern footprint, proven parentage."},
+  {file:"pdfs/AE3150.pdf", title:"AE3150 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3150 3.11 RM", desc:"AE3150 Â· 3.1 RM Â· Enlist E3 Â· step-change performance, clean line."},
+  {file:"pdfs/AE3270.pdf", title:"AE3270 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3270 3.2 RM", desc:"AE3270 Â· 3.2 RM Â· Enlist E3 Â· high + low productivity acres both."},
+  {file:"pdfs/AE3370.pdf", title:"AE3370 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3370 3.3 RM", desc:"AE3370 Â· 3.3 RM Â· Enlist E3 Â· Central + Eastern Corn Belt, STS-tolerant."},
+  {file:"pdfs/AE3550S.pdf", title:"AE3550S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3550S 3.5 RM sts", desc:"AE3550S Â· 3.5 RM Â· Enlist E3 Â· STS Â· #1 in almost every breakout."},
+  {file:"pdfs/AE3660.pdf", title:"AE3660 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3660 3.6 RM peking", desc:"AE3660 Â· 3.6 RM Â· Enlist E3 Â· Peking SCN, Cadillac defensive package."},
+  {file:"pdfs/AE3850.pdf", title:"AE3850 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3850 3.8 RM", desc:"AE3850 Â· 3.8 RM Â· Enlist E3 Â· added height, strong SDS package."},
+  {file:"pdfs/AE3870S.pdf", title:"AE3870S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3870S 3.8 RM sts", desc:"AE3870S Â· 3.8 RM Â· Enlist E3 Â· STS Â· elite late-3 addition."},
+  {file:"pdfs/AE3950S.pdf", title:"AE3950S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3950S 3.9 RM sts", desc:"AE3950S Â· 3.9 RM Â· Enlist E3 Â· STS Â· big upgrade to SDS + standability."},
+  {file:"pdfs/28F70.pdf", title:"28F70 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 28F70 2.8 RM peking sts", desc:"28F70 Â· 2.8 RM Â· XtendFLEX Â· Peking SCN, STS-tolerant."},
+  {file:"pdfs/30F73.pdf", title:"30F73 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 30F73 3.0 RM", desc:"30F73 Â· 3.0 RM Â· XtendFLEX Â· wet-feet product, outstanding standability."},
+  {file:"pdfs/34F74.pdf", title:"34F74 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 34F74 3.4 RM prr", desc:"34F74 Â· 3.4 RM Â· XtendFLEX Â· chart-topper for Group 3, stacked PRR."},
+  {file:"pdfs/32C71.pdf", title:"32C71 Â· Conventional", cat:"soy", tags:"soy conventional 32C71 3.2 RM buff hilum", desc:"32C71 Â· 3.2 RM Â· Conventional Â· buff hilum, 1c gene, strong disease pkg."}
 
 ];
 
@@ -1305,12 +1311,12 @@ const CATEGORIES = [
 ];
 
 /* ============================================================
-   PRICING TABLES — parsed from Zone 1 pricelist source
+   PRICING TABLES â€” parsed from Zone 1 pricelist source
 ============================================================ */
 const PRICE_TABLES = [
   {
     id:"corn-ag-rib",
-    title:"Corn — Above & Below Ground RIB",
+    title:"Corn â€” Above & Below Ground RIB",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     note:"ProHarvest, 80K kernel bag = 1 unit. Available in 36 or 50 unit Black Boxes.",
@@ -1339,7 +1345,7 @@ const PRICE_TABLES = [
   },
   {
     id:"corn-conv",
-    title:"Corn — Conventional",
+    title:"Corn â€” Conventional",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     rows:[
@@ -1362,7 +1368,7 @@ const PRICE_TABLES = [
   },
   {
     id:"corn-ag-only",
-    title:"Corn — Above Ground Only RIB",
+    title:"Corn â€” Above Ground Only RIB",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     rows:[
@@ -1396,7 +1402,7 @@ const PRICE_TABLES = [
   },
   {
     id:"corn-gly",
-    title:"Corn — Glyphosate Tolerant",
+    title:"Corn â€” Glyphosate Tolerant",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     rows:[
@@ -1408,7 +1414,7 @@ const PRICE_TABLES = [
   },
   {
     id:"soy-enlist",
-    title:"Soybeans — Enlist E3™ & XtendFLEX®",
+    title:"Soybeans â€” Enlist E3â„¢ & XtendFLEXÂ®",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
     note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only).",
@@ -1427,7 +1433,7 @@ const PRICE_TABLES = [
   },
   {
     id:"soy-xtend",
-    title:"Soybeans — XtendFLEX®",
+    title:"Soybeans â€” XtendFLEXÂ®",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
     rows:[
@@ -1437,7 +1443,7 @@ const PRICE_TABLES = [
   },
   {
     id:"soy-conv",
-    title:"Soybeans — Conventional",
+    title:"Soybeans â€” Conventional",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
     rows:[
@@ -1505,7 +1511,7 @@ const PRICE_TABLES = [
   },
   {
     id:"white-corn",
-    title:"White Corn — Specialty (ProHarvest)",
+    title:"White Corn â€” Specialty (ProHarvest)",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     note:"Contract only, limited supply. Bright-white identity-preserved hybrids for premium end-use markets. Call for market letter.",
@@ -1537,24 +1543,24 @@ const PRICE_TABLES = [
     columns:["Program","Timing","Cost/Acre"],
     note:"Custom-mixed to order. All fall 2026 retail pricing. Custom blending $0.10/lb.",
     rows:[
-      ["Corn Program 1 — Barley + Rape","Simple","$20.14"],
-      ["Corn Program 2 — Barley + Rape + Radish","Plant by Sept 30","$23.14"],
-      ["Corn Program 3 — Oats + Barley + Rape","Plant by Sept 15","$19.99"],
-      ["Corn Program 4 — Barley + Balansa + Vetch + Rape","N-fixing, plant by Sept 15","$55.84"],
+      ["Corn Program 1 â€” Barley + Rape","Simple","$20.14"],
+      ["Corn Program 2 â€” Barley + Rape + Radish","Plant by Sept 30","$23.14"],
+      ["Corn Program 3 â€” Oats + Barley + Rape","Plant by Sept 15","$19.99"],
+      ["Corn Program 4 â€” Barley + Balansa + Vetch + Rape","N-fixing, plant by Sept 15","$55.84"],
       ["Soybean Program (Bonus Blend @ 35#/A)","After beans","$21.00"],
       ["Soybean Program 2 (reSTORE Rye @ 45#/A)","After beans, low-cost","$12.86"]
     ]
   },
   {
     id:"restore-rye",
-    title:"reSTORE Winter Rye — Semi-Load Pricing",
+    title:"reSTORE Winter Rye â€” Semi-Load Pricing",
     unit:"$/bushel (56 lb)",
     columns:["Tier","Price/Bu","Detail"],
     note:"Premium cleaned winter rye. Trucks average 765-810 units (mix of 56-lb bags or 45-unit mini-bulks).",
     rows:[
       ["Retail (less than load)","$16.00","Customer price"],
       ["Dealer (less than load)","$13.00","Dealer price"],
-      ["Semi Load • Early Order","$12.00","Best value"]
+      ["Semi Load â€¢ Early Order","$12.00","Best value"]
     ]
   },
   {
@@ -1575,7 +1581,7 @@ const PRICE_TABLES = [
 ];
 
 /* ============================================================
-   SALES CALL — 5-stop guided flow
+   SALES CALL â€” 5-stop guided flow
 ============================================================ */
 const CALL_STOPS = [
   {
@@ -1585,11 +1591,11 @@ const CALL_STOPS = [
       title:"Ask, then shut up",
       points:[
         "How many acres corn / soy / wheat this season, and what's the rotation?",
-        "What was your best field last year — and what made it best?",
+        "What was your best field last year â€” and what made it best?",
         "Where did yield disappoint, and what do you think caused it?",
         "How are you handling replant risk this spring?",
-        "Where are you today on biologicals — trying them, using them, or skeptical?",
-        "What's your finance plan — cash, First Mid 0%, or JDF?"
+        "Where are you today on biologicals â€” trying them, using them, or skeptical?",
+        "What's your finance plan â€” cash, First Mid 0%, or JDF?"
       ]
     },
     refs:[
@@ -1599,21 +1605,21 @@ const CALL_STOPS = [
   },
   {
     title:"Product Match",
-    lead:"Match the right hybrids and varieties to their acres and rotation. Show real product sheets — never wing it.",
+    lead:"Match the right hybrids and varieties to their acres and rotation. Show real product sheets â€” never wing it.",
     talk:{
       title:"Match by RM, trait, and pest pressure",
       points:[
         "For corn: pick RM to match their maturity zone; trait platform to match rootworm / above-ground pressure.",
-        "Above-ground only (PCE / VT2P / TreRIB) is cheaper — recommend when below-ground pressure is genuinely low.",
+        "Above-ground only (PCE / VT2P / TreRIB) is cheaper â€” recommend when below-ground pressure is genuinely low.",
         "For soy: default to Enlist E3 unless the neighbor mix or herbicide plan says XtendFLEX. Offer Conventional for the food-grade grower.",
         "If they grow specialty markets, SOYLEIC or white corn opens premium contracts.",
-        "Show the actual product sheet — don't quote traits from memory."
+        "Show the actual product sheet â€” don't quote traits from memory."
       ]
     },
     refs:[
       {label:"7B440 Wheat Variety", file:"pdfs/7B440.pdf"},
       {label:"7B520 Wheat Variety", file:"pdfs/7B520.pdf"},
-      {label:"Wheat Lineup — All 3", file:"pdfs/Sell_Sheet_all_three.pdf"},
+      {label:"Wheat Lineup â€” All 3", file:"pdfs/Sell_Sheet_all_three.pdf"},
       {label:"White Corn Sell Sheet", file:"pdfs/White_Corn_Sell_Sheet.pdf"},
       {label:"High Oleic Soy (SOYLEIC)", file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf"}
     ]
@@ -1625,7 +1631,7 @@ const CALL_STOPS = [
       title:"Anchor on units, then discounts",
       points:[
         "Corn = 80K kernel bag = 1 unit. Soybean = 140K seeds = 1 unit.",
-        "Every hybrid falls into a Volume Discount Group (A-H). Show them their tier at their bag count — this is often the close.",
+        "Every hybrid falls into a Volume Discount Group (A-H). Show them their tier at their bag count â€” this is often the close.",
         "Treated soybean orders after Jan 15, 2027 = extra $1/unit. Order early, save the dollar.",
         "Alfalfa ordered after Sept 15 for spring qualifies for the same cash discounts as corn/soy through Jan 15."
       ]
@@ -1638,15 +1644,15 @@ const CALL_STOPS = [
   },
   {
     title:"Programs",
-    lead:"Now upgrade the ask. Show the systems approach — TCO, Meristem biologicals, in-furrow, foliar, harvest.",
+    lead:"Now upgrade the ask. Show the systems approach â€” TCO, Meristem biologicals, in-furrow, foliar, harvest.",
     talk:{
       title:"Programs turn a seed order into a system",
       points:[
-        "TCO is the conversation-changer — show the placemat so they see cost per acre, not per bag.",
+        "TCO is the conversation-changer â€” show the placemat so they see cost per acre, not per bag.",
         "MaxStax in-furrow biologicals: real yield lift, dry & easy to run through the planter.",
         "N-Stabilizers protect the nitrogen they're already paying for.",
-        "Upshift C-Pro late-vegetative foliar shows results in trials — bring the results sheet.",
-        "Harvestshield Evo saves grain in storage — cheap insurance on a full bin."
+        "Upshift C-Pro late-vegetative foliar shows results in trials â€” bring the results sheet.",
+        "Harvestshield Evo saves grain in storage â€” cheap insurance on a full bin."
       ]
     },
     refs:[
@@ -1666,11 +1672,11 @@ const CALL_STOPS = [
     talk:{
       title:"Close on units, treatment, finance",
       points:[
-        "Confirm bag count per hybrid/variety — write it down together.",
+        "Confirm bag count per hybrid/variety â€” write it down together.",
         "Confirm treatment: proTect DI or ULTRA on the soybeans that need to move as Black Box or after Jan 15.",
         "Confirm financing: First Mid 0% (Corn/Soy, by Jan 15) is the sweet spot. JDF 1.9% Fixed for larger orders.",
         "Confirm delivery window and Black Box return plan ($550 each if not returned).",
-        "Email them the pricelist and program sheets before you leave — while it's fresh."
+        "Email them the pricelist and program sheets before you leave â€” while it's fresh."
       ]
     },
     refs:[
@@ -1685,28 +1691,28 @@ const CALL_STOPS = [
    TALKING POINTS DRAWER content
 ============================================================ */
 const TALK_HTML = `
-<h4>Value Story — In One Breath</h4>
+<h4>Value Story â€” In One Breath</h4>
 <ul>
-  <li>ProHarvest genetics priced to move, backed by Meristem biology and a real TCO story — one call, one program, one invoice.</li>
+  <li>ProHarvest genetics priced to move, backed by Meristem biology and a real TCO story â€” one call, one program, one invoice.</li>
 </ul>
 <h4>Opening Questions</h4>
 <ul>
   <li>How many acres corn / soy / wheat this season?</li>
-  <li>What was your best field last year — and what made it best?</li>
+  <li>What was your best field last year â€” and what made it best?</li>
   <li>Where did yield disappoint, and what do you think caused it?</li>
   <li>Where are you on biologicals today?</li>
 </ul>
 <h4>Objection Handling</h4>
 <div class="obj"><div class="q">"Your seed is more expensive than X."</div>
-<div class="a">"Let's look at total cost per acre, not per bag. When you fold in the volume discount at your bag count and the in-furrow biological package, the delivered acre cost usually comes in the same or lower — with a better yield floor. Show me your acres and I'll do the math with you." (Open the <em>TCO Placemat</em>.)</div></div>
-<div class="obj"><div class="q">"I tried biologicals — didn't see anything."</div>
-<div class="a">"Most of the time that's a storage or tank-mix problem — the microbes were dead before they hit the furrow. Meristem's dry HT MaxStax was built to solve exactly that. Let me show you the handling rules and the trial results." (Open <em>Keep Biologicals Alive</em> and <em>Upshift C-Plus Results</em>.)</div></div>
+<div class="a">"Let's look at total cost per acre, not per bag. When you fold in the volume discount at your bag count and the in-furrow biological package, the delivered acre cost usually comes in the same or lower â€” with a better yield floor. Show me your acres and I'll do the math with you." (Open the <em>TCO Placemat</em>.)</div></div>
+<div class="obj"><div class="q">"I tried biologicals â€” didn't see anything."</div>
+<div class="a">"Most of the time that's a storage or tank-mix problem â€” the microbes were dead before they hit the furrow. Meristem's dry HT MaxStax was built to solve exactly that. Let me show you the handling rules and the trial results." (Open <em>Keep Biologicals Alive</em> and <em>Upshift C-Plus Results</em>.)</div></div>
 <div class="obj"><div class="q">"I already have a program with someone else."</div>
-<div class="a">"Great — I'm not asking you to switch all of it. Give me one field to prove the TCO. If I'm not right, you owe me nothing next year." (Open <em>TCO Placemat</em>.)</div></div>
+<div class="a">"Great â€” I'm not asking you to switch all of it. Give me one field to prove the TCO. If I'm not right, you owe me nothing next year." (Open <em>TCO Placemat</em>.)</div></div>
 <div class="obj"><div class="q">"Cash is tight."</div>
-<div class="a">"First Mid 0% financing on corn and soy through January 15 — you still get every volume and early-order discount, and nothing's due until December." (Open <em>Policies &amp; Finance</em>.)</div></div>
+<div class="a">"First Mid 0% financing on corn and soy through January 15 â€” you still get every volume and early-order discount, and nothing's due until December." (Open <em>Policies &amp; Finance</em>.)</div></div>
 <div class="obj"><div class="q">"Can I get treated soybeans in Black Box later?"</div>
-<div class="a">"Absolutely — but treated soybean orders after January 15 pick up an extra $1/unit for package &amp; handling, and no returns/cancels on treated. So the ask is: firm it up before Jan 15."</div></div>
+<div class="a">"Absolutely â€” but treated soybean orders after January 15 pick up an extra $1/unit for package &amp; handling, and no returns/cancels on treated. So the ask is: firm it up before Jan 15."</div></div>
 <h4>Close Checklist</h4>
 <ul>
   <li>Bag count per hybrid / variety confirmed</li>
@@ -1718,10 +1724,10 @@ const TALK_HTML = `
 </ul>
 <h4>Key Dates</h4>
 <ul>
-  <li><strong>Jan 15, 2027</strong> — Last day for First Mid 0% &amp; JDF 1.9% Fixed corn/soy financing; treated-soybean surcharge kicks in after.</li>
-  <li><strong>Mar 31, 2027</strong> — Last day for JDF Prime -1% financing.</li>
-  <li><strong>Jun 15, 2027</strong> — Last day for seed corn returns.</li>
-  <li><strong>Jun 30, 2027</strong> — Last day for soybean returns; all accounts due in full.</li>
+  <li><strong>Jan 15, 2027</strong> â€” Last day for First Mid 0% &amp; JDF 1.9% Fixed corn/soy financing; treated-soybean surcharge kicks in after.</li>
+  <li><strong>Mar 31, 2027</strong> â€” Last day for JDF Prime -1% financing.</li>
+  <li><strong>Jun 15, 2027</strong> â€” Last day for seed corn returns.</li>
+  <li><strong>Jun 30, 2027</strong> â€” Last day for soybean returns; all accounts due in full.</li>
 </ul>
 `;
 </script>
@@ -1750,7 +1756,7 @@ const VIEW_TITLES = {
   pricing:{t:"Pricing",s:"Live pricelist & discount schedules"},
   programs:{t:"Programs",s:"Systems, TCO, Meristem, dealer kits"},
   call:{t:"Sales Call",s:"Guided 5-stop flow"},
-  policies:{t:"Policies & Finance",s:"ProHarvest — 2026-27 season"},
+  policies:{t:"Policies & Finance",s:"ProHarvest â€” 2026-27 season"},
   library:{t:"PDF Library",s:"All PDFs in one place"}
 };
 function setView(v){
@@ -1787,7 +1793,7 @@ function pushRecent(item){
 function renderRecent(){
   const strip = $("#recentStrip");
   if(!state.recent.length){
-    strip.innerHTML = `<div class="empty-recent">Nothing here yet — open a PDF to build a recent-viewed list on this device.</div>`;
+    strip.innerHTML = `<div class="empty-recent">Nothing here yet â€” open a PDF to build a recent-viewed list on this device.</div>`;
     return;
   }
   strip.innerHTML = state.recent.map(r=>`
@@ -1872,7 +1878,8 @@ let currentPdf = null;
 
 async function openPdf(file, name){
   const base = file.replace(/^pdfs\//,'');
-  const resolved = PDF_URLS[base] || file;
+  const resolved = file;
+  const remoteFallback = PDF_URLS[base] || null;
   currentPdf = {file:resolved,title:name||base,localFile:file};
   viewerTitle.textContent = currentPdf.title;
   viewerBody.classList.remove("native-fail");
@@ -1887,7 +1894,7 @@ async function openPdf(file, name){
   viewer.classList.add("open");
   document.body.style.overflow="hidden";
 
-  // Universal PDF.js render — works on desktop AND iPad, no CORS/content-disposition issues
+  // Universal PDF.js render â€” works on desktop AND iPad, no CORS/content-disposition issues
   let container = document.getElementById("pdfjsPages");
   if(!container){
     container = document.createElement("div");
@@ -1900,7 +1907,7 @@ async function openPdf(file, name){
 
   try {
     if(!window.pdfjsLib) throw new Error("pdf.js not loaded");
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "./vendor/pdf.worker.min.js";
     // withCredentials false; use CORS mode; disable range requests to sidestep servers that don't advertise them
     const loadingTask = pdfjsLib.getDocument({
       url: resolved,
@@ -1934,7 +1941,7 @@ async function openPdf(file, name){
           This PDF's cloud link has expired or the file server is temporarily unreachable. Tell Greg to refresh the PDF library links.
           Tap below to open it directly.
         </div>
-        <a href="${resolved}" target="_blank" rel="noopener"
+        <a href="${remoteFallback || resolved}" target="_blank" rel="noopener"
            style="display:inline-block;padding:.9rem 1.4rem;background:#009040;color:#fff;font-weight:800;border-radius:10px;text-decoration:none;letter-spacing:.05em;text-transform:uppercase">
           Open PDF in New Tab
         </a>
@@ -1995,7 +2002,7 @@ $("#viewerEmail").addEventListener("click", ()=>{
   if(!currentPdf) return;
   const abs = new URL(currentPdf.file, location.href).href;
   const subj = encodeURIComponent("RSS: "+currentPdf.title);
-  const body = encodeURIComponent(`Here's the ${currentPdf.title} we discussed:\n\n${abs}\n\nLet me know if you'd like to talk through it.\n\n— Greg Simmons\nRohrer Seed Solutions\n217-899-7722\ngreg@rohrerseedsolutions.com`);
+  const body = encodeURIComponent(`Here's the ${currentPdf.title} we discussed:\n\n${abs}\n\nLet me know if you'd like to talk through it.\n\nâ€” Greg Simmons\nRohrer Seed Solutions\n217-899-7722\ngreg@rohrerseedsolutions.com`);
   location.href = `mailto:?subject=${subj}&body=${body}`;
 });
 document.addEventListener("keydown", e=>{
@@ -2282,7 +2289,7 @@ function search(q){
   PRICE_TABLES.forEach(t=>{
     t.rows.forEach(r=>{
       const hay = r.join(" ").toLowerCase();
-      if(hay.includes(q)) results.push({kind:"Price",title:r[0]+" — "+r[r.length-1],meta:t.title,action:()=>{setView("pricing");setTimeout(()=>{document.querySelector(`[data-tid="${t.id}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});},50);}});
+      if(hay.includes(q)) results.push({kind:"Price",title:r[0]+" â€” "+r[r.length-1],meta:t.title,action:()=>{setView("pricing");setTimeout(()=>{document.querySelector(`[data-tid="${t.id}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});},50);}});
     });
   });
   // Call stops
@@ -2387,12 +2394,12 @@ const FarmPlan = (function(){
       if(!groups[p.group]) groups[p.group]=[];
       groups[p.group].push({...p,idx:i});
     });
-    let html = '<option value="">— pick a product —</option>';
+    let html = '<option value="">â€” pick a product â€”</option>';
     Object.keys(groups).forEach(g=>{
       html += `<optgroup label="${g}">`;
       groups[g].forEach(p=>{
-        const m = p.meta ? ' · '+p.meta : '';
-        html += `<option value="${p.idx}">${p.name}${m} — $${p.retail.toFixed(2)}</option>`;
+        const m = p.meta ? ' Â· '+p.meta : '';
+        html += `<option value="${p.idx}">${p.name}${m} â€” $${p.retail.toFixed(2)}</option>`;
       });
       html += `</optgroup>`;
     });
@@ -2445,18 +2452,18 @@ const FarmPlan = (function(){
         <tr>
           <td>
             <div class="prod-name">${escapeHtml(l.product.name)}</div>
-            <div class="prod-meta">${escapeHtml(l.product.group)}${l.product.meta?' · '+escapeHtml(l.product.meta):''}</div>
+            <div class="prod-meta">${escapeHtml(l.product.group)}${l.product.meta?' Â· '+escapeHtml(l.product.meta):''}</div>
           </td>
           <td class="num">$${l.product.retail.toFixed(2)}</td>
-          <td class="num">−$${volD.toFixed(2)}</td>
-          <td class="num">−$${(cashD+early+other).toFixed(2)}</td>
+          <td class="num">âˆ’$${volD.toFixed(2)}</td>
+          <td class="num">âˆ’$${(cashD+early+other).toFixed(2)}</td>
           <td class="num" style="font-weight:800;color:var(--signal-3)">$${net.toFixed(2)}</td>
           <td class="num">
             <input type="number" min="1" step="1" value="${l.qty}" onchange="FarmPlan.setQty(${i}, this.value)">
             <span class="qty-display" style="display:none">${l.qty}</span>
           </td>
           <td class="num" style="font-weight:800">$${total.toFixed(2)}</td>
-          <td><button class="kill" onclick="FarmPlan.removeLine(${i})" title="Remove">×</button></td>
+          <td><button class="kill" onclick="FarmPlan.removeLine(${i})" title="Remove">Ã—</button></td>
         </tr>`;
     }).join("");
     updateTotals();
@@ -2483,8 +2490,8 @@ const FarmPlan = (function(){
       grand   += net * l.qty;
     });
     document.getElementById("tot-retail").textContent = "$"+retail.toFixed(2);
-    document.getElementById("tot-vol").textContent    = "−$"+volTot.toFixed(2);
-    document.getElementById("tot-cash").textContent   = "−$"+cashTot.toFixed(2);
+    document.getElementById("tot-vol").textContent    = "âˆ’$"+volTot.toFixed(2);
+    document.getElementById("tot-cash").textContent   = "âˆ’$"+cashTot.toFixed(2);
     document.getElementById("tot-grand").textContent  = "$"+grand.toFixed(2);
   }
 
@@ -2539,7 +2546,7 @@ const FarmPlan = (function(){
     state.quotes = [data, ...state.quotes].slice(0,50);
     localStorage.setItem("rss_quotes", JSON.stringify(state.quotes));
     renderQuotes();
-    alert("Saved: "+data.name+" — "+data.total);
+    alert("Saved: "+data.name+" â€” "+data.total);
   }
   function renderQuotes(){
     const wrap = document.getElementById("quotesList");
@@ -2554,10 +2561,10 @@ const FarmPlan = (function(){
         <button class="quote-row" onclick="FarmPlan.openQuote('${q.id}')">
           <div class="info">
             <div class="n">${escapeHtml(q.name||"Unnamed")}</div>
-            <div class="m">${ds} · ${q.lines.length} line${q.lines.length===1?'':'s'}</div>
+            <div class="m">${ds} Â· ${q.lines.length} line${q.lines.length===1?'':'s'}</div>
           </div>
           <div class="tot">${escapeHtml(q.total||"$0.00")}</div>
-          <span class="del" onclick="event.stopPropagation();FarmPlan.deleteQuote('${q.id}')">×</span>
+          <span class="del" onclick="event.stopPropagation();FarmPlan.deleteQuote('${q.id}')">Ã—</span>
         </button>`;
     }).join("");
   }
@@ -2575,12 +2582,12 @@ const FarmPlan = (function(){
     const d = collectData();
     if(!d.email){ alert("Enter the customer's email first."); return; }
     if(!state.lines.length){ alert("Add products before emailing."); return; }
-    const linesTxt = state.lines.map(l=>` • ${l.product.name} — ${l.qty} unit(s)`).join("\n");
-    const subj = encodeURIComponent(`Rohrer Seed Solutions — Farm Plan for ${d.name||"you"}`);
+    const linesTxt = state.lines.map(l=>` â€¢ ${l.product.name} â€” ${l.qty} unit(s)`).join("\n");
+    const subj = encodeURIComponent(`Rohrer Seed Solutions â€” Farm Plan for ${d.name||"you"}`);
     const body = encodeURIComponent(
 `Hi ${d.name||"there"},
 
-Thanks for your time today. Here's the plan we put together — I can adjust anything before we lock it in.
+Thanks for your time today. Here's the plan we put together â€” I can adjust anything before we lock it in.
 
 Products:
 ${linesTxt}
@@ -2590,7 +2597,7 @@ Financing: ${d.finance}
 
 ${d.notes?"Notes: "+d.notes+"\n\n":""}Let me know when you're ready to move forward or if you want to tweak anything.
 
-— Greg Simmons
+â€” Greg Simmons
 Rohrer Seed Solutions
 217-899-7722
 `);
@@ -2659,7 +2666,7 @@ window.buildPrintQuote = function(){
   var $ = function(id){ return document.getElementById(id); };
   var v = function(id){ var el=$(id); return el ? (el.value||el.textContent||"").trim() : ""; };
   var cust = {
-    name: v("pl-name") || "—",
+    name: v("pl-name") || "â€”",
     phone: v("pl-phone") || "",
     email: v("pl-email") || "",
     addr: v("pl-addr") || "",
@@ -2688,8 +2695,8 @@ window.buildPrintQuote = function(){
         var val = t.textContent.replace(/\s+/g," ").trim();
         arr.push(val);
       });
-      // Drop the last cell if it looks like an action ("Remove","×","")
-      if(arr.length && /^(remove|×|x|delete|—|-)$/i.test(arr[arr.length-1])){ arr.pop(); }
+      // Drop the last cell if it looks like an action ("Remove","Ã—","")
+      if(arr.length && /^(remove|Ã—|x|delete|â€”|-)$/i.test(arr[arr.length-1])){ arr.pop(); }
       rows.push(arr);
     });
   }
@@ -2718,12 +2725,12 @@ window.buildPrintQuote = function(){
   totals.disc = totals.gross - totals.net;
   function fmt$(n){ return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}); }
   var totalsOut = {
-    units: totals.units ? totals.units.toLocaleString("en-US") : "—",
-    gross: totals.gross ? fmt$(totals.gross) : "—",
-    disc:  totals.disc  ? fmt$(totals.disc)  : "—",
-    net:   totals.net   ? fmt$(totals.net)   : "—"
+    units: totals.units ? totals.units.toLocaleString("en-US") : "â€”",
+    gross: totals.gross ? fmt$(totals.gross) : "â€”",
+    disc:  totals.disc  ? fmt$(totals.disc)  : "â€”",
+    net:   totals.net   ? fmt$(totals.net)   : "â€”"
   };
-  // Per-crop bag totals (corn / soy / wheat) — infer from product name in first column
+  // Per-crop bag totals (corn / soy / wheat) â€” infer from product name in first column
   var iProd = 0;
   var bagsByCrop = {corn:0, soy:0, wheat:0, other:0};
   rows.forEach(function(r){
@@ -2751,7 +2758,7 @@ window.buildPrintQuote = function(){
   if(parseFloat(cust.corn)>0) acres.push(cust.corn + " ac corn");
   if(parseFloat(cust.soy)>0) acres.push(cust.soy + " ac soy");
   if(parseFloat(cust.wheat)>0) acres.push(cust.wheat + " ac wheat");
-  var acresStr = acres.join(" · ") || "—";
+  var acresStr = acres.join(" Â· ") || "â€”";
 
   var lineRowsHtml = rows.length
     ? rows.map(function(r){
@@ -2759,7 +2766,7 @@ window.buildPrintQuote = function(){
         // Fallback: dump each cell
         return "<tr>" + r.map(function(c,i){
           var isNum = /[\$\d]/.test(c) && i>0;
-          return "<td"+(isNum?" class='num'":"")+">"+ (c||"—") +"</td>";
+          return "<td"+(isNum?" class='num'":"")+">"+ (c||"â€”") +"</td>";
         }).join("") + "</tr>";
       }).join("")
     : "<tr><td colspan='6' style='text-align:center;color:#5A6A82;padding:24px'>No line items added</td></tr>";
@@ -2767,7 +2774,7 @@ window.buildPrintQuote = function(){
   // Prefer the actual source-table headers so columns line up perfectly
   var colHeaders = headerLabels.slice();
   // Drop trailing action-header if it looks like an action column
-  if(colHeaders.length && /^(remove|action|actions|—|-|\s*)$/i.test(colHeaders[colHeaders.length-1])){ colHeaders.pop(); }
+  if(colHeaders.length && /^(remove|action|actions|â€”|-|\s*)$/i.test(colHeaders[colHeaders.length-1])){ colHeaders.pop(); }
   // Trim headers to match actual row width
   if(rows.length){
     var w = rows[0].length;
@@ -2823,7 +2830,7 @@ window.buildPrintQuote = function(){
     +   '<table>'
     +     '<tr><td class="lbl">Total Units</td><td class="val">'+ totalsOut.units +'</td></tr>'
     +     '<tr><td class="lbl">Gross Retail</td><td class="val">'+ totalsOut.gross +'</td></tr>'
-    +     '<tr><td class="lbl">Total Discounts</td><td class="val">'+ (totalsOut.disc==="—"?"—":"− "+totalsOut.disc) +'</td></tr>'
+    +     '<tr><td class="lbl">Total Discounts</td><td class="val">'+ (totalsOut.disc==="â€”"?"â€”":"âˆ’ "+totalsOut.disc) +'</td></tr>'
     +     '<tr class="grand"><td class="lbl">Net Investment</td><td class="val">'+ totalsOut.net +'</td></tr>'
     +   '</table>'
     + '</div>'
@@ -2831,15 +2838,15 @@ window.buildPrintQuote = function(){
     + '<div class="pq-terms">'
     +   '<h4>Terms & Discount Schedule</h4>'
     +   'Volume discount, early-order discount, and cash discount all stack. Payment due June 30, 2027. '
-    +   'Cash-discount tiers: Oct 15 10% · Dec 15 9% · Jan 15 8% · Feb 15 7% · Mar 15 5% · Apr 15 2%. '
+    +   'Cash-discount tiers: Oct 15 10% Â· Dec 15 9% Â· Jan 15 8% Â· Feb 15 7% Â· Mar 15 5% Â· Apr 15 2%. '
     +   'Early-order: Oct 15 = $10/u corn + $2/u soy; Dec 15 = $7/u corn + $1/u soy; Wheat $0.50/u by Aug 22. '
     +   'Pricing valid 30 days from quote date. Subject to product availability.'
     + '</div>'
     + '<div class="pq-sig">'
     +   '<div class="line">Customer Signature / Date</div>'
-    +   '<div class="line">Greg Simmons — Rohrer Seed Solutions</div>'
+    +   '<div class="line">Greg Simmons â€” Rohrer Seed Solutions</div>'
     + '</div>'
-    + '<div class="pq-foot">Rohrer Seed Solutions · 35650 IL-111, Modesto IL 62667 · 217-899-7722 · greg@rohrerseedsolutions.com</div>';
+    + '<div class="pq-foot">Rohrer Seed Solutions Â· 35650 IL-111, Modesto IL 62667 Â· 217-899-7722 Â· greg@rohrerseedsolutions.com</div>';
   function escapeH(s){ return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 };
 window.printQuote = function(){
@@ -2849,12 +2856,12 @@ window.printQuote = function(){
       localStorage.setItem("rssPrintTipSeen","1");
     }
   } catch(_){}
-  // Build content FIRST, then flip class, then print — all synchronous.
+  // Build content FIRST, then flip class, then print â€” all synchronous.
   window.buildPrintQuote();
   document.body.classList.add("printing-quote");
   // Force layout so browser sees the class change before print
   void document.body.offsetHeight;
-  // Print synchronously — this blocks until user clicks Print or Cancel
+  // Print synchronously â€” this blocks until user clicks Print or Cancel
   try { window.print(); } catch(e) { console.warn("print failed:", e); }
   // Restore normal view once dialog closes
   document.body.classList.remove("printing-quote");
@@ -2882,6 +2889,20 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
 })();
+</script>
+<script>
+// ---- Offline / PWA ----
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(() => {
+      const allPdfUrls = (window.PDFS || []).map(p => new URL(p.file, location.href).toString());
+      const warm = () => navigator.serviceWorker.controller &&
+        navigator.serviceWorker.controller.postMessage({ type: 'prewarm', urls: allPdfUrls });
+      if (navigator.serviceWorker.controller) warm();
+      else navigator.serviceWorker.ready.then(warm);
+    }).catch(err => console.warn('SW register failed', err));
+  });
+}
 </script>
 </body>
 </html>
