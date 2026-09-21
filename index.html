@@ -771,6 +771,10 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
   #printQuote .pq-totals { width:55%; background:#F7F9FC; border-radius:6px; padding:8px 14px; -webkit-print-color-adjust:exact; print-color-adjust:exact; border:1px solid #E2E8F0; }
   #printQuote .pq-totals tr.grand td { color:#002870; }
 }
+
+.price-section-head{margin:2rem 0 .8rem 0;padding:.75rem 1rem;border-radius:12px;background:linear-gradient(90deg,#009040 0%,#00702d 100%);color:#fff;box-shadow:0 4px 14px rgba(0,144,64,.18)}
+.price-section-head h2{margin:0;font-family:'Barlow Condensed',Inter,sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:.02em;text-transform:uppercase}
+.price-section-head:first-child{margin-top:.4rem}
 </style>
 <script src="./vendor/pdf.min.js"></script>
 </head>
@@ -1221,45 +1225,49 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
 ============================================================ */
 const PDFS = [
   // Corn
-  {file:"pdfs/Zone_1_Full.pdf", title:"Zone 1 Full Pricelist", cat:"pricing", tags:"corn soy wheat alfalfa full pricelist", desc:"Complete Zone 1 corn, soybean, alfalfa pricing + volume discounts."},
-  {file:"pdfs/7B440.pdf", title:"7B440 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B440 early bearded head", desc:"ProHarvest 7B440 â€” early-maturity bearded wheat, late heading reduces spring freeze risk."},
-  {file:"pdfs/7B520.pdf", title:"7B520 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B520 medium-early bearded head scab", desc:"ProHarvest 7B520 â€” medium-early bearded wheat, excellent head scab resistance."},
-  {file:"pdfs/High_Yield_Corn.pdf", title:"High-Yield Corn System", cat:"corn", tags:"corn program system yield", desc:"How to build a high-yield corn program â€” inputs, timing, ROI."},
+  {file:"pdfs/Zone_1_Full.pdf", title:"Zone 1 Full Pricelist (ProHarvest)", cat:"pricing", tags:"proharvest corn soy wheat alfalfa full pricelist zone 1", desc:"Complete ProHarvest Zone 1 corn, soybean, alfalfa pricing + volume discounts."},
+  {file:"pdfs/7B440.pdf", title:"7B440 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B440 early bearded head", desc:"ProHarvest 7B440 - early-maturity bearded wheat, late heading reduces spring freeze risk."},
+  {file:"pdfs/7B520.pdf", title:"7B520 Wheat Variety", cat:"wheat", tags:"wheat variety proharvest 7B520 medium-early bearded head scab", desc:"ProHarvest 7B520 - medium-early bearded wheat, excellent head scab resistance."},
+  {file:"pdfs/High_Yield_Corn.pdf", title:"High-Yield Corn System", cat:"corn", tags:"corn program system yield", desc:"How to build a high-yield corn program - inputs, timing, ROI."},
   {file:"pdfs/TCO_Corn_Program.pdf", title:"TCO Corn Program", cat:"corn", tags:"corn program tco cost", desc:"Total Cost of Ownership breakdown for the corn program."},
-  {file:"pdfs/White_Corn_Sell_Sheet.pdf", title:"White Corn Sell Sheet", cat:"corn", tags:"white corn specialty food", desc:"White corn program overview and specs."},
+  {file:"pdfs/White_Corn_Sell_Sheet.pdf", title:"White Corn Sell Sheet (2026)", cat:"corn", tags:"white corn specialty food 2026", desc:"White corn program overview and specs (2026 edition)."},
+  {file:"pdfs/White_Corn_Sell_Sheet_2027.pdf", title:"White Corn Sell Sheet (2027)", cat:"corn", tags:"white corn specialty food 2027", desc:"2027 White corn sell sheet - specialty food-grade program."},
   {file:"pdfs/White_Corn_SOYLEIC_Pricelist.pdf", title:"White Corn & SOYLEIC Pricelist", cat:"pricing", tags:"white corn soyleic specialty pricing", desc:"Pricing for white corn and SOYLEIC high-oleic soy."},
 
   // Soybeans
   {file:"pdfs/High_Yield_Soybean.pdf", title:"High-Yield Soybean System", cat:"soy", tags:"soy program system yield", desc:"Build a high-yield soybean program from planting through harvest."},
   {file:"pdfs/TCO_Soybean_Program.pdf", title:"TCO Soybean Program", cat:"soy", tags:"soy program tco cost", desc:"Total Cost of Ownership for the soybean program."},
-  {file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf", title:"High Oleic Soy (SOYLEIC)", cat:"soy", tags:"soy soyleic high oleic specialty", desc:"SOYLEIC high-oleic soybean opportunity â€” food-grade premium market."},
+  {file:"pdfs/High_Oleic_Soy_Sell_Sheet.pdf", title:"High Oleic Soy - SOYLEIC (2026)", cat:"soy", tags:"soy soyleic high oleic specialty 2026", desc:"SOYLEIC high-oleic soybean opportunity - food-grade premium market (2026 edition)."},
+  {file:"pdfs/High_Oleic_Soy_Sell_Sheet_2027.pdf", title:"High Oleic Soy - SOYLEIC (2027)", cat:"soy", tags:"soy soyleic high oleic specialty 2027", desc:"2027 SOYLEIC high-oleic soybean sell sheet - food-grade premium contract."},
   {file:"pdfs/Meristem_Soybean_Replant.pdf", title:"Meristem Soybean Replant", cat:"biologicals", tags:"soy replant meristem", desc:"Replant options and biology for soybean stands."},
-  {file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf", title:"HT MaxStax â€” Soybean", cat:"biologicals", tags:"soy maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for soybeans."},
-  {file:"pdfs/Sell_Sheet_all_three.pdf", title:"Wheat Sell Sheet â€” All Three Varieties", cat:"wheat", tags:"wheat sell sheet proharvest 7B440 7B520 7B620", desc:"ProHarvest wheat lineup â€” sell sheet covering all three varieties."},
+  {file:"pdfs/Meristem_HT_MaxStax_Soybean.pdf", title:"HT MaxStax - Soybean", cat:"biologicals", tags:"soy maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for soybeans."},
+  {file:"pdfs/Sell_Sheet_all_three.pdf", title:"Wheat Sell Sheet - All Three Varieties", cat:"wheat", tags:"wheat sell sheet proharvest 7B440 7B520 7B620", desc:"ProHarvest wheat lineup - sell sheet covering all three varieties."},
 
   // Wheat
   {file:"pdfs/2026_Retail_wheat_print.pdf", title:"2026 Retail Wheat Pricelist", cat:"pricing", tags:"wheat pricing retail 2026", desc:"Full 2026 retail wheat pricing."},
-  {file:"pdfs/UOFI_WHEAT_TRIALS.pdf", title:"U of I Wheat Trials â€” Full Report", cat:"wheat", tags:"wheat u of i illinois trials data yield", desc:"University of Illinois wheat variety trial data."},
+  {file:"pdfs/UOFI_WHEAT_TRIALS.pdf", title:"U of I Wheat Trials - Full Report", cat:"wheat", tags:"wheat u of i illinois trials data yield", desc:"University of Illinois wheat variety trial data."},
   {file:"pdfs/UofIData.pdf", title:"U of I Data Summary", cat:"wheat", tags:"wheat u of i illinois summary", desc:"Quick-look summary of U of I wheat trial results."},
 
-  // Cover Crop / Forage / Rye
-  {file:"pdfs/2026_Retail_Fall_CC_Forage.pdf", title:"2026 Fall Cover Crop & Forage Pricelist", cat:"cover", tags:"cover crop forage fall pricing 2026", desc:"Complete fall cover crop and forage seed retail pricing."},
+  // Cover Crop / Forage / Rye (pricelist moved to Pricing tab per Greg 2026-09-21)
+  {file:"pdfs/2026_Retail_Fall_CC_Forage.pdf", title:"2026 Fall Cover Crop & Forage Pricelist", cat:"pricing", tags:"cover crop forage fall pricing 2026", desc:"Complete fall cover crop and forage seed retail pricing."},
+  {file:"pdfs/2026_Cover_Crop_Guide.pdf", title:"2026 Cover Crop Guide", cat:"cover", tags:"cover crop guide 2026 species rate mixes", desc:"2026 Cover Crop Guide - species, rates, mix recipes, termination."},
+  {file:"pdfs/2026_Forage_Guide.pdf", title:"2026 Forage Guide", cat:"cover", tags:"forage guide 2026 grass legume mix", desc:"2026 Forage Guide - full grass, legume, and mix lineup for hay and pasture."},
   {file:"pdfs/Terminating_Cover_Crops.pdf", title:"Terminating Cover Crops", cat:"biologicals", tags:"cover crop termination agronomy biological", desc:"When and how to terminate cover crops for the following cash crop."},
 
   // Biologicals
   {file:"pdfs/KeepBiologicalsAlive.pdf", title:"Keep Biologicals Alive", cat:"biologicals", tags:"biologicals living microbes storage handling", desc:"Storage, handling, and tank-mix rules that keep biologicals viable."},
-  {file:"pdfs/BioControls_Results.pdf", title:"Biological Controls â€” Results", cat:"biologicals", tags:"biologicals biocontrols yield results trials", desc:"On-farm results from biological control programs."},
+  {file:"pdfs/BioControls_Results.pdf", title:"Biological Controls - Results", cat:"biologicals", tags:"biologicals biocontrols yield results trials", desc:"On-farm results from biological control programs."},
   {file:"pdfs/BioFriendly_Nitrogen.pdf", title:"Bio-Friendly Nitrogen", cat:"biologicals", tags:"nitrogen biological n stabilizer", desc:"Nitrogen sources compatible with biological programs."},
-  {file:"pdfs/Immunity_Graphic.pdf", title:"Plant Immunity Graphic", cat:"biologicals", tags:"biologicals immunity plant defense visual", desc:"Visual explainer â€” how biologicals prime plant immunity."},
+  {file:"pdfs/Immunity_Graphic.pdf", title:"Plant Immunity Graphic", cat:"biologicals", tags:"biologicals immunity plant defense visual", desc:"Visual explainer - how biologicals prime plant immunity."},
 
   // Meristem programs / adjuvants
   {file:"pdfs/Meristem_CY27_Product_Sheet.pdf", title:"Meristem CY27 Product Sheet", cat:"biologicals", tags:"meristem 2027 lineup product", desc:"Full Meristem 2027 crop-year product lineup."},
-  {file:"pdfs/Meristem_ExcavatorAMS.pdf", title:"Meristem Excavator AMS", cat:"biologicals", tags:"meristem excavator ams adjuvant", desc:"Excavator AMS adjuvant â€” water conditioning + drift management."},
-  {file:"pdfs/Meristem_HT_MaxStax_Corn.pdf", title:"HT MaxStax â€” Corn", cat:"biologicals", tags:"corn maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for corn."},
+  {file:"pdfs/Meristem_ExcavatorAMS.pdf", title:"Meristem Excavator AMS", cat:"biologicals", tags:"meristem excavator ams adjuvant", desc:"Excavator AMS adjuvant - water conditioning + drift management."},
+  {file:"pdfs/Meristem_HT_MaxStax_Corn.pdf", title:"HT MaxStax - Corn", cat:"biologicals", tags:"corn maxstax ht meristem in-furrow biological", desc:"Meristem HT MaxStax in-furrow biological for corn."},
   {file:"pdfs/Meristem_HopperThrottle_Matrix.pdf", title:"HopperThrottle Matrix", cat:"biologicals", tags:"meristem hopperthrottle in-furrow rate matrix", desc:"Rate matrix for HopperThrottle in-furrow biological."},
   {file:"pdfs/Meristem_N-Stabilizers.pdf", title:"Meristem N-Stabilizers", cat:"biologicals", tags:"meristem nitrogen stabilizer n", desc:"Nitrogen stabilizer options and positioning."},
-  {file:"pdfs/Meristem_Upshift_CPro.pdf", title:"Meristem Upshift C-Pro", cat:"biologicals", tags:"meristem upshift c-pro carbon foliar", desc:"Upshift C-Pro â€” foliar carbon program for corn/soy."},
-  {file:"pdfs/UpshiftCPlus_Results.pdf", title:"Upshift C-Plus â€” Results", cat:"biologicals", tags:"meristem upshift c-plus results yield", desc:"On-farm yield results for the Upshift C-Plus program."},
+  {file:"pdfs/Meristem_Upshift_CPro.pdf", title:"Meristem Upshift C-Pro", cat:"biologicals", tags:"meristem upshift c-pro carbon foliar", desc:"Upshift C-Pro - foliar carbon program for corn/soy."},
+  {file:"pdfs/UpshiftCPlus_Results.pdf", title:"Upshift C-Plus - Results", cat:"biologicals", tags:"meristem upshift c-plus results yield", desc:"On-farm yield results for the Upshift C-Plus program."},
   {file:"pdfs/MaxStax_Breakout.pdf", title:"MaxStax Breakout", cat:"biologicals", tags:"maxstax breakout in-furrow biological", desc:"Breakout view of the MaxStax in-furrow stack."},
   {file:"pdfs/MaxStaxVSLiquid.pdf", title:"MaxStax vs Liquid Fertilizer", cat:"biologicals", tags:"maxstax comparison liquid fertilizer starter", desc:"MaxStax biological stack vs conventional liquid starter."},
 
@@ -1269,33 +1277,36 @@ const PDFS = [
   {file:"pdfs/Systems_Rates.pdf", title:"Systems Rates", cat:"biologicals", tags:"systems rates in-furrow foliar biological meristem", desc:"Program rates across the full systems approach."},
 
   // Dealer
-  {file:"pdfs/Dealer_Success_Kits.pdf", title:"2027 Dealer Success Kits", cat:"program", tags:"dealer kits success sales tools", desc:"Dealer success kit â€” sales tools, positioning, promo materials."},
+  {file:"pdfs/Dealer_Success_Kits.pdf", title:"2027 Dealer Success Kits", cat:"program", tags:"dealer kits success sales tools", desc:"Dealer success kit - sales tools, positioning, promo materials."},
   {file:"pdfs/New_Dealer_Portal.pdf", title:"New Dealer Portal", cat:"program", tags:"dealer portal login access", desc:"How to log into and use the new dealer portal."},
 
   // Tech
-  {file:"pdfs/TechSheet_Harvestshield.pdf", title:"Harvestshield Evo â€” Tech Sheet", cat:"biologicals", tags:"harvestshield evo tech sheet grain storage meristem", desc:"Meristem Harvestshield Evo â€” grain-storage protectant."},
-  {file:"pdfs/TechSheet_Homestretch.pdf", title:"Homestretch â€” Tech Sheet", cat:"biologicals", tags:"homestretch tech sheet late season foliar meristem", desc:"Homestretch late-season foliar program."},
-  {file:"pdfs/80P75.pdf", title:"80P75 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 80P75 110 day pce conv", desc:"ProHarvest 80P75 Â· 110-day Â· PCE / Conv Â· outstanding stalks, low green snap."},
-  {file:"pdfs/82P96.pdf", title:"82P96 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 82P96 112 day pce", desc:"ProHarvest 82P96 Â· 112-day Â· PCE Â· new genetics pushing yield, strong disease pkg."},
-  {file:"pdfs/83P66.pdf", title:"83P66 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 83P66 113 day vt2prib", desc:"ProHarvest 83P66 Â· 113-day Â· VT2P RIB Â· high-yield relative of the 8360."},
-  {file:"pdfs/84P78.pdf", title:"84P78 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 84P78 114 day trerib conv", desc:"ProHarvest 84P78 Â· 114-day Â· TreRIB / Conv Â· workhorse hybrid with ear flex."},
-  {file:"pdfs/85P58.pdf", title:"85P58 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 85P58 115 day ssrib vt2prib", desc:"ProHarvest 85P58 Â· 115-day Â· SSRIB / VT2P RIB Â· full-season powerhouse."},
-  {file:"pdfs/86P55.pdf", title:"86P55 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 86P55 116 day trerib", desc:"ProHarvest 86P55 Â· 116-day Â· TreRIB Â· massive yields for the aggressive grower."},
-  {file:"pdfs/AE2860.pdf", title:"AE2860 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE2860 2.8 RM", desc:"AE2860 Â· 2.8 RM Â· Enlist E3 Â· height + standability, beats key checks."},
-  {file:"pdfs/AE3070.pdf", title:"AE3070 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3070 3.0 RM", desc:"AE3070 Â· 3.0 RM Â· Enlist E3 Â· Central & Eastern footprint, proven parentage."},
-  {file:"pdfs/AE3150.pdf", title:"AE3150 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3150 3.11 RM", desc:"AE3150 Â· 3.1 RM Â· Enlist E3 Â· step-change performance, clean line."},
-  {file:"pdfs/AE3270.pdf", title:"AE3270 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3270 3.2 RM", desc:"AE3270 Â· 3.2 RM Â· Enlist E3 Â· high + low productivity acres both."},
-  {file:"pdfs/AE3370.pdf", title:"AE3370 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3370 3.3 RM", desc:"AE3370 Â· 3.3 RM Â· Enlist E3 Â· Central + Eastern Corn Belt, STS-tolerant."},
-  {file:"pdfs/AE3550S.pdf", title:"AE3550S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3550S 3.5 RM sts", desc:"AE3550S Â· 3.5 RM Â· Enlist E3 Â· STS Â· #1 in almost every breakout."},
-  {file:"pdfs/AE3660.pdf", title:"AE3660 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3660 3.6 RM peking", desc:"AE3660 Â· 3.6 RM Â· Enlist E3 Â· Peking SCN, Cadillac defensive package."},
-  {file:"pdfs/AE3850.pdf", title:"AE3850 Â· Enlist E3", cat:"soy", tags:"soy enlist e3 AE3850 3.8 RM", desc:"AE3850 Â· 3.8 RM Â· Enlist E3 Â· added height, strong SDS package."},
-  {file:"pdfs/AE3870S.pdf", title:"AE3870S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3870S 3.8 RM sts", desc:"AE3870S Â· 3.8 RM Â· Enlist E3 Â· STS Â· elite late-3 addition."},
-  {file:"pdfs/AE3950S.pdf", title:"AE3950S Â· Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3950S 3.9 RM sts", desc:"AE3950S Â· 3.9 RM Â· Enlist E3 Â· STS Â· big upgrade to SDS + standability."},
-  {file:"pdfs/28F70.pdf", title:"28F70 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 28F70 2.8 RM peking sts", desc:"28F70 Â· 2.8 RM Â· XtendFLEX Â· Peking SCN, STS-tolerant."},
-  {file:"pdfs/30F73.pdf", title:"30F73 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 30F73 3.0 RM", desc:"30F73 Â· 3.0 RM Â· XtendFLEX Â· wet-feet product, outstanding standability."},
-  {file:"pdfs/34F74.pdf", title:"34F74 Â· XtendFLEX", cat:"soy", tags:"soy xtendflex 34F74 3.4 RM prr", desc:"34F74 Â· 3.4 RM Â· XtendFLEX Â· chart-topper for Group 3, stacked PRR."},
-  {file:"pdfs/32C71.pdf", title:"32C71 Â· Conventional", cat:"soy", tags:"soy conventional 32C71 3.2 RM buff hilum", desc:"32C71 Â· 3.2 RM Â· Conventional Â· buff hilum, 1c gene, strong disease pkg."}
+  {file:"pdfs/TechSheet_Harvestshield.pdf", title:"Harvestshield Evo - Tech Sheet", cat:"biologicals", tags:"harvestshield evo tech sheet grain storage meristem", desc:"Meristem Harvestshield Evo - grain-storage protectant."},
+  {file:"pdfs/TechSheet_Homestretch.pdf", title:"Homestretch - Tech Sheet", cat:"biologicals", tags:"homestretch tech sheet late season foliar meristem", desc:"Homestretch late-season foliar program."},
 
+  // Corn hybrid sell sheets (>=105 RM only per Greg 2026-09-21)
+  {file:"pdfs/80P75.pdf", title:"80P75 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 80P75 110 day pce conv", desc:"ProHarvest 80P75 - 110-day - PCE / Conv - outstanding stalks, low green snap."},
+  {file:"pdfs/82P96.pdf", title:"82P96 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 82P96 112 day pce", desc:"ProHarvest 82P96 - 112-day - PCE - new genetics pushing yield, strong disease pkg."},
+  {file:"pdfs/83P66.pdf", title:"83P66 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 83P66 113 day vt2prib", desc:"ProHarvest 83P66 - 113-day - VT2P RIB - high-yield relative of the 8360."},
+  {file:"pdfs/84P78.pdf", title:"84P78 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 84P78 114 day trerib conv", desc:"ProHarvest 84P78 - 114-day - TreRIB / Conv - workhorse hybrid with ear flex."},
+  {file:"pdfs/85P58.pdf", title:"85P58 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 85P58 115 day ssrib vt2prib", desc:"ProHarvest 85P58 - 115-day - SSRIB / VT2P RIB - full-season powerhouse."},
+  {file:"pdfs/86P55.pdf", title:"86P55 Corn Hybrid", cat:"corn", tags:"corn hybrid proharvest 86P55 116 day trerib", desc:"ProHarvest 86P55 - 116-day - TreRIB - massive yields for the aggressive grower."},
+
+  // Enlist E3 soy sell sheets (>=2.5 RM only per Greg 2026-09-21)
+  {file:"pdfs/AE2860.pdf", title:"AE2860 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE2860 2.8 RM", desc:"AE2860 - 2.8 RM - Enlist E3 - height + standability, beats key checks."},
+  {file:"pdfs/AE3070.pdf", title:"AE3070 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3070 3.0 RM", desc:"AE3070 - 3.0 RM - Enlist E3 - Central & Eastern footprint, proven parentage."},
+  {file:"pdfs/AE3150.pdf", title:"AE3150 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3150 3.1 RM", desc:"AE3150 - 3.1 RM - Enlist E3 - step-change performance, clean line."},
+  {file:"pdfs/AE3270.pdf", title:"AE3270 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3270 3.2 RM", desc:"AE3270 - 3.2 RM - Enlist E3 - high + low productivity acres both."},
+  {file:"pdfs/AE3370.pdf", title:"AE3370 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3370 3.3 RM", desc:"AE3370 - 3.3 RM - Enlist E3 - Central + Eastern Corn Belt, STS-tolerant."},
+  {file:"pdfs/AE3550S.pdf", title:"AE3550S - Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3550S 3.5 RM sts", desc:"AE3550S - 3.5 RM - Enlist E3 - STS - #1 in almost every breakout."},
+  {file:"pdfs/AE3660.pdf", title:"AE3660 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3660 3.6 RM peking", desc:"AE3660 - 3.6 RM - Enlist E3 - Peking SCN, Cadillac defensive package."},
+  {file:"pdfs/AE3850.pdf", title:"AE3850 - Enlist E3", cat:"soy", tags:"soy enlist e3 AE3850 3.8 RM", desc:"AE3850 - 3.8 RM - Enlist E3 - added height, strong SDS package."},
+  {file:"pdfs/AE3870S.pdf", title:"AE3870S - Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3870S 3.8 RM sts", desc:"AE3870S - 3.8 RM - Enlist E3 - STS - elite late-3 addition."},
+  {file:"pdfs/AE3950S.pdf", title:"AE3950S - Enlist E3 (STS)", cat:"soy", tags:"soy enlist e3 AE3950S 3.9 RM sts", desc:"AE3950S - 3.9 RM - Enlist E3 - STS - big upgrade to SDS + standability."},
+  {file:"pdfs/28F70.pdf", title:"28F70 - XtendFLEX", cat:"soy", tags:"soy xtendflex 28F70 2.8 RM peking sts", desc:"28F70 - 2.8 RM - XtendFLEX - Peking SCN, STS-tolerant."},
+  {file:"pdfs/30F73.pdf", title:"30F73 - XtendFLEX", cat:"soy", tags:"soy xtendflex 30F73 3.0 RM", desc:"30F73 - 3.0 RM - XtendFLEX - wet-feet product, outstanding standability."},
+  {file:"pdfs/34F74.pdf", title:"34F74 - XtendFLEX", cat:"soy", tags:"soy xtendflex 34F74 3.4 RM prr", desc:"34F74 - 3.4 RM - XtendFLEX - chart-topper for Group 3, stacked PRR."},
+  {file:"pdfs/32C71.pdf", title:"32C71 - Conventional", cat:"soy", tags:"soy conventional 32C71 3.2 RM buff hilum", desc:"32C71 - 3.2 RM - Conventional - buff hilum, 1c gene, strong disease pkg."}
 ];
 
 const CATEGORIES = [
@@ -1314,19 +1325,14 @@ const CATEGORIES = [
    PRICING TABLES â€” parsed from Zone 1 pricelist source
 ============================================================ */
 const PRICE_TABLES = [
+  { heading: "ProHarvest Corn" },
   {
-    id:"corn-ag-rib",
-    title:"Corn â€” Above & Below Ground RIB",
+    id:"corn-ph-ag-rib",
+    title:"ProHarvest Corn - Above & Below Ground RIB",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
-    note:"ProHarvest, 80K kernel bag = 1 unit. Available in 36 or 50 unit Black Boxes.",
+    note:"ProHarvest, 80K kernel bag = 1 unit. Available in 36 or 50 unit Black Boxes. Hybrids under 105 RM omitted per current lineup.",
     rows:[
-      ["67P33 DS","97 RM","$390.00"],
-      ["67P84 StaxPro RIB","97 RM","$420.00"],
-      ["70P47 DS","100 RM","$390.00"],
-      ["71P16 Stax RIB","101 RM","$390.00"],
-      ["71P50 StaxPro RIB","101 RM","$410.00"],
-      ["72P32 D","102 RM","$385.00"],
       ["75P72 StaxPro RIB","105 RM","$410.00"],
       ["77P25 VT4Pro RIB","107 RM","$390.00"],
       ["77P60 Stax RIB","107 RM","$405.00"],
@@ -1344,39 +1350,11 @@ const PRICE_TABLES = [
     ]
   },
   {
-    id:"corn-conv",
-    title:"Corn â€” Conventional",
+    id:"corn-ph-ag-only",
+    title:"ProHarvest Corn - Above Ground Only RIB",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     rows:[
-      ["71P11","101 RM","$221.00"],
-      ["74P10","104 RM","$221.00"],
-      ["76P42","106 RM","$223.00"],
-      ["78P95","108 RM","$221.00"],
-      ["8015","110 RM","$213.00"],
-      ["80P75","110 RM","$220.00"],
-      ["81P20","111 RM","$218.00"],
-      ["81P65","111 RM","$218.00"],
-      ["82P96","112 RM","$225.00"],
-      ["8360","113 RM","$218.00"],
-      ["83P66","113 RM","$223.00"],
-      ["84P78","114 RM","$223.00"],
-      ["84P90","114 RM","$225.00"],
-      ["85P13","115 RM","$213.00"],
-      ["85P58","115 RM","$225.00"]
-    ]
-  },
-  {
-    id:"corn-ag-only",
-    title:"Corn â€” Above Ground Only RIB",
-    unit:"$/80K bag",
-    columns:["Hybrid","RM","Price"],
-    rows:[
-      ["66P46 PCE","96 RM","$353.00"],
-      ["71P11 PCE","101 RM","$358.00"],
-      ["73P40 PCE","103 RM","$358.00"],
-      ["73P67 TrePRIB","103 RM","$373.00"],
-      ["74P10 PCE","104 RM","$358.00"],
       ["75P60 TrePRIB","105 RM","$373.00"],
       ["75P85 DGVT2PRIB","105 RM","$373.00"],
       ["76P42 PCE","106 RM","$363.00"],
@@ -1401,84 +1379,313 @@ const PRICE_TABLES = [
     ]
   },
   {
-    id:"corn-gly",
-    title:"Corn â€” Glyphosate Tolerant",
+    id:"corn-ph-gly",
+    title:"ProHarvest Corn - Glyphosate Tolerant",
     unit:"$/80K bag",
     columns:["Hybrid","RM","Price"],
     rows:[
-      ["73F02 G","103 RM","$255.00"],
       ["77F02 G","107 RM","$255.00"],
       ["8015 RR2","110 RM","$265.00"],
       ["80F02 G","110 RM","$255.00"]
     ]
   },
   {
+    id:"corn-ph-conv",
+    title:"ProHarvest Corn - Conventional",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    rows:[
+      ["76P42","106 RM","$223.00"],
+      ["78P95","108 RM","$221.00"],
+      ["8015","110 RM","$213.00"],
+      ["80P75","110 RM","$220.00"],
+      ["81P20","111 RM","$218.00"],
+      ["81P65","111 RM","$218.00"],
+      ["82P96","112 RM","$225.00"],
+      ["8360","113 RM","$218.00"],
+      ["83P66","113 RM","$223.00"],
+      ["84P78","114 RM","$223.00"],
+      ["84P90","114 RM","$225.00"],
+      ["85P13","115 RM","$213.00"],
+      ["85P58","115 RM","$225.00"]
+    ]
+  },
+  {
+    id:"white-corn",
+    title:"ProHarvest White Corn (Specialty)",
+    unit:"$/80K bag",
+    columns:["Hybrid","RM","Price"],
+    note:"Contract only, limited supply. Bright-white identity-preserved hybrids for premium end-use markets. Call for market letter.",
+    rows:[
+      ["82W49","112 RM","$230.00"],
+      ["84W24","114 RM","$230.00"],
+      ["84W70","114 RM","$230.00"]
+    ]
+  },
+
+  { heading: "Wyffels Corn - 2027 Zone 1 (Central IL / Western IN)" },
+  {
+    id:"corn-wy-ag-rib",
+    title:"Wyffels Corn - Above & Below Ground RIB",
+    unit:"$/unit (MP PP / SP LP)",
+    columns:["Hybrid","Trait","RM","MP PP","SP LP"],
+    note:"2027 Wyffels Zone 1 (Central IL / Western IN). MP PP = Multi-Program Paid Price. SP LP = Single-Program List Price. Hybrids under 105 RM omitted per current lineup.",
+    rows:[
+      ["W3579RIB","SSP","105 RM","$459.00","$453.00"],
+      ["W4439RIB","SSP","106 RM","$459.00","$453.00"],
+      ["W4487RIB","VT4P","106 RM","$463.00","$457.00"],
+      ["W4889RIB (New)","SSP","107 RM","$488.00","$482.00"],
+      ["W5019RIB","SSP","107 RM","$453.00","$447.00"],
+      ["W5129RIB","SSP","108 RM","$483.00","$477.00"],
+      ["W5778RIB","SS","109 RM","$448.00","$442.00"],
+      ["W6408RIB","SS","110 RM","$435.00","$429.00"],
+      ["W6479RIB","SSP","110 RM","$474.00","$468.00"],
+      ["W7048RIB","SS","111 RM","$438.00","$432.00"],
+      ["W7208RIB","SS","112 RM","$438.00","$432.00"],
+      ["W7229RIB (New)","SSP","112 RM","$488.00","$482.00"],
+      ["W7499RIB","SSP","112 RM","$478.00","$472.00"],
+      ["W7759RIB","SSP","113 RM","$459.00","$453.00"],
+      ["W7819RIB (New)","SSP","113 RM","$488.00","$482.00"],
+      ["W7878RIB","SS","114 RM","$448.00","$442.00"],
+      ["W7888RIB","SS","114 RM","$425.00","$419.00"],
+      ["W8007RIB","VT4P","114 RM","$454.00","$448.00"],
+      ["W8108RIB","SS","114 RM","$438.00","$432.00"],
+      ["W9097RIB (New)","VT4P","117 RM","$468.00","$462.00"],
+      ["W9218RIB","SS","118 RM","$439.00","$433.00"]
+    ]
+  },
+  {
+    id:"corn-wy-ag-only",
+    title:"Wyffels Corn - Above Ground Only RIB",
+    unit:"$/unit (MP PP / SP LP)",
+    columns:["Hybrid","Trait","RM","MP PP","SP LP"],
+    rows:[
+      ["W4025RIB","TRE","105 RM","$400.00","$394.00"],
+      ["W4246RIB","VT2P","105 RM","$390.00","$384.00"],
+      ["W4514RIB","PCE","106 RM","$439.00","$433.00"],
+      ["W4545RIB (New)","TRE","106 RM","$446.00","$440.00"],
+      ["W4796RIB","VT2P","106 RM","$375.00","$369.00"],
+      ["W5086RIB","VT2P","107 RM","$408.00","$402.00"],
+      ["W5406RIB","VT2P","108 RM","$415.00","$409.00"],
+      ["W5516RIB","VT2P","108 RM","$375.00","$369.00"],
+      ["W5684RIB","PCE","108 RM","$439.00","$433.00"],
+      ["W5735RIB (New)","TRE","109 RM","$446.00","$440.00"],
+      ["W6215RIB","TRE","109 RM","$405.00","$399.00"],
+      ["W6505RIB","TRE","110 RM","$435.00","$429.00"],
+      ["W6644RIB (New)","PCE","110 RM","$446.00","$440.00"],
+      ["W6826RIB","VT2P","111 RM","$385.00","$379.00"],
+      ["W6886RIB","VT2P","111 RM","$409.00","$403.00"],
+      ["W6935RIB","TRE","111 RM","$389.00","$383.00"],
+      ["W7424RIB","PCE","112 RM","$439.00","$433.00"],
+      ["W7485RIB","TRE","112 RM","$427.00","$421.00"],
+      ["W7536DGRIB","VT2PDG","112 RM","$385.00","$379.00"],
+      ["W7544RIB (New)","PCE","112 RM","$446.00","$440.00"],
+      ["W7696RIB","VT2P","113 RM","$375.00","$369.00"],
+      ["W7876RIB","VT2P","114 RM","$418.00","$412.00"],
+      ["W7945RIB","TRE","114 RM","$424.00","$418.00"],
+      ["W7956RIB","VT2P","114 RM","$360.00","$354.00"],
+      ["W7976RIB","VT2P","113 RM","$375.00","$369.00"],
+      ["W8086RIB","VT2P","114 RM","$409.00","$403.00"],
+      ["W8134RIB (New)","PCE","114 RM","$446.00","$440.00"],
+      ["W8646RIB","VT2P","116 RM","$375.00","$369.00"]
+    ]
+  },
+  {
+    id:"corn-wy-ht",
+    title:"Wyffels Corn - Herbicide Tolerant",
+    unit:"$/unit (MP PP / SP LP)",
+    columns:["Hybrid","Trait","RM","MP PP","SP LP"],
+    rows:[
+      ["W4192","RR2","104 RM","$347.00","$341.00"],
+      ["W7942","RR2","113 RM","$367.00","$361.00"]
+    ]
+  },
+  {
+    id:"corn-wy-nongmo",
+    title:"Wyffels Corn - Non-GMO",
+    unit:"$/unit (MP PP / SP LP)",
+    columns:["Hybrid","Trait","RM","MP PP","SP LP"],
+    rows:[
+      ["W4510","Non-GMO","105 RM","$289.00","$283.00"],
+      ["W5080","Non-GMO","106 RM","$259.00","$253.00"],
+      ["W5610 (New)","Non-GMO","108 RM","$296.00","$290.00"],
+      ["W5680","Non-GMO","107 RM","$289.00","$283.00"],
+      ["W6110","Non-GMO","109 RM","$289.00","$283.00"],
+      ["W6820","Non-GMO","110 RM","$239.00","$233.00"],
+      ["W6880","Non-GMO","111 RM","$279.00","$273.00"],
+      ["W7170","Non-GMO","111 RM","$289.00","$283.00"],
+      ["W7730","Non-GMO","112 RM","$239.00","$233.00"],
+      ["W7870","Non-GMO","113 RM","$272.00","$266.00"],
+      ["W7940","Non-GMO","113 RM","$289.00","$283.00"],
+      ["W8080","Non-GMO","113 RM","$270.00","$264.00"],
+      ["W8700 (New)","Non-GMO","116 RM","$296.00","$290.00"],
+      ["W8910","Non-GMO","115 RM","$229.00","$223.00"],
+      ["W8930","Non-GMO","116 RM","$239.00","$233.00"]
+    ]
+  },
+
+  { heading: "ProHarvest Soybeans" },
+  {
     id:"soy-enlist",
-    title:"Soybeans â€” Enlist E3â„¢ & XtendFLEXÂ®",
+    title:"ProHarvest Soybeans - Enlist E3 (AE series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
-    note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only).",
+    note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only). Varieties under 2.5 RM omitted per current lineup.",
     rows:[
-      ["AE1650","1.6","$54.00"],["AE1870","1.8","$54.00"],["AE2050","2.0","$54.00"],
-      ["AE2361","2.3","$54.00"],["AE2470","2.4","$54.00"],["AE2560","2.5","$54.00"],
-      ["25E35","2.7","$58.50"],["27E77","2.7","$58.50"],["AE2750","2.7","$54.00"],
-      ["AE2770","2.7","$54.00"],["AE2860","2.8","$54.00"],["AE2940S","2.9","$54.00"],
-      ["29E71","2.9","$58.50"],["AE3060","3.0","$54.00"],["AE3070","3.0","$54.00"],
-      ["AE3131S","3.1","$54.00"],["AE3150","3.1","$54.00"],["32E79","3.2","$58.50"],
-      ["AE3340","3.3","$54.00"],["AE3370","3.3","$54.00"],["AE3550S","3.5","$54.00"],
-      ["AE3660","3.6","$54.00"],["AE3670S","3.6","$54.00"],["37E72","3.7","$58.50"],
-      ["AE3870S","3.8","$54.00"],["AE3950S","3.9","$54.00"],["AE4150S","4.1","$54.00"],
+      ["AE2560","2.5","$54.00"],
+      ["25E35","2.7","$58.50"],
+      ["27E77","2.7","$58.50"],
+      ["AE2750","2.7","$54.00"],
+      ["AE2770","2.7","$54.00"],
+      ["AE2860","2.8","$54.00"],
+      ["AE2940S","2.9","$54.00"],
+      ["29E71","2.9","$58.50"],
+      ["AE3060","3.0","$54.00"],
+      ["AE3070","3.0","$54.00"],
+      ["AE3131S","3.1","$54.00"],
+      ["AE3150","3.1","$54.00"],
+      ["32E79","3.2","$58.50"],
+      ["AE3340","3.3","$54.00"],
+      ["AE3370","3.3","$54.00"],
+      ["AE3550S","3.5","$54.00"],
+      ["AE3660","3.6","$54.00"],
+      ["AE3670S","3.6","$54.00"],
+      ["37E72","3.7","$58.50"],
+      ["AE3870S","3.8","$54.00"],
+      ["AE3950S","3.9","$54.00"],
+      ["AE4150S","4.1","$54.00"],
       ["AE4270S","4.2","$54.00"]
     ]
   },
   {
     id:"soy-xtend",
-    title:"Soybeans â€” XtendFLEXÂ®",
+    title:"ProHarvest Soybeans - XtendFLEX (F series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
     rows:[
-      ["27F66","2.7","$59.50"],["28F70","2.8","$59.50"],
-      ["30F73","3.0","$59.50"],["34F74","3.4","$59.50"],["36F58","3.6","$59.50"]
+      ["27F66","2.7","$59.50"],
+      ["28F70","2.8","$59.50"],
+      ["30F73","3.0","$59.50"],
+      ["34F74","3.4","$59.50"],
+      ["36F58","3.6","$59.50"]
     ]
   },
   {
     id:"soy-conv",
-    title:"Soybeans â€” Conventional",
+    title:"ProHarvest Soybeans - Conventional (C series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
     rows:[
-      ["26C52","2.6","$49.50"],["27C10","2.7","$45.50"],
-      ["29C57","2.9","$49.50"],["32C71","3.2","$49.50"],["35C56S","3.5","$49.50"]
+      ["26C52","2.6","$49.50"],
+      ["27C10","2.7","$45.50"],
+      ["29C57","2.9","$49.50"],
+      ["32C71","3.2","$49.50"],
+      ["35C56S","3.5","$49.50"]
+    ]
+  },
+  {
+    id:"soyleic",
+    title:"ProHarvest SOYLEIC - High-Oleic",
+    unit:"$/140K bag",
+    columns:["Variety","Rel. Mat.","Trait","Price"],
+    note:"Non-GMO high-oleic oil market with contract premium delivered to processor. Limited supply. Varieties under 2.5 RM omitted per current lineup.",
+    rows:[
+      ["28C76HO","2.8","Conv","$51.50"],
+      ["32C76HO","3.2","Conv","$51.50"],
+      ["35C71HO","3.5","Conv","$51.50"],
+      ["36E72HO","3.6","Enlist","$59.50"],
+      ["38E78HO","3.8","Enlist","$59.50"]
     ]
   },
   {
     id:"soy-tmt",
-    title:"Soybean Seed Treatments",
+    title:"Soybean Seed Treatments - 2027",
     unit:"per unit",
-    columns:["Treatment","","Price"],
+    columns:["Treatment","Price/Unit","With Victrato"],
+    note:"Treated soybean orders have NO returns or cancellations.",
     rows:[
-      ["proTect DI","","$15.50/unit"],
-      ["proTect ULTRA*","","$29.50/unit"]
+      ["FX3I","$12.50","$25.00"],
+      ["MYDRYVE F","$15.00","$27.50"],
+      ["MYDRYVE X","$15.75","$28.25"],
+      ["SoyFX","$9.50","-"],
+      ["Trunemco Nematode","$8.00","-"]
     ]
   },
+  {
+    id:"soy-tmt-box",
+    title:"Soybean Seed Box Treatments - 2027",
+    unit:"per unit",
+    columns:["Treatment","Price/Unit"],
+    rows:[
+      ["Hopper Throttle F&I","$18.50"],
+      ["Hopper Throttle MAX","$32.00"]
+    ]
+  },
+
+  { heading: "Wheat" },
+  {
+    id:"wheat",
+    title:"ProHarvest Wheat - 2026 Retail",
+    unit:"$/bu",
+    columns:["Variety","Type","Notes"],
+    note:"Full retail pricing in the 2026 Retail Wheat Pricelist (open PDF at right).",
+    rows:[
+      ["7B440","Bearded, Early","Late heading reduces spring freeze risk"],
+      ["7B520","Bearded, Medium-Early","Excellent head scab resistance"],
+      ["7B620","Bearded, Medium","Full-season yield workhorse"]
+    ]
+  },
+
+  { heading: "Alfalfa" },
   {
     id:"alfalfa",
-    title:"Alfalfa Pricelist",
-    unit:"per lb",
-    columns:["Variety","Type","Price"],
-    note:"Alfalfa ordered after Sept 15, 2026 for spring 2027 planting qualifies for the same cash discounts as Corn and Soybeans through Jan 15, 2027.",
+    title:"Alfalfa Varieties",
+    unit:"$/lb",
+    columns:["Variety","Coating","Price/lb"],
+    note:"50 lb bags. Alfalfa ordered after Sept 15, 2026 for spring 2027 planting qualifies for same cash discounts as corn/soy through Jan 15, 2027. CT=Coated, UCT=Uncoated.",
     rows:[
-      ["Eldora III Alfalfa","CT","$6.00/lb"],
-      ["Entree RL Alfalfa","CT","$6.00/lb"],
-      ["L-442RR Alfalfa","CT","$12.25/lb"],
-      ["HopperNot Max Alfalfa","CT","$6.00/lb"],
-      ["X-Force 5420 Wet","UCT","$7.70/lb"],
-      ["2200 Alfalfa","UCT","$4.75/lb"]
+      ["Eldora III*","CT","$6.00"],
+      ["Entree RL*","CT","$6.00"],
+      ["L-442RR* (Round-Up tolerant)","CT","$12.25"],
+      ["HopperNot Max*","CT","$6.00"],
+      ["X-Force 5420-Wet*","UCT","$7.70"],
+      ["2200","UCT","$4.50"]
+    ]
+  },
+
+  { heading: "Cover Crop & Forage" },
+  {
+    id:"cover-programs",
+    title:"Cover Crop House-Blend Programs",
+    unit:"$/Acre",
+    columns:["Program","Timing","Cost/Acre"],
+    note:"Custom-mixed to order. All fall 2026 retail pricing. Custom blending $0.10/lb. See '2026 Fall Cover Crop & Forage Pricelist' PDF for the full retail catalog.",
+    rows:[
+      ["Corn Program 1 - Barley + Rape","Simple","$20.14"],
+      ["Corn Program 2 - Barley + Rape + Radish","Plant by Sept 30","$23.14"],
+      ["Corn Program 3 - Oats + Barley + Rape","Plant by Sept 15","$19.99"],
+      ["Corn Program 4 - Barley + Balansa + Vetch + Rape","N-fixing, plant by Sept 15","$55.84"],
+      ["Soybean Program (Bonus Blend @ 35#/A)","After beans","$21.00"],
+      ["Soybean Program 2 (reSTORE Rye @ 45#/A)","After beans, low-cost","$12.86"]
     ]
   },
   {
+    id:"restore-rye",
+    title:"reSTORE Winter Rye - Semi-Load Pricing",
+    unit:"$/bushel (56 lb)",
+    columns:["Tier","Price/Bu","Detail"],
+    note:"Premium cleaned winter rye. Trucks average 765-810 units (mix of 56-lb bags or 45-unit mini-bulks).",
+    rows:[
+      ["Retail (less than load)","$16.00","Customer price"],
+      ["Dealer (less than load)","$13.00","Dealer price"],
+      ["Semi Load - Early Order","$12.00","Best value"]
+    ]
+  },
+
+  { heading: "Volume & Early-Pay Discount Schedules" },
+  {
     id:"disc-corn",
-    title:"Corn Volume Discount Schedule",
+    title:"ProHarvest Corn Volume Discount Schedule",
     unit:"per bag",
     columns:["Bags Ordered","Discount","Group"],
     rows:[
@@ -1494,7 +1701,7 @@ const PRICE_TABLES = [
   },
   {
     id:"disc-soy",
-    title:"Soybean Volume Discount Schedule",
+    title:"ProHarvest Soybean Volume Discount Schedule",
     unit:"per bag",
     columns:["Bags Ordered","Discount","Group"],
     note:"Treated soybean orders received after Jan 15, 2027 are subject to an additional $1/unit for package & handling. No returns or cancellations of treated soybeans.",
@@ -1510,72 +1717,28 @@ const PRICE_TABLES = [
     ]
   },
   {
-    id:"white-corn",
-    title:"White Corn â€” Specialty (ProHarvest)",
-    unit:"$/80K bag",
-    columns:["Hybrid","RM","Price"],
-    note:"Contract only, limited supply. Bright-white identity-preserved hybrids for premium end-use markets. Call for market letter.",
+    id:"disc-wy-vol",
+    title:"Wyffels Volume Discount Schedule (2027)",
+    unit:"% of total amount",
+    columns:["Paid Units","Discount"],
     rows:[
-      ["82W49","112 RM","$230.00"],
-      ["84W24","114 RM","$230.00"],
-      ["84W70","114 RM","$230.00"]
+      ["12-249","8% per paid unit"],
+      ["250-499","10% per paid unit"],
+      ["500+","12% per paid unit"]
     ]
   },
   {
-    id:"soyleic",
-    title:"SOYLEIC High-Oleic Soybeans",
-    unit:"$/140K bag",
-    columns:["Variety","Rel. Mat.","Trait","Price"],
-    note:"Non-GMO high-oleic oil market with contract premium delivered to processor. Limited supply.",
+    id:"disc-wy-early",
+    title:"Wyffels Early-Pay Discounts (2027)",
+    unit:"% off subtotal",
+    columns:["Paid By","Discount"],
+    note:"Applies AFTER volume + Grow More Wyffels bonus discounts. Additional 2.0% Early Order Discount applies to seed ordered by Sept 30, 2026. Accounts due June 30, 2027.",
     rows:[
-      ["22C70HO","2.2","Conv","$51.50"],
-      ["28C76HO","2.8","Conv","$51.50"],
-      ["32C76HO","3.2","Conv","$51.50"],
-      ["35C71HO","3.5","Conv","$51.50"],
-      ["36E72HO","3.6","Enlist","$59.50"],
-      ["38E78HO","3.8","Enlist","$59.50"]
-    ]
-  },
-  {
-    id:"cover-programs",
-    title:"Cover Crop House-Blend Programs",
-    unit:"$/Acre",
-    columns:["Program","Timing","Cost/Acre"],
-    note:"Custom-mixed to order. All fall 2026 retail pricing. Custom blending $0.10/lb.",
-    rows:[
-      ["Corn Program 1 â€” Barley + Rape","Simple","$20.14"],
-      ["Corn Program 2 â€” Barley + Rape + Radish","Plant by Sept 30","$23.14"],
-      ["Corn Program 3 â€” Oats + Barley + Rape","Plant by Sept 15","$19.99"],
-      ["Corn Program 4 â€” Barley + Balansa + Vetch + Rape","N-fixing, plant by Sept 15","$55.84"],
-      ["Soybean Program (Bonus Blend @ 35#/A)","After beans","$21.00"],
-      ["Soybean Program 2 (reSTORE Rye @ 45#/A)","After beans, low-cost","$12.86"]
-    ]
-  },
-  {
-    id:"restore-rye",
-    title:"reSTORE Winter Rye â€” Semi-Load Pricing",
-    unit:"$/bushel (56 lb)",
-    columns:["Tier","Price/Bu","Detail"],
-    note:"Premium cleaned winter rye. Trucks average 765-810 units (mix of 56-lb bags or 45-unit mini-bulks).",
-    rows:[
-      ["Retail (less than load)","$16.00","Customer price"],
-      ["Dealer (less than load)","$13.00","Dealer price"],
-      ["Semi Load â€¢ Early Order","$12.00","Best value"]
-    ]
-  },
-  {
-    id:"alfalfa",
-    title:"Alfalfa Varieties",
-    unit:"$/lb",
-    columns:["Variety","Coating","Price/lb"],
-    note:"50 lb bags. Alfalfa ordered after Sept 15, 2026 for spring 2027 planting qualifies for same cash discounts as corn/soy through Jan 15, 2027. CT=Coated, UCT=Uncoated.",
-    rows:[
-      ["Eldora III*","CT","$6.00"],
-      ["Entree RL*","CT","$6.00"],
-      ["L-442RR* (Round-Up tolerant)","CT","$12.25"],
-      ["HopperNot Max*","CT","$6.00"],
-      ["X-Force 5420-Wet*","UCT","$7.70"],
-      ["2200","UCT","$4.50"]
+      ["Oct 15, 2026","11.0%"],
+      ["Nov 15, 2026","10.0%"],
+      ["Dec 15, 2026","8.5%"],
+      ["Jan 15, 2027","8.0%"],
+      ["Mar 15, 2027","4.0%"]
     ]
   }
 ];
@@ -2123,7 +2286,11 @@ function renderLibrary(){
 /* ---------- Pricing tables ---------- */
 function renderPricing(){
   const wrap = $("#priceTables");
-  wrap.innerHTML = PRICE_TABLES.map(t=>`
+  wrap.innerHTML = PRICE_TABLES.map(t=>{
+    if(t.heading){
+      return `<div class="price-section-head"><h2>${escapeHtml(t.heading)}</h2></div>`;
+    }
+    return `
     <div class="price-block" data-tid="${t.id}">
       <div class="ph">
         <h3>${escapeHtml(t.title)}</h3>
@@ -2140,8 +2307,8 @@ function renderPricing(){
           </tbody>
         </table>
       </div>
-    </div>
-  `).join("");
+    </div>`;
+  }).join("");
   // Sortable
   $$(".price-table").forEach(tbl=>{
     tbl.querySelectorAll("th").forEach(th=>{
@@ -2287,6 +2454,7 @@ function search(q){
   });
   // Pricing rows
   PRICE_TABLES.forEach(t=>{
+    if(!t.rows||!t.id) return;
     t.rows.forEach(r=>{
       const hay = r.join(" ").toLowerCase();
       if(hay.includes(q)) results.push({kind:"Price",title:r[0]+" â€” "+r[r.length-1],meta:t.title,action:()=>{setView("pricing");setTimeout(()=>{document.querySelector(`[data-tid="${t.id}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});},50);}});
@@ -2347,6 +2515,7 @@ const FarmPlan = (function(){
   function buildProductList(){
     const out = [];
     PRICE_TABLES.forEach(t=>{
+    if(!t.rows) return;
       if(!/Discount/i.test(t.title)){
         t.rows.forEach(r=>{
           const priceStr = r[r.length-1];
@@ -2370,8 +2539,8 @@ const FarmPlan = (function(){
     const isSoy  = /Soybean/i.test(product.group);
     const isCorn = /Corn/i.test(product.group);
     let sched = null;
-    if(isCorn) sched = PRICE_TABLES.find(t=>t.id==="disc-corn");
-    else if(isSoy) sched = PRICE_TABLES.find(t=>t.id==="disc-soy");
+    if(isCorn) sched = PRICE_TABLES.find(t=>t&&t.id==="disc-corn");
+    else if(isSoy) sched = PRICE_TABLES.find(t=>t&&t.id==="disc-soy");
     if(!sched) return 0;
     // Sched rows are ["1-35","$5.00","A"]
     for(const r of sched.rows){
@@ -2904,5 +3073,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>

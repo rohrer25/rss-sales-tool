@@ -1,4 +1,4 @@
-﻿const CACHE_VERSION = 'rss-sales-v1';
+﻿const CACHE_VERSION = 'rss-sales-v2';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const PDF_CACHE   = CACHE_VERSION + '-pdfs';
 
@@ -85,3 +85,4 @@ self.addEventListener('message', event => {
     })());
   }
 });
+
