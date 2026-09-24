@@ -9,17 +9,26 @@ STEP 1 - Download the zip
   Grab: rss-sales-tool-github.zip
 
 STEP 2 - Unzip it
-  You'll get:
-    - RSS-Fall-2026-Sales-Tool.html   (the main sales tool)
-    - index.html                       (identical, so the GitHub Pages
-                                        root URL still works)
-    - pdfs/                            (all 40 PDFs)
+  You'll get ONE tool:
+    - index.html                       (THE sales tool — always this file)
+    - pdfs/                            (all the PDFs)
+    - sw.js, vendor/, icons/, manifest.webmanifest
+
+  NOTE (2026-09-24): there used to be a second file,
+  RSS-Fall-2026-Sales-Tool.html, described here as "the main sales tool".
+  That was wrong — index.html is the only tool. The old file has been
+  retired to a redirect, so old bookmarks and QR codes still work.
+
+  IMPORTANT — upload index.html by itself. Don't drag in a whole folder
+  from Finder/Explorer or the browser will rename it "index (1).html",
+  which is NOT served. That is what caused earlier duplicates in this repo.
 
 STEP 3 - Push to GitHub
   Option A (easiest — via the web):
     1. Go to github.com/rohrer25/rss-sales-tool
-    2. Click "Add file" -> "Upload files"
-    3. Drag EVERYTHING from the unzipped folder in
+    2. Open index.html -> pencil (Edit) -> paste the new contents -> Commit
+       (editing in place avoids duplicates entirely)
+    3. Or: "Add file" -> "Upload files", drop in ONLY the files that changed
     4. Commit message: "Fall 2026 sales tool - unified iPad+desktop"
     5. Click "Commit changes"
     6. Wait 1-2 minutes for GitHub Pages to rebuild
