@@ -1,4 +1,7 @@
-﻿const CACHE_VERSION = 'rss-sales-v5';
+﻿// Bumped v5 -> v6 on 2026-09-24: the cache-first fetch handler means a device
+// that cached a broken/older shell keeps serving it. A version bump makes the
+// activate step delete the old caches, so the device picks up the current tool.
+const CACHE_VERSION = 'rss-sales-v6';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const PDF_CACHE   = CACHE_VERSION + '-pdfs';
 
