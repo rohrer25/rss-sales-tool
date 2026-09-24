@@ -821,6 +821,10 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
         <svg class="ico icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
         Sales Call
       </button>
+      <button class="navbtn" data-view="match">
+        <svg class="ico icoline" viewBox="0 0 24 24"><path d="M12 3l2.2 5.3 5.8.5-4.4 3.8 1.3 5.6L12 15.4 7.1 18.2l1.3-5.6L4 8.8l5.8-.5z"/></svg>
+        Seed Match
+      </button>
       <button class="navbtn" data-view="plan">
         <svg class="ico icoline" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/><path d="M9 13h6M9 16h3"/></svg>
         Farm Plan
@@ -977,6 +981,46 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
       </div>
     </section>
 
+
+    <!-- SEED MATCH VIEW -->
+    <section class="view" id="view-match">
+      <div class="gcard">
+        <h3>Seed Match</h3>
+        <p class="pill">Tech-sheet fit — soil placement + agronomics</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.85rem;margin:.85rem 0 .5rem">
+          <div class="plan-field">
+            <label>Grower / Field</label>
+            <input id="sm-field" type="text" placeholder="e.g. Darrell — east 80" style="width:190px;padding:.5rem;border:1.5px solid var(--hair-2);border-radius:8px;font-family:inherit;font-size:.95rem">
+          </div>
+          <div class="plan-field">
+            <label>Crop</label>
+            <select id="sm-crop" style="padding:.5rem;border:1.5px solid var(--hair-2);border-radius:8px;font-family:inherit;font-size:.95rem">
+              <option value="corn">Corn</option>
+              <option value="soy">Soybeans</option>
+            </select>
+          </div>
+          <div class="plan-field">
+            <label>Target RM (optional)</label>
+            <input id="sm-rm" type="number" step="0.1" placeholder="e.g. 110" style="width:110px;padding:.5rem;border:1.5px solid var(--hair-2);border-radius:8px;font-family:inherit;font-size:.95rem">
+          </div>
+          <div class="plan-field">
+            <label>Brand</label>
+            <select id="sm-brand" style="padding:.5rem;border:1.5px solid var(--hair-2);border-radius:8px;font-family:inherit;font-size:.95rem"></select>
+          </div>
+        </div>
+        <div>
+          <label style="font-weight:700">Soil type on this field</label>
+          <div id="sm-soils" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.45rem"></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--ink-2);margin-top:.85rem">
+          Pick the ground this field is on. New grower with no history? This is all you need — the match runs on tech-sheet fit alone.
+          Corn under 105 RM and soybeans under 2.5 RM are filtered out automatically.
+        </p>
+      </div>
+      <div class="gcard" style="margin-top:1rem">
+        <div id="sm-results"><div class="plan-empty">Pick a crop and soil type above to rank the lineup.</div></div>
+      </div>
+    </section>
 
     <!-- FARM PLAN / QUOTE BUILDER VIEW -->
     <section class="view" id="view-plan">
@@ -1171,6 +1215,10 @@ body.printing-quote #printQuote { position:static; left:auto; top:auto; }
     <button class="tabbtn" data-view="call">
       <svg class="ico icoline" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg>
       Call
+    </button>
+    <button class="tabbtn" data-view="match">
+      <svg class="ico icoline" viewBox="0 0 24 24"><path d="M12 3l2.2 5.3 5.8.5-4.4 3.8 1.3 5.6L12 15.4 7.1 18.2l1.3-5.6L4 8.8l5.8-.5z"/></svg>
+      Match
     </button>
     <button class="tabbtn" data-view="plan">
       <svg class="ico icoline" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 9h16"/><path d="M9 13h6"/></svg>
@@ -1530,31 +1578,18 @@ const PRICE_TABLES = [
     title:"ProHarvest Soybeans - Enlist E3 (AE series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
-    note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only). Varieties under 2.5 RM omitted per current lineup.",
+    note:"140K seed count = 1 unit. Available in paper bag, 40-unit mini-bulk, or 40-unit Black Box (treated only). Prices from the RSS 2026-27 master pricesheet, Soy Zone 1 (not the ProHarvest sheet).",
     rows:[
-      ["AE2560","2.5","$54.00"],
-      ["25E35","2.7","$58.50"],
-      ["27E77","2.7","$58.50"],
-      ["AE2750","2.7","$54.00"],
-      ["AE2770","2.7","$54.00"],
-      ["AE2860","2.8","$54.00"],
-      ["AE2940S","2.9","$54.00"],
-      ["29E71","2.9","$58.50"],
+      ["AE2940","2.9","$54.00"],
+      ["AE2950","2.9","$54.00"],
       ["AE3060","3.0","$54.00"],
-      ["AE3070","3.0","$54.00"],
-      ["AE3131S","3.1","$54.00"],
       ["AE3150","3.1","$54.00"],
-      ["32E79","3.2","$58.50"],
-      ["AE3340","3.3","$54.00"],
-      ["AE3370","3.3","$54.00"],
-      ["AE3550S","3.5","$54.00"],
+      ["AE3340S","3.3","$54.00"],
+      ["AE3550","3.5","$54.00"],
       ["AE3660","3.6","$54.00"],
-      ["AE3670S","3.6","$54.00"],
-      ["37E72","3.7","$58.50"],
-      ["AE3870S","3.8","$54.00"],
-      ["AE3950S","3.9","$54.00"],
-      ["AE4150S","4.1","$54.00"],
-      ["AE4270S","4.2","$54.00"]
+      ["AE3850","3.8","$54.00"],
+      ["AE3950","3.9","$54.00"],
+      ["AE4150","4.1","$54.00"]
     ]
   },
   {
@@ -1562,12 +1597,14 @@ const PRICE_TABLES = [
     title:"ProHarvest Soybeans - XtendFLEX (F series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
+    note:"Prices from the RSS 2026-27 master pricesheet, Soy Zone 1.",
     rows:[
-      ["27F66","2.7","$59.50"],
-      ["28F70","2.8","$59.50"],
-      ["30F73","3.0","$59.50"],
-      ["34F74","3.4","$59.50"],
-      ["36F58","3.6","$59.50"]
+      ["27F59","2.7","$61.50"],
+      ["27F66","2.7","$61.50"],
+      ["29F42","2.9","$61.50"],
+      ["32F54","3.2","$61.50"],
+      ["36F58","3.6","$61.50"],
+      ["38F67","3.8","$61.50"]
     ]
   },
   {
@@ -1575,12 +1612,12 @@ const PRICE_TABLES = [
     title:"ProHarvest Soybeans - Conventional (C series)",
     unit:"$/140K bag",
     columns:["Variety","Rel. Mat.","Price"],
+    note:"Prices from the RSS 2026-27 master pricesheet, Soy Zone 1.",
     rows:[
-      ["26C52","2.6","$49.50"],
-      ["27C10","2.7","$45.50"],
-      ["29C57","2.9","$49.50"],
-      ["32C71","3.2","$49.50"],
-      ["35C56S","3.5","$49.50"]
+      ["29C57","2.9","$50.00"],
+      ["31C30","3.1","$50.00"],
+      ["35C56S","3.5","$50.00"],
+      ["37C13","3.7","$50.00"]
     ]
   },
   {
@@ -2786,9 +2823,180 @@ Rohrer Seed Solutions
     });
     renderQuotes();
   }
-  return {init, addLine, removeLine, setQty, openQuote, deleteQuote};
+  function addItem(item, qty){
+    state.lines.push({product:{
+      group:item.group||"Catalog",
+      name:item.name||"Product",
+      meta:item.meta||"",
+      retail:Number(item.retail)||0
+    }, qty:Math.max(1, parseInt(qty,10)||1)});
+    render();
+  }
+  return {init, addLine, addItem, removeLine, setQty, openQuote, deleteQuote, products:PRODUCTS};
 })();
 FarmPlan.init();
+
+/* ===== SEED MATCH DATA + ENGINE (added for field use) ===== */
+const CATALOG=[{"c":"W6505","b":"Wyffels","k":"corn","rm":110.0,"t":"","s":[3.0,3.0,3.0,2.0],"sp":["E","E","E","VG"],"r":{"st":7.0,"rt":8.0,"gs":7.0,"dt":8.0,"sg":6.0,"ev":7.0,"gw":7.0,"gl":8.0,"nl":7.0,"an":9.0},"a":0.0},{"c":"W6644RIB","b":"Wyffels","k":"corn","rm":110.0,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":9.0,"rt":8.0,"gs":8.0,"dt":8.0,"sg":8.0,"ev":8.0,"gw":8.0,"gl":7.0,"nl":7.0,"an":8.0},"a":2.5},{"c":"W7424","b":"Wyffels","k":"corn","rm":112.0,"t":"Roundup         Liberty   ","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":9.0,"rt":7.0,"gs":8.0,"dt":8.0,"sg":7.0,"ev":9.0,"gw":7.0,"gl":7.0,"nl":6.0,"an":8.0},"a":1.0},{"c":"W7544RIB","b":"Wyffels","k":"corn","rm":112.0,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":8.0,"rt":9.0,"gs":9.0,"dt":8.0,"sg":9.0,"ev":7.0,"gw":8.0,"gl":7.0,"nl":8.0,"an":7.0},"a":3.0},{"c":"W7878RIB","b":"Wyffels","k":"corn","rm":114,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":9.0,"rt":9.0,"gs":8.0,"dt":8.0,"sg":8.0,"ev":7.0,"gw":6.0,"gl":8.0,"nl":8.0,"an":8.0},"x":0,"a":2.5},{"c":"W7876RIB","b":"Wyffels","k":"corn","rm":114,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":9.0,"rt":9.0,"gs":8.0,"dt":8.0,"sg":8.0,"ev":7.0,"gw":6.0,"gl":8.0,"nl":8.0,"an":8.0},"x":0,"a":2.5},{"c":"W7870","b":"Wyffels","k":"corn","rm":113,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":9.0,"rt":9.0,"gs":8.0,"dt":8.0,"sg":8.0,"ev":7.0,"gw":6.0,"gl":8.0,"nl":8.0,"an":8.0},"x":0,"a":2.5},{"c":"W7945RIB","b":"Wyffels","k":"corn","rm":114,"t":"","s":[2.0,3.0,3.0,3.0],"sp":["VG","E","E","E"],"r":{"st":8.0,"rt":8.0,"gs":7.0,"dt":7.0,"sg":8.0,"ev":8.0,"gw":8.0,"gl":8.0,"nl":8.0,"an":9.0},"x":0,"a":2.5},{"c":"W7940","b":"Wyffels","k":"corn","rm":113,"t":"","s":[2.0,3.0,3.0,3.0],"sp":["VG","E","E","E"],"r":{"st":8.0,"rt":8.0,"gs":7.0,"dt":7.0,"sg":8.0,"ev":8.0,"gw":8.0,"gl":8.0,"nl":8.0,"an":9.0},"x":0,"a":2.5},{"c":"W8086RIB","b":"Wyffels","k":"corn","rm":114,"t":"","s":[3.0,3.0,3.0,2.0],"sp":["E","E","E","VG"],"r":{"st":8.0,"rt":8.0,"gs":8.0,"dt":8.0,"sg":6.0,"ev":8.0,"gw":8.0,"gl":7.0,"nl":8.0,"an":9.0},"x":0,"a":2.0},{"c":"W8080","b":"Wyffels","k":"corn","rm":113,"t":"","s":[3.0,3.0,3.0,2.0],"sp":["E","E","E","VG"],"r":{"st":8.0,"rt":8.0,"gs":8.0,"dt":8.0,"sg":6.0,"ev":8.0,"gw":8.0,"gl":7.0,"nl":8.0,"an":9.0},"x":0,"a":2.0},{"c":"W8134RIB","b":"Wyffels","k":"corn","rm":114.0,"t":"","s":[3.0,3.0,3.0,3.0],"sp":["E","E","E","E"],"r":{"st":8.0,"rt":7.0,"gs":8.0,"dt":8.0,"sg":8.0,"ev":8.0,"gw":6.0,"gl":7.0,"nl":8.0,"an":8.0},"a":1.0},{"c":"80P75","b":"ProHarvest","k":"corn","rm":110.0,"t":"PCE, CONV","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":9.0,"rt":8.0,"gs":8.0},"a":3.0},{"c":"81P19","b":"ProHarvest","k":"corn","rm":111.0,"t":"VT4PRIB, TRERIB","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":8.0,"rt":7.0,"gs":8.0},"a":2.0},{"c":"81P20","b":"ProHarvest","k":"corn","rm":111.0,"t":"PowerCore Enlist, Conventi","s":[3.0,3.0,3.0,null],"sp":["HR","HR","HR",null],"r":{"st":8.0,"rt":7.0,"gs":8.0},"a":2.0},{"c":"82P96","b":"ProHarvest","k":"corn","rm":112.0,"t":"PCE","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":7.0,"rt":7.0,"gs":7.0},"a":1.0},{"c":"83P66","b":"ProHarvest","k":"corn","rm":113.0,"t":"VT2PRIB","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":8.0,"rt":8.0,"gs":6.0},"a":1.5},{"c":"84P78","b":"ProHarvest","k":"corn","rm":114.0,"t":"TRERIB, CONV","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":8.0,"rt":8.0,"gs":7.0},"a":2.0},{"c":"85P58","b":"ProHarvest","k":"corn","rm":115.0,"t":"SSRIB, VT2PRIB","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{"st":9.0,"rt":8.0,"gs":8.0},"a":3.0},{"c":"86P55","b":"ProHarvest","k":"corn","rm":116.0,"t":"TRERIB","s":[3.0,3.0,3.0,2.0],"sp":["HR","HR","HR","R"],"r":{"st":7.0,"rt":6.0,"gs":6.0},"a":0.0},{"c":"AE2770","b":"Enlist E3 Soybeans","k":"soy","rm":2.7,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE2950","b":"Enlist E3 Soybeans","k":"soy","rm":2.9,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3060","b":"Enlist E3 Soybeans","k":"soy","rm":3.0,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3070","b":"Enlist E3 Soybeans","k":"soy","rm":3.0,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3150","b":"Enlist E3 Soybeans","k":"soy","rm":3.1,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3270","b":"Enlist E3 Soybeans","k":"soy","rm":3.2,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3370","b":"Enlist E3 Soybeans","k":"soy","rm":3.3,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3550S","b":"Enlist E3 Soybeans","k":"soy","rm":3.5,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3660","b":"Enlist E3 Soybeans","k":"soy","rm":3.6,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3670S","b":"Enlist E3 Soybeans","k":"soy","rm":3.6,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3850","b":"Enlist E3 Soybeans","k":"soy","rm":3.8,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3870S","b":"Enlist E3 Soybeans","k":"soy","rm":3.8,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"AE3950S","b":"Enlist E3 Soybeans","k":"soy","rm":3.9,"t":"Enlist E3","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"27C10","b":"Conventional Soybeans","k":"soy","rm":2.7,"t":"Conventional","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"29C57","b":"Conventional Soybeans","k":"soy","rm":2.9,"t":"Conventional","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"32C71","b":"Conventional Soybeans","k":"soy","rm":3.2,"t":"Conventional","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"35C56S","b":"Conventional Soybeans","k":"soy","rm":3.5,"t":"Conventional","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"27F66","b":"XtendFlex Soybeans","k":"soy","rm":2.7,"t":"XtendFlex","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"28F70","b":"XtendFlex Soybeans","k":"soy","rm":2.8,"t":"XtendFlex","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"30F73","b":"XtendFlex Soybeans","k":"soy","rm":3.0,"t":"XtendFlex","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"34F74","b":"XtendFlex Soybeans","k":"soy","rm":3.4,"t":"XtendFlex","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"36F58","b":"XtendFlex Soybeans","k":"soy","rm":3.6,"t":"XtendFlex","s":[3.0,3.0,3.0,3.0],"sp":["HR","HR","HR","HR"],"r":{},"a":1.5},{"c":"ProHarvest Alfalfa Varieties","b":"Alfalfa & Forage","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5},{"c":"ProHarvest Forage Positioning Chart","b":"Alfalfa & Forage","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5},{"c":"ProHarvest Forage Blends","b":"Alfalfa & Forage","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5},{"c":"ProHarvest Cover Crops Overview","b":"Cover Crops","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5},{"c":"ProHarvest Cover Crop Blends","b":"Cover Crops","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5},{"c":"ProHarvest Wheat Sell Sheet","b":"Wheat","k":"other","rm":null,"t":"ProHarvest","s":[null,null,null,null],"sp":[null,null,null,null],"r":{},"x":1,"a":1.5}];
+const CATALOG_HELD_OUT=["ProHarvest Alfalfa Varieties","ProHarvest Forage Positioning Chart","ProHarvest Forage Blends","ProHarvest Cover Crops Overview","ProHarvest Cover Crop Blends","ProHarvest Wheat Sell Sheet"];
+
+/* ============================================================
+   SEED MATCH — tech-sheet fit engine (v1)
+   Ranks the catalog against the soil a field is actually on.
+   Weights are the Brain's fit logic: soil .50 / agronomy .33 / maturity .17
+   Evidence from yield history is NOT wired here yet — this is tech-sheet fit.
+   Hard rules: no corn under 105 RM, no soy under 2.5 RM.
+============================================================ */
+const SeedMatch = (function(){
+  const SOILS=[{k:"light",l:"Light"},{k:"medium",l:"Medium"},{k:"heavy",l:"Heavy"},{k:"poorly",l:"Poorly Drained"}];
+  const IDX={light:0,medium:1,heavy:2,poorly:3};
+  const RLAB={st:"stalk",rt:"root",gs:"green snap",dt:"drought",sg:"staygreen",ev:"early vigor",gw:"Goss's wilt",gl:"gray leaf",nl:"NLB",an:"anthracnose"};
+  const state={crop:"corn",soil:"heavy",rm:"",brand:""};
+
+  function strip(s){ return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,""); }
+
+  function priceFor(code){
+    const list = (FarmPlan && FarmPlan.products) || [];
+    const up = strip(code);
+    let hit = list.find(p=>strip(p.name).includes(up));
+    if(!hit){ const c = up.match(/\d{3,}/); if(c) hit = list.find(p=>String(p.name).toUpperCase().includes(c[0])); }
+    return hit ? {retail:Number(hit.retail)||0, group:hit.group, meta:hit.meta||""}
+               : {retail:0, group:"Catalog — price TBD", meta:""};
+  }
+
+  function rank(){
+    const idx = IDX[state.soil];
+    const rmTarget = parseFloat(state.rm);
+    return CATALOG
+      .filter(p=>!p.x)
+      .filter(p=>p.k===state.crop)
+      .filter(p=> state.crop==="corn" ? (p.rm||0)>=105 : (p.rm||0)>=2.5)
+      .filter(p=> !state.brand || String(p.b||"").toLowerCase().includes(state.brand))
+      .map(p=>{
+        const soilS = Number(p.s[idx]||0)/3;
+        const agroS = Number(p.a||0)/3;
+        let matS = 0.6;
+        if(!isNaN(rmTarget) && p.rm) matS = Math.max(0, 1 - Math.abs(p.rm-rmTarget)/1.5);
+        return {p, soilS, agroS, matS, score: 0.50*soilS + 0.33*agroS + 0.17*matS};
+      })
+      .sort((a,b)=>b.score-a.score);
+  }
+
+  function reason(x){
+    const p = x.p;
+    const sp = (p.sp && p.sp[IDX[state.soil]]) || "";
+    const words = {E:"Excellent",VG:"Very good",G:"Good",F:"Fair",R:"Rated",HR:"Highly rated",
+                   N:"Not rated",NR:"Not recommended"};
+    const out = [];
+    if(sp) out.push((words[sp]||sp)+" on "+SOILS[IDX[state.soil]].l.toLowerCase()+" ground");
+    const r = p.r||{};
+    const top = Object.entries(r).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k,v])=>RLAB[k]+" "+v);
+    if(top.length) out.push(top.join(" + "));
+    const bad = Object.entries(r).sort((a,b)=>a[1]-b[1])[0];
+    if(bad && bad[1]<=5) out.push("watch "+RLAB[bad[0]]+" ("+bad[1]+")");
+    return out.join(" · ");
+  }
+
+  function render(){
+    let rows = rank();
+    const box = document.getElementById("sm-results");
+    if(!box) return;
+    const field = (document.getElementById("sm-field")||{}).value || "";
+    if(!rows.length){
+      box.innerHTML = '<div class="plan-empty">Nothing fits those filters — widen the brand or clear the target RM.</div>';
+      return;
+    }
+    // Price first: a product you cannot quote should never outrank one you can.
+    const items = rows.map(x=>({x, pr:priceFor(x.p.c)}));
+    const priced   = items.filter(i=>i.pr.retail>0);
+    const unpriced = items.filter(i=>!(i.pr.retail>0));
+    const ordered  = priced.concat(unpriced);
+    const head = '<div style="font-size:.8rem;color:var(--ink-2);margin-bottom:.4rem">'
+      + (field?'<strong>'+field.replace(/[<>&]/g,"")+'</strong> · ':'')
+      + rows.length + ' products ranked on ' + SOILS[IDX[state.soil]].l.toLowerCase()
+      + ' ground · tech-sheet fit only (no yield history yet)</div>';
+    let notes = '';
+    if(state.crop==="soy") {
+      notes += '<div style="font-size:.8rem;color:var(--warn);margin:.35rem 0">'
+        + 'Soy soil placement has not differentiated in the catalog yet — this ranking is agronomics + maturity, not soil fit. '
+        + 'Soil scoring lights up when the soy tech sheets are re-read.</div>';
+    }
+    const combos = (typeof CATALOG_HELD_OUT !== "undefined" ? CATALOG_HELD_OUT.filter(c=>!/^ProHarvest/.test(c)) : []);
+    if(combos.length) {
+      notes += '<div style="font-size:.8rem;color:var(--ink-2);margin:.35rem 0">'
+        + 'Held out until the sheet is split — one sheet covers several hybrids, so the code would be wrong on a quote: <strong>'
+        + combos.join(' · ') + '</strong></div>';
+    }
+    if(unpriced.length) {
+      notes += '<div style="font-size:.8rem;color:var(--warn);margin:.35rem 0">'
+        + unpriced.length + ' variety(ies) below have <strong>no Zone 1 price on the sheet</strong> — they rank low because you cannot quote them yet. '
+        + 'Confirm with the office whether they are still sold: <strong>'
+        + unpriced.map(i=>i.x.p.c).join(' · ') + '</strong></div>';
+    }
+    let html = head + notes;
+    ordered.forEach((it,i)=>{
+      if(i===priced.length && unpriced.length){
+        html += '<div style="font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin:.9rem 0 .2rem">No price on the Zone 1 sheet</div>';
+      }
+      const x = it.x, p = x.p, pr = it.pr;
+      const pct = Math.round(x.score*100);
+      const bar = pct>=85 ? "var(--signal)" : pct>=70 ? "var(--wheat)" : "var(--furrow)";
+      const name = (p.b?p.b+" ":"") + p.c;
+      html += '<div style="display:flex;gap:.75rem;align-items:flex-start;padding:.7rem 0;border-top:1px solid var(--hair)">'
+        + '<div style="font-weight:800;color:var(--field);min-width:1.6rem">'+(i+1)+'</div>'
+        + '<div style="flex:1;min-width:0">'
+        +   '<div style="font-weight:800">'+name+(p.rm?' · '+p.rm+' RM':'')+'</div>'
+        +   '<div style="font-size:.86rem;color:var(--ink-2);margin:.15rem 0">'+reason(x)+'</div>'
+        +   '<div style="height:6px;background:var(--paper-3);border-radius:4px;overflow:hidden;max-width:260px"><div style="height:100%;width:'+pct+'%;background:'+bar+'"></div></div>'
+        + '</div>'
+        + '<div style="text-align:right;min-width:92px">'
+        +   '<div style="font-weight:800">'+(pr.retail?'$'+pr.retail.toFixed(2):'no price')+'</div>'
+        +   '<div style="font-size:.75rem;color:var(--ink-2)">fit '+pct+'%</div>'
+        +   '<button class="btn primary" style="margin-top:.35rem" onclick="SeedMatch.add(\''+p.c+'\', this)">Add</button>'
+        + '</div>'
+        + '</div>';
+    });
+    box.innerHTML = html;
+  }
+
+  function add(code, btn){
+    const p = CATALOG.find(x=>x.c===code);
+    if(!p) return;
+    const pr = priceFor(code);
+    const grp = (state.crop==="corn" ? "Corn" : "Soybean") + " — Seed Match";
+    FarmPlan.addItem({name:(p.b?p.b+" ":"")+p.c, group:grp, meta:(p.rm?p.rm+" RM":""), retail:pr.retail}, 1);
+    if(btn){ btn.textContent="Added ✓"; setTimeout(()=>{btn.textContent="Add";},1400); }
+  }
+
+  function setSoil(k){
+    state.soil = k;
+    document.querySelectorAll("#sm-soils .btn").forEach(b=>b.classList.toggle("primary", b.dataset.soil===k));
+    render();
+  }
+
+  function init(){
+    const soils = document.getElementById("sm-soils");
+    if(soils){
+      soils.innerHTML = SOILS.map(s=>
+        '<button class="btn'+(s.k===state.soil?" primary":"")+'" data-soil="'+s.k+'" onclick="SeedMatch.setSoil(\''+s.k+'\')">'+s.l+'</button>').join("");
+    }
+    const brands = [...new Set(CATALOG.map(p=>p.b).filter(Boolean))].sort();
+    const bsel = document.getElementById("sm-brand");
+    if(bsel) bsel.innerHTML = '<option value="">All brands</option>'
+      + brands.map(b=>'<option value="'+b.toLowerCase()+'">'+b+'</option>').join("");
+    const crop = document.getElementById("sm-crop");
+    if(crop) crop.addEventListener("change", e=>{ state.crop = e.target.value; render(); });
+    if(bsel) bsel.addEventListener("change", e=>{ state.brand = e.target.value; render(); });
+    const rm = document.getElementById("sm-rm");
+    if(rm) rm.addEventListener("input", e=>{ state.rm = e.target.value; render(); });
+    const fld = document.getElementById("sm-field");
+    if(fld) fld.addEventListener("input", render);
+    render();
+  }
+  return {init, render, setSoil, add};
+})();
+SeedMatch.init();
+
 
 /* ---------- Boot ---------- */
 function updateBadges(){
@@ -3073,6 +3281,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
