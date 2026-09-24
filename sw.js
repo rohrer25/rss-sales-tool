@@ -1,4 +1,4 @@
-﻿const CACHE_VERSION = 'rss-sales-v2';
+﻿const CACHE_VERSION = 'rss-sales-v3';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const PDF_CACHE   = CACHE_VERSION + '-pdfs';
 
