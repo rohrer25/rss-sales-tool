@@ -1,8 +1,9 @@
-// Bumped v6 -> v7 on 2026-11-13: MaxStax in-furrow biological block added to
-// PRICE_TABLES. The cache-first fetch handler keeps an old shell until the version
-// changes, so this bump is what makes an installed iPad pick up the new price sheet.
-// (Prior: v5 -> v6 on 2026-09-24, after a broken shell had been cached.)
-const CACHE_VERSION = 'rss-sales-v7';
+// Bumped v7 -> v8 on 2026-11-13: 2027 soybean seed treatment prices changed in
+// PRICE_TABLES (FX4i $13.25, DRYVE X $16.25, Victrato add-on $13.50). The cache-first
+// fetch handler keeps an old shell until the version changes, so this bump is what
+// makes an installed iPad pick up the new price sheet.
+// (Prior: v6 -> v7 on 2026-11-13, MaxStax in-furrow block added.)
+const CACHE_VERSION = 'rss-sales-v8';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const PDF_CACHE   = CACHE_VERSION + '-pdfs';
 
