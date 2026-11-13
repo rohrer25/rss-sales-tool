@@ -1,7 +1,8 @@
-﻿// Bumped v5 -> v6 on 2026-09-24: the cache-first fetch handler means a device
-// that cached a broken/older shell keeps serving it. A version bump makes the
-// activate step delete the old caches, so the device picks up the current tool.
-const CACHE_VERSION = 'rss-sales-v6';
+// Bumped v6 -> v7 on 2026-11-13: MaxStax in-furrow biological block added to
+// PRICE_TABLES. The cache-first fetch handler keeps an old shell until the version
+// changes, so this bump is what makes an installed iPad pick up the new price sheet.
+// (Prior: v5 -> v6 on 2026-09-24, after a broken shell had been cached.)
+const CACHE_VERSION = 'rss-sales-v7';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const PDF_CACHE   = CACHE_VERSION + '-pdfs';
 
